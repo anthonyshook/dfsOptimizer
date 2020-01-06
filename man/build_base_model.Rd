@@ -4,10 +4,12 @@
 \alias{build_base_model}
 \title{Build Base Model}
 \usage{
-build_base_model(n)
+build_base_model(size, pts)
 }
 \arguments{
-\item{n}{number of units}
+\item{size}{number of units}
+
+\item{pts}{vector of length 'size' containing points to use in objective function}
 }
 \description{
 Build Base Model
