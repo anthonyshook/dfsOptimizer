@@ -1,0 +1,30 @@
+Package: dfsOptimizer
+Type: Package
+Title: Optimizer for Daily Fantasy Sports
+Version: 0.1.0.9999
+Authors@R: person("Anthony", "Shook", email = "anthony.shook@gmail.com", role = c("aut", "cre"))
+Description: Provides a RelR
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Depends:
+  R (>= 3.4)
+Imports:
+  R6,
+  data.table,
+  magrittr,
+  ROI,
+  ROI.plugin.glpk,
+  ompr,
+  ompr.roi,
+  lubridate,
+  stringr
+RoxygenNote: 7.0.2
+Collate: 
+    'class-game-info.R'
+    'utils.R'
+    'class-player.R'
+    'imports.R'
+    'class-optim-model.R'
+    'class-optimizer.R'
