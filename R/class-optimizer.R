@@ -7,7 +7,6 @@
 #' @slot model The optimization model
 #' @slot maximize Logical, whether to maximize or minimize the objective function
 #'
-#' @export
 .optimizer <- setClass('optimizer',
                        slots = list(
                          site = 'character',
@@ -199,6 +198,7 @@ setMethod('construct_model',
             # Start constructing the model
             object@model@mod <- build_base_model(
               size = length(object@players),
+              num_groups = data.table::uniqueN(sapply(object@players, team))
               pts  = extract_player_fpts(object)
             )
 
@@ -215,7 +215,7 @@ setMethod('construct_model',
 
           })
 
-setGeneric('optimize', function(object, num_lineups) standardGeneric('optimize'))
+setGeneric('optimize', function(object, num_lineups = 1) standardGeneric('optimize'))
 #' Function to Generate lineups
 #'
 #' @param object an S4 object of class Optimizer
@@ -234,7 +234,7 @@ setMethod('optimize',
                                              solver = ompr.roi::with_ROI(object@model@solver))
 
               # Get solution index
-              get_solution <- ompr::get_solution(fit_model, include_flag[i])
+              get_solution <- ompr::get_solution(fit_model, players[i])
 
               # Get just the relevant rows
             })

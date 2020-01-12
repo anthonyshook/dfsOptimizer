@@ -4,12 +4,12 @@
 # l = 2
 # v = runif(n, 0, 1)
 # base_model <- ompr::MILPModel() %>%
-#   ompr::add_variable(include_flag[i], i = 1:n, type = "binary") %>%
-#   ompr::set_objective(sum_expr(colwise(v[i]) * include_flag[i], i = 1:n), 'max') %>%
-# #  ompr::set_objective(ompr::sum_expr(colwise(v[i]) * include_flag[i], i = 1:n)) %>%
-#   ompr::add_constraint(sum_expr(include_flag[i], i = 1:n) == l) %>%
+#   ompr::add_variable(players[i], i = 1:n, type = "binary") %>%
+#   ompr::set_objective(sum_expr(colwise(v[i]) * players[i], i = 1:n), 'max') %>%
+# #  ompr::set_objective(ompr::sum_expr(colwise(v[i]) * players[i], i = 1:n)) %>%
+#   ompr::add_constraint(sum_expr(players[i], i = 1:n) == l) %>%
 #   ompr::solve_model(ompr.roi::with_ROI(solver = "glpk")) %>%
-#   ompr::get_solution(include_flag[i])
+#   ompr::get_solution(players[i])
 #
 #
 # max_capacity <- 5
@@ -26,15 +26,36 @@
 #' Build Base Model
 #'
 #' @param size number of units
+#' @param team_vector vector of teams
+#' @param position_vector Vector of positions to consider
 #' @param pts vector of length 'size' containing points to use in objective function
 #'
 #' @export
-build_base_model <- function(size, pts) {
-  base_model <- ompr::MILPModel() %>%
-    ompr::add_variable(include_flag[i], i = 1:size, type = "binary")
+build_base_model <- function(size, team_vector, position_vector, pts) {
 
+  # Lengths
+  num_teams <- length(team_vector)
+  num_positions <- length(position_vector)
+
+  # Appropriate data vector
+
+  # Model with all appropriate variables
+  base_model <- ompr::MILPModel() %>%
+    ompr::add_variable(players[i], i = 1:size, type = "binary") %>%
+    # Team related variables
+    ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>% # j is the number of unique animals.
+    ompr::add_variable(teams[i], i = 1:num_teams, type = 'integer') %>%
+    ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary') %>%
+    # Position related variables
+    ompr::add_variable(player_positions[i,j], i = 1:size, j = 1:num_positions, type = 'integer') %>%
+    ompr::add_variable(positions[i], i = 1:num_positions, type = 'integer') %>%
+    ## Basic alignment of variables (making teams == player_teams, etc.) via constraint
+    ompr::add_constraint(player_teams[i,j] == players[i] * mask_func(j, team_vector), i = 1:size, j = 1:num_teams) %>%
+    ompr::add_constraint(teams[j] == sum_expr(player_teams[i,j], i = 1:size), j = 1:num_teams)
+
+
+  # Here we can also add constraints
   base_model <- add_objective(base_model, maximize = TRUE, pts = pts)
-#    ompr::add_constraint(sum_expr(include_flag[i], i = 1:n) == l)
 
   return(base_model)
 }
@@ -42,10 +63,10 @@ build_base_model <- function(size, pts) {
 
 ##### Base objective #####
 add_objective  <- function(model, maximize = TRUE, pts) {
-  N <- get_model_length(model, 'include_flag')
+  N <- get_model_length(model, 'players')
   objdir <- ifelse(maximize, 'max', 'min')
   model <- ompr::set_objective(model,
-                               sum_expr(colwise(pts[i]) * include_flag[i], i = 1:N),
+                               sum_expr(colwise(pts[i]) * players[i], i = 1:N),
                                sense = objdir)
   return(model)
 }
@@ -53,18 +74,31 @@ add_objective  <- function(model, maximize = TRUE, pts) {
 ##### Base Constraints #####
 # Roster Size Constraint
 add_roster_size_constraint <- function(model, roster_limit) {
-  N <- get_model_length(model, 'include_flag')
+  N <- get_model_length(model, 'players')
   model <- ompr::add_constraint(.model = model,
-                                .constraint_expr = sum_expr(include_flag[i], i = 1:N) == roster_limit)
+                                .constraint_expr = sum_expr(players[i], i = 1:N) == roster_limit)
   return(model)
 }
 
 # Budget Constraint
 add_budget_constraint <- function(model, player_salaries, budget) {
-  N <- get_model_length(model, 'include_flag')
+  N <- get_model_length(model, 'players')
   model <- ompr::add_constraint(.model = model,
-                                .constraint_expr = sum_expr(colwise(player_salaries[i]) * include_flag[i], i = 1:N) <= budget)
+                                .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) <= budget)
   return(model)
 }
 
+# Minimum Number of Teams constraint
+add_max_players_constraint <- function(model, min_team_number, team_vector) {
+  N <- get_model_length(model, 'players')
+  G <- get_model_length(model, 'teams')
 
+  # Add constraint
+  new_model <- model %>%
+    ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:G) %>%
+    ompr::add_constraint(teams[j] <= teams_binary[j] * 10000, j=1:G) %>%
+    ompr::add_constraint(sum_expr(teams_binary[j], j=1:G) >= min_team_number)
+
+  return(new_model)
+
+}

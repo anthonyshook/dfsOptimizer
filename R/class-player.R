@@ -113,6 +113,9 @@ setMethod("id", "player_object", function(x) x@id)
 setGeneric("fullname", function(x) standardGeneric("fullname"))
 setMethod("fullname", "player_object", function(x) x@fullname)
 
+setGeneric("team", function(x) standardGeneric("team"))
+setMethod("team", "player_object", function(x) x@team)
+
 
 
 # #' Testing
