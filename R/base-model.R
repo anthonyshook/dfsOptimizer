@@ -85,8 +85,8 @@ add_team_number_constraints <- function(model, min_team_number, max_players_per_
 add_position_constraint <- function(model, position_vector, roster_key, flex_positions) {
 
   pos_masks <- lapply(roster_key, function(V){
-   current_positions <- V$positions
-   return(as.numeric(position_vector %in% current_positions))
+    current_positions <- V$positions
+    return(as.numeric(position_vector %in% current_positions))
   })
 
   # Model length
@@ -114,7 +114,7 @@ add_position_constraint <- function(model, position_vector, roster_key, flex_pos
       model <- model %>%
         ompr::add_constraint(positions[J] == curr_limit)
     }
-      # Add limit to position
+    # Add limit to position
   }
 
   return(model)
@@ -143,7 +143,7 @@ add_max_share_constraint <- function(model, roster_indx, max_share) {
 #' @param roster_indx the index of players to constrain
 #'
 #' @keywords internal
-add_unique_lineup_constraint <- function(model, roster_indx) {
+block_one_lineup <- function(model, roster_indx) {
   model <- add_max_share_constraint(model = model,
                                     roster_indx = roster_indx,
                                     max_share = length(roster_indx) - 1)
@@ -151,3 +151,41 @@ add_unique_lineup_constraint <- function(model, roster_indx) {
   return(model)
 }
 
+#' Unique Lineup Constraint
+#'
+#' @param model The model to further constrain
+#' @param roster_indx the index of players to constrain
+#'
+#' @keywords internal
+add_unique_lineup_constraint <- function(model, roster_indx_list) {
+
+  if (length(roster_indx_list) == 0) {
+    return(model)
+  } else {
+    for (roster_indx in roster_indx_list){
+      model <- block_one_lineup(model = model,
+                                roster_indx = which(roster_indx == 1))
+    }
+  }
+
+  return(model)
+}
+
+
+#' Unique ID constraint
+#'
+#' On sites with multi-position eligibility, players will show up once for every
+#' position they are eligible. We want to ensure a player is not selected more than
+#' once on the same lineup
+#' @keywords internal
+add_unique_id_constraint <- function(model, ids) {
+  id_cnt     <- table(ids)
+  repeat_ids <- names(id_cnt)[id_cnt > 1]
+
+  for (id in repeat_ids) {
+    indx <- which(ids == id)
+    model <- add_constraint(model, sum_expr(players[i], i = indx) == 1)
+  }
+
+  return(model)
+}
