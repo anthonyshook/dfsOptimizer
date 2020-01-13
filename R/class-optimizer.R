@@ -174,6 +174,48 @@ setMethod('get_player_data', 'optimizer',
 
           })
 
+
+setGeneric('block_players_by_id', function(object, player_ids) standardGeneric('block_players_by_id'))
+#' Function to block players by ID
+#'
+#' @param object an S4 object of class Optimizer
+#' @param player_ids IDs of players to block
+#'
+#' @export
+setMethod('block_players_by_id', 'optimizer',
+          function(object, player_ids) {
+            # Find player
+            for (pid in player_ids){
+              indx <- which(sapply(object@players, id) == pid)
+              for (i in indx) {
+                object@players[[i]] <- block_player(object@players[[i]])
+              }
+            }
+            return(object)
+          })
+
+
+setGeneric('lock_players_by_id', function(object, player_ids) standardGeneric('lock_players_by_id'))
+#' Function to block players by ID
+#'
+#' @param object an S4 object of class Optimizer
+#' @param player_ids IDs of players to block
+#'
+#' @export
+setMethod('lock_players_by_id', 'optimizer',
+          function(object, player_ids) {
+            # Find player
+            for (pid in player_ids){
+              indx <- which(sapply(object@players, id) == pid)
+              for (i in indx) {
+                object@players[[i]] <- lock_player(object@players[[i]])
+              }
+            }
+            return(object)
+          })
+
+
+########## Running Models
 setGeneric('construct_model', function(object) standardGeneric('construct_model'))
 #' Method for constructing the optimization model
 #'

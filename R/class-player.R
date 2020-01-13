@@ -10,6 +10,7 @@
 #' @slot salary salary
 #' @slot fpts fantasy points
 #' @slot locked Whether the player should be locked to all lineups
+#' @slot blocked whether to omit player from all lineups
 #' @slot is_injured injury flag
 #' @slot min_exposure Single player minimum exposure
 #' @slot max_exposure Single player maximum exposure
@@ -28,6 +29,7 @@
                      salary = 'integer',
                      fpts = 'numeric',
                      locked = 'logical',
+                     blocked = 'logical',
                      is_injured = 'logical',
                      min_exposure = 'numeric',
                      max_exposure = 'numeric',
@@ -51,6 +53,7 @@
 #' @param salary salary
 #' @param fpts fantasy points
 #' @param locked Whether the player should be locked to all lineups (Default FALSE)
+#' @param blocked Whether to omit player from all lineups (Default FALSE)
 #' @param is_injured injury flag (Default FALSE)
 #' @param min_exposure Single player minimum exposure (Default 0)
 #' @param max_exposure Single player maximum exposure (Default 1)
@@ -68,6 +71,7 @@ player <- function(id,
                    salary,
                    fpts,
                    locked = FALSE,
+                   blocked = FALSE,
                    is_injured = FALSE,
                    min_exposure = 0,
                    max_exposure = 1,
@@ -88,6 +92,7 @@ player <- function(id,
                salary = as.integer(salary),
                fpts = fpts,
                locked = locked,
+               blocked = blocked,
                is_injured = is_injured,
                min_exposure = min_exposure,
                max_exposure = max_exposure,
@@ -126,7 +131,7 @@ setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
 setMethod("max_exposure", "player_object", function(x) x@max_exposure)
 
 
-# Full method
+# Formatter method
 setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
 setMethod('get_player_data', 'player_object',
           function(object) {
@@ -140,3 +145,19 @@ setMethod('get_player_data', 'player_object',
             return(data.frame(vals, row.names = FALSE))
 
           })
+
+setGeneric('lock_player', function(object) standardGeneric('lock_player'))
+setMethod('lock_player', 'player_object',
+           function(object) {
+             object@locked  <- TRUE
+             object@blocked <- FALSE
+             return(object)
+           })
+
+setGeneric('block_player', function(object) standardGeneric('block_player'))
+setMethod('block_player', 'player_object',
+           function(object) {
+             object@locked  <- FALSE
+             object@blocked <- TRUE
+             return(object)
+           })
