@@ -122,6 +122,9 @@ setMethod("position", "player_object", function(x) x@position)
 setGeneric("salary", function(x) standardGeneric("salary"))
 setMethod("salary", "player_object", function(x) x@salary)
 
+setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
+setMethod("max_exposure", "player_object", function(x) x@max_exposure)
+
 
 # Full method
 setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))

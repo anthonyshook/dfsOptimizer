@@ -166,29 +166,11 @@ setMethod('update_fpts',
 
           })
 
+setMethod('get_player_data', 'optimizer',
+          function(object){
 
-setGeneric('get_player_index', function(object) standardGeneric('get_player_index'))
-#' Method for getting player index (Deprecated?)
-#'
-#' @param object an S4 object of class Optimizer
-#'
-#' @export
-setMethod('get_player_index',
-          signature = 'optimizer',
-          definition = function(object){
-            if (length(object@players) == 0) {
-              return(NA)
-            } else {
-              o <- do.call('rbind',
-                           lapply(seq_len(length(object@players)),
-                                  function(i){
-                                    data.frame(index = i ,
-                                               id = id(object@players[[i]]),
-                                               fullname = fullname(object@players[[i]])
-                                    )
-                                  }))
-            }
-            return(o)
+            players <- lapply(object@players, get_player_data)
+            return(data.table::rbindlist(players))
 
           })
 
@@ -240,6 +222,10 @@ setMethod('construct_model',
                                                         roster_key = base_config$roster_key,
                                                         flex_positions = object@model@flex_positions)
 
+            # Add unique ID constraint
+            object@model@mod <- add_unique_id_constraint(model = object@model@mod,
+                                                         ids = sapply(object@players, id))
+
             return(object)
 
           })
@@ -258,14 +244,32 @@ setMethod('optimize',
             # Construct Model
             # Necessary to do this now so we do just-in-time construction
             M <- construct_model(object)
-            current_model <- M@model@mod
 
             # Build a player data set
             # We can then filter from this below, where we need the relevant rows the optimizer solved for
-            solution_vectors <- vector(mode = 'list', length = num_lineups)
+            solution_vectors <- list()
             lineups <- vector(mode = 'list', length = num_lineups)
 
             for (i in 1:num_lineups) {
+
+              # Temporary Model
+              current_model <- M@model@mod
+
+              # Add unique roster constraint
+              current_model <- add_unique_lineup_constraint(current_model, solution_vectors)
+
+              # If any player is currently above their exposure rate, block them
+              if (length(solution_vectors) > 0) {
+                current_exposures <- calculate_exposure(solution_vectors)
+                over_exposed <- which(current_exposures > sapply(object@players, max_exposure))
+
+                # Add exposure constraint
+                if (length(over_exposed) > 0) {
+                  current_model <- current_model %>%
+                    ompr::add_constraint(players[i] == 0, i = over_exposed)
+                }
+              }
+
               # Solve the model
               fit_model <- ompr::solve_model(current_model,
                                              solver = ompr.roi::with_ROI(M@model@solver))
@@ -279,13 +283,10 @@ setMethod('optimize',
               solution_index <- ompr::get_solution(fit_model, players[i])
 
               # Add to existing rosters
-              solution_vectors[[i]] <- which(solution_index$value == 1)
-
-              # Add constraint to model before running again
-              current_model <- add_unique_lineup_constraint(current_model, solution_vectors[[i]])
+              solution_vectors[[i]] <- solution_index$value
 
               # TO DO -- get only relevant rows (not the index, but the table containing players' data)
-              lineups[[i]] <- get_player_data(object)[solution_vectors[[i]],]
+              lineups[[i]] <- get_player_data(object)[which(solution_vectors[[i]]==1),]
 
             }
 
@@ -293,10 +294,4 @@ setMethod('optimize',
 
           })
 
-setMethod('get_player_data', 'optimizer',
-          function(object){
 
-            players <- lapply(object@players, get_player_data)
-            return(data.table::rbindlist(players))
-
-          })
