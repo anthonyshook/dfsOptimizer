@@ -1,41 +1,15 @@
-# Base model
-#library(ROI.plugin.glpk)
-# n = 10
-# l = 2
-# v = runif(n, 0, 1)
-# base_model <- ompr::MILPModel() %>%
-#   ompr::add_variable(players[i], i = 1:n, type = "binary") %>%
-#   ompr::set_objective(sum_expr(colwise(v[i]) * players[i], i = 1:n), 'max') %>%
-# #  ompr::set_objective(ompr::sum_expr(colwise(v[i]) * players[i], i = 1:n)) %>%
-#   ompr::add_constraint(sum_expr(players[i], i = 1:n) == l) %>%
-#   ompr::solve_model(ompr.roi::with_ROI(solver = "glpk")) %>%
-#   ompr::get_solution(players[i])
-#
-#
-# max_capacity <- 5
-# #n <- 10
-# weights <- runif(n, max = max_capacity)
-# MIPModel() %>%
-#   add_variable(x[i], i = 1:n, type = "binary") %>%
-#   set_objective(sum_expr(weights[i] * x[i], i = 1:n), "max") %>%
-#   add_constraint(sum_expr(weights[i] * x[i], i = 1:n) <= max_capacity) %>%
-#   solve_model(with_ROI(solver = "glpk")) %>%
-#   get_solution(x[i])
-#
 
 #' Build Base Model
 #'
 #' @param size number of units
 #' @param team_vector vector of teams
-#' @param position_vector Vector of positions to consider
 #' @param pts vector of length 'size' containing points to use in objective function
+#' @param maximize Whether to maximize the objective (if FALSE, the objective is minimized)
 #'
-#' @export
-build_base_model <- function(size, team_vector, position_vector, pts) {
+build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
 
   # Lengths (unique teams and positions)
   num_teams <- length(unique(team_vector))
-  num_positions <- length(unique(position_vector))
 
   # Model with all appropriate variables
   base_model <- ompr::MILPModel() %>%
@@ -44,22 +18,14 @@ build_base_model <- function(size, team_vector, position_vector, pts) {
     ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>% # j is the number of unique animals.
     ompr::add_variable(teams[i], i = 1:num_teams, type = 'integer') %>%
     ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary') %>%
-    # Position related variables
-    ompr::add_variable(player_positions[i,j], i = 1:size, j = 1:num_positions, type = 'integer') %>%
-    ompr::add_variable(positions[i], i = 1:num_positions, type = 'integer') %>%
-    ## Basic alignment of variables (making teams == player_teams, etc.) via constraint
     # Teams alignment
     ompr::add_constraint(player_teams[i,j] == players[i] * mask_func(j, team_vector), i = 1:size, j = 1:num_teams) %>%
     ompr::add_constraint(teams[j] == sum_expr(player_teams[i,j], i = 1:size), j = 1:num_teams) %>%
     ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:num_teams) %>%
-    ompr::add_constraint(teams[j] <= teams_binary[j] * 10000, j = 1:num_teams) %>%
-    # Positions alignment
-    ompr::add_constraint(player_positions[i, j] == players[i] * mask_func(j, position_vector), i = 1:size, j = 1:num_positions) %>%
-    ompr::add_constraint(positions[j] == sum_expr(player_positions[i,j], i = 1:size), j = 1:num_positions)
+    ompr::add_constraint(teams[j] <= teams_binary[j] * 10000, j = 1:num_teams)
 
-
-  # Here we can also add constraints
-  base_model <- add_objective(base_model, maximize = TRUE, pts = pts)
+  # Add Objective
+  base_model <- add_objective(base_model, maximize = maximize, pts = pts)
 
   return(base_model)
 }
@@ -108,5 +74,55 @@ add_team_number_constraints <- function(model, min_team_number, max_players_per_
 
 }
 
+#' Position constraint
+#'
+#' @param model OMPR Model object
+#' @param position_vector Vector of positions to consider
+#' @param roster_key List containing
+#' @param flex_positions Positions to be considered for flex
+#'
+#' @keywords internal
+add_position_constraint <- function(model, position_vector, roster_key, flex_positions) {
 
-# Other constraints
+  pos_masks <- lapply(roster_key, function(V){
+   current_positions <- V$positions
+   return(as.numeric(position_vector %in% current_positions))
+  })
+
+  # Model length
+  num_players   <- get_model_length(model, 'players')
+  num_positions <- length(roster_key)
+
+  model <- model %>%
+    # Position related variables
+    ompr::add_variable(player_positions[i,j], i = 1:num_players, j = 1:num_positions, type = 'integer') %>%
+    ompr::add_variable(positions[i], i = 1:num_positions, type = 'integer')
+
+  for (J in 1:num_positions) {
+    mask_vec   <- pos_masks[[J]]
+    curr_limit <- roster_key[[J]]$num
+    model <- model %>%
+      # Position Alignment
+      ompr::add_constraint(player_positions[i, J] == players[i] * mask_vec, i = 1:num_players, j = J) %>%
+      ompr::add_constraint(positions[J] == sum_expr(player_positions[i,J], i = 1:num_players), j = J) #%>%
+
+    if (all(roster_key[[J]]$positions %in% flex_positions)) {
+      model <- model %>%
+        ompr::add_constraint(positions[J] >= curr_limit) %>%
+        ompr::add_constraint(positions[J] <= curr_limit+1)
+    } else {
+      model <- model %>%
+        ompr::add_constraint(positions[J] == curr_limit)
+    }
+      # Add limit to position
+  }
+
+  return(model)
+
+}
+
+
+#' Unique ID constraint
+
+
+#' Unique Lineup constraint

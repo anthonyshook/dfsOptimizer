@@ -123,12 +123,17 @@ setGeneric("salary", function(x) standardGeneric("salary"))
 setMethod("salary", "player_object", function(x) x@salary)
 
 
-# #' Testing
-# #' @include utils.R
-# playerr6 <- R6::R6Class('player',
-#                         list(
-#                           sum = 0,
-#                           add = add,
-#                           add_shortname = add_shortname,
-#                           s4 = player()
-#                         ))
+# Full method
+setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
+setMethod('get_player_data', 'player_object',
+          function(object) {
+
+            # Get all the object names and values
+            object_names <- c('id','fullname','team','position','salary','fpts')
+            vals <- lapply(object_names, function(obn) slot(object, obn))
+
+            names(vals) <- object_names
+
+            return(data.frame(vals, row.names = FALSE))
+
+          })

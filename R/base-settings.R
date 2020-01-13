@@ -6,7 +6,12 @@ dk_settings <- list(
       budget = 50000,
       roster = 9,
       min_team_req = 3,
-      max_players_per_team = 9
+      max_players_per_team = 9,
+      roster_key = list('C' = list(positions = 'C', num = 2),
+                        'W' = list(positions = 'W', num = 3),
+                        'D' = list(positions = 'D', num = 2),
+                        'G' = list(positions = 'G', num = 1)),
+      flex_positions = c('C', 'W', 'D')
     ),
     SHOWDOWN = list(),
     TIERS = list()
@@ -21,7 +26,9 @@ dk_settings <- list(
       budget = 50000,
       roster = 6,
       min_team_req = 1,
-      max_players_per_team = 6
+      max_players_per_team = 6,
+      roster_key = list('G' = list(positions = 'G', num = 6)),
+      flex_positions = NA_character_
     ),
     SHOWDOWN = list(),
     WEEKEND = list() # Less important
@@ -35,7 +42,12 @@ yahoo_settings <- list(
       budget = 200,
       roster = 9,
       min_team_req = 3,
-      max_players_from_team = 6
+      max_players_from_team = 6,
+      roster_key =list('C' = list(positions = 'C', num = 2),
+                       'W' = list(positions = 'W', num = 3),
+                       'D' = list(positions = 'D', num = 2),
+                       'G' = list(positions = 'G', num = 2)),
+      flex_positions = NA_character_
     )
   ),
   FOOTBALL = list(
@@ -46,7 +58,9 @@ yahoo_settings <- list(
       budget = 200,
       roster = 6,
       min_team_req = 1,
-      max_from_one_team = 6
+      max_from_one_team = 6,
+      roster_key =list('G' = list(positions = 'G', num = 6)),
+      flex_positions = NA_character_
     )
   )
 )
@@ -58,7 +72,12 @@ fd_settings <- list(
       budget = 55000,
       roster = 9,
       min_team_req = 3,
-      max_from_one_team = 4
+      max_from_one_team = 4,
+      roster_key = list('C' = list(positions = 'C', num = 2),
+                        'W' = list(positions = 'W', num = 4),
+                        'D' = list(positions = 'D', num = 2),
+                        'G' = list(positions = 'G', num = 1)),
+      flex_positions = NA_character_
     ),
     SINGLE = list()
   ),
@@ -71,7 +90,9 @@ fd_settings <- list(
       budget = 60000,
       roster = 6,
       min_team_req = 1,
-      max_from_one_team = 6
+      max_from_one_team = 6,
+      roster_key = list('G' = list(positions = 'G', num = 6)),
+      flex_positions = NA_character_
     ),
     SINGLE = list()
   )

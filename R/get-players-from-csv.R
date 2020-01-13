@@ -38,6 +38,9 @@ parse_dk_csv <- function(dat) {
            # Game Info
            gi <- parse_game_info(curr$`Game Info`)
 
+           # This fix is for hockey (LW/)
+           curr$Position <- gsub(pattern = 'LW|RW', replacement = 'W', x = curr$Position)
+
            # Make player object
            # Uses avg points as fpts at the moment -- need easy way to replace those.
            pl <- player(id = curr$ID,

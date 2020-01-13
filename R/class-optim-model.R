@@ -6,17 +6,20 @@ setOldClass('milp_model')
 #'
 #' @slot mod The model object
 #' @slot solver Method for solving; currently only 'glpk' is available
+#' @slot flex_positions Character array of flex positions
 #'
 #' @export
 optim_model <- setClass('optim_model',
                         slots = list(
                           mod = 'milp_model',
-                          solver = 'character'
+                          solver = 'character',
+                          flex_positions = 'character'
                         ),
                         prototype = list(
                           mod = ompr::MILPModel(),
-                          solver = 'glpk'
-                        ))
+                          solver = 'glpk',
+                          flex_positions = NA_character_
+                          ))
 
 setMethod('show','optim_model', function(object) {
   cat(paste('Solver:', object@solver, '\n'))

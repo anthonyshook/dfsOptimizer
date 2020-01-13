@@ -24,21 +24,34 @@
 #'
 #' @param site The site being used for optimization
 #' @param sport The sport being optimized
-#' @param contest_type The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game)
+#' @param contest_type The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game). Default: CLASSIC
 #' @param players List of players to build lineups from (defaults to empty list)
-#' @param model The optimization model (Defaults to empty model)
 #' @param maximize Logical, whether to maximize or minimize the objective function (Defaults to TRUE)
 #'
 #' @export
-optimizer <- function(site, sport, contest_type, players = list(), model, maximize = TRUE) {
+optimizer <- function(site,
+                      sport,
+                      contest_type = 'CLASSIC',
+                      players = list(),
+                      maximize = TRUE) {
 
-  if (missing('model')) {
-    model = optim_model()
+  site         <- toupper(site)
+  sport        <- toupper(sport)
+  contest_type <- toupper(contest_type)
+
+  # Get base config
+  cfg <- base_settings[[site]][[sport]][[contest_type]]
+
+  if (length(cfg) == 0 || is.null(cfg)) {
+    stop('Configuration for Site + Sport + Contest Type not implemented!')
   }
 
-  o <- .optimizer(site = toupper(site),
-                  sport = toupper(sport),
-                  contest_type = toupper(contest_type),
+  # Making model with flex position
+  model <- optim_model(flex_positions = cfg$flex_positions)
+
+  o <- .optimizer(site = site,
+                  sport = sport,
+                  contest_type = contest_type,
                   players = players,
                   model = model,
                   maximize = maximize)
@@ -188,19 +201,23 @@ setGeneric('construct_model', function(object) standardGeneric('construct_model'
 setMethod('construct_model',
           signature = 'optimizer',
           definition = function(object) {
-            # Checks should be added, but for now
 
+            # Get base config
             base_config <- base_settings[[object@site]][[object@sport]][[object@contest_type]]
-            if (length(base_config) == 0 || is.null(base_config)) {
-              stop('Configuration for Site, Sport and Contest Type not found!')
+
+            # Checking for players
+            if (length(object@players) == 0) {
+              stop('No players found, cannot construct a model!')
             }
 
             # Start constructing the model
             object@model@mod <- build_base_model(
               size = length(object@players),
               team_vector = sapply(object@players, team),
-              position_vector = sapply(object@players, position),
-              pts  = extract_player_fpts(object)
+              # position_vector = sapply(object@players, position),
+              # roster_key = base_config$roster_key,
+              pts  = extract_player_fpts(object),
+              maximize = object@maximize
             )
 
             # Adding roster limit
@@ -217,6 +234,12 @@ setMethod('construct_model',
                                                             min_team_number = base_config$min_team_req,
                                                             max_players_per_team = base_config$max_players_per_team)
 
+            # Add positional constraint
+            object@model@mod <- add_position_constraint(model = object@model@mod,
+                                                        position_vector = sapply(object@players, position),
+                                                        roster_key = base_config$roster_key,
+                                                        flex_positions = object@model@flex_positions)
+
             return(object)
 
           })
@@ -232,19 +255,32 @@ setMethod('optimize',
           signature = 'optimizer',
           definition = function(object, num_lineups = 1) {
 
+            # Construct Model
+            # Necessary to do this now so we do just-in-time construction
+            M <- construct_model(object)
+
             # Build a player data set
             # We can then filter from this below, where we need the relevant rows the optimizer solved for
 
             solution_list <- lapply(1:num_lineups, function(Z){
-              fit_model <- ompr::solve_model(object@model@mod,
-                                             solver = ompr.roi::with_ROI(object@model@solver))
+              fit_model <- ompr::solve_model(M@model@mod,
+                                             solver = ompr.roi::with_ROI(M@model@solver))
 
               # Get solution index
               get_solution <- ompr::get_solution(fit_model, players[i])
 
-              # Get just the relevant rows
+              # TO DO -- get only relevant rows (not the index, but the table containing players' data)
+
             })
 
             return(solution_list)
+
+          })
+
+setMethod('get_player_data', 'optimizer',
+          function(object){
+
+            players <- lapply(object@players, get_player_data)
+            return(data.table::rbindlist(players))
 
           })
