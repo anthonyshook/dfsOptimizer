@@ -292,6 +292,15 @@ setMethod('optimize',
             solution_vectors <- list()
             lineups <- vector(mode = 'list', length = num_lineups)
 
+            # Block Players
+            M@model@mod <- add_block_constraint(M@model@mod,
+                                                block_vector = sapply(object@players, blocked))
+
+            # Lock Players
+            M@model@mod <- add_lock_constraint(M@model@mod,
+                                               lock_vector = sapply(object@players, locked))
+
+            # Generate Lineups
             for (i in 1:num_lineups) {
 
               # Temporary Model
@@ -304,6 +313,11 @@ setMethod('optimize',
               if (length(solution_vectors) > 0) {
                 current_exposures <- calculate_exposure(solution_vectors)
                 over_exposed <- which(current_exposures > sapply(object@players, max_exposure))
+
+                # Ignore Locked and blocked
+                over_exposed <- setdiff(over_exposed,
+                                        c(which(sapply(object@players, locked) == 1),
+                                          which(sapply(object@players, blocked) == 1)))
 
                 # Add exposure constraint
                 if (length(over_exposed) > 0) {
