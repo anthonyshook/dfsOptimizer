@@ -202,3 +202,11 @@ setMethod('set_as_active', 'player_object',
             object@is_injured <- FALSE
             return(object)
           })
+
+
+setGeneric('set_fpts', function(object, pts) standardGeneric('set_fpts'))
+setMethod('set_fpts', 'player_object',
+          function(object, pts) {
+            object@fpts <- pts
+            return(object)
+          })
