@@ -4,18 +4,22 @@
 \alias{optimizer}
 \title{Initialization Function For Optimizer Class}
 \usage{
-optimizer(site, sport, contest_type, players = list(), model, maximize = TRUE)
+optimizer(
+  site,
+  sport,
+  contest_type = "CLASSIC",
+  players = list(),
+  maximize = TRUE
+)
 }
 \arguments{
 \item{site}{The site being used for optimization}
 
 \item{sport}{The sport being optimized}
 
-\item{contest_type}{The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game)}
+\item{contest_type}{The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game). Default: CLASSIC}
 
 \item{players}{List of players to build lineups from (defaults to empty list)}
-
-\item{model}{The optimization model (Defaults to empty model)}
 
 \item{maximize}{Logical, whether to maximize or minimize the objective function (Defaults to TRUE)}
 }

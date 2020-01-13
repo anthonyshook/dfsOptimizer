@@ -4,12 +4,16 @@
 \alias{build_base_model}
 \title{Build Base Model}
 \usage{
-build_base_model(size, pts)
+build_base_model(size, team_vector, pts, maximize = TRUE)
 }
 \arguments{
 \item{size}{number of units}
 
+\item{team_vector}{vector of teams}
+
 \item{pts}{vector of length 'size' containing points to use in objective function}
+
+\item{maximize}{Whether to maximize the objective (if FALSE, the objective is minimized)}
 }
 \description{
 Build Base Model
