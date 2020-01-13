@@ -6,8 +6,15 @@
 #' @keywords internal
 add_block_constraint <- function(model, block_vector) {
   blocks <- which(block_vector == 1)
-  model <- model %>%
-    ompr::add_constraint(players[i] == 0, i = blocks)
+
+  if (sum(block_vector) == 0) {
+    model <- model
+  } else {
+    model <- model %>%
+      ompr::add_constraint(players[i] == 0, i = blocks)
+  }
+
+  return(model)
 }
 
 
@@ -19,6 +26,13 @@ add_block_constraint <- function(model, block_vector) {
 #' @keywords internal
 add_lock_constraint <- function(model, lock_vector) {
   locks <- which(lock_vector == 1)
-  model <- model %>%
-    ompr::add_constraint(players[i] == 1, i = locks)
+
+  if (sum(lock_vector) == 0) {
+    model <- model
+  } else {
+    model <- model %>%
+      ompr::add_constraint(players[i] == 1, i = locks)
+  }
+
+  return(model)
 }
