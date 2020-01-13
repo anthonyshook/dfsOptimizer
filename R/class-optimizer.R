@@ -258,22 +258,38 @@ setMethod('optimize',
             # Construct Model
             # Necessary to do this now so we do just-in-time construction
             M <- construct_model(object)
+            current_model <- M@model@mod
 
             # Build a player data set
             # We can then filter from this below, where we need the relevant rows the optimizer solved for
+            solution_vectors <- vector(mode = 'list', length = num_lineups)
+            lineups <- vector(mode = 'list', length = num_lineups)
 
-            solution_list <- lapply(1:num_lineups, function(Z){
-              fit_model <- ompr::solve_model(M@model@mod,
+            for (i in 1:num_lineups) {
+              # Solve the model
+              fit_model <- ompr::solve_model(current_model,
                                              solver = ompr.roi::with_ROI(M@model@solver))
 
+              # Break if not optimal
+              if (fit_model$status != 'optimal') {
+                stop('Model could not reach a solution.')
+              }
+
               # Get solution index
-              get_solution <- ompr::get_solution(fit_model, players[i])
+              solution_index <- ompr::get_solution(fit_model, players[i])
+
+              # Add to existing rosters
+              solution_vectors[[i]] <- which(solution_index$value == 1)
+
+              # Add constraint to model before running again
+              current_model <- add_unique_lineup_constraint(current_model, solution_vectors[[i]])
 
               # TO DO -- get only relevant rows (not the index, but the table containing players' data)
+              lineups[[i]] <- get_player_data(object)[solution_vectors[[i]],]
 
-            })
+            }
 
-            return(solution_list)
+            return(lineups)
 
           })
 
