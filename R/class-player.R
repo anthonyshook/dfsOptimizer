@@ -168,3 +168,37 @@ setMethod('block_player', 'player_object',
              object@blocked <- TRUE
              return(object)
            })
+
+setGeneric('set_min_exposure', function(object, exposure) standardGeneric('set_min_exposure'))
+setMethod('set_min_exposure', 'player_object',
+          function(object, exposure){
+            if (exposure > 1 || exposure < 0) {
+              stop('Minimum Exposure must be between 0 and 1')
+            }
+            object@min_exposure <- exposure
+            return(object)
+          })
+
+setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
+setMethod('set_max_exposure', 'player_object',
+          function(object, exposure){
+            if (exposure > 1 || exposure < 0) {
+              stop('Maximum Exposure must be between 0 and 1')
+            }
+            object@max_exposure <- exposure
+            return(object)
+          })
+
+setGeneric('set_as_injured', function(object, exposure) standardGeneric('set_as_injured'))
+setMethod('set_as_injured', 'player_object',
+          function(object){
+            object@is_injured <- TRUE
+            return(object)
+          })
+
+setGeneric('set_as_active', function(object, exposure) standardGeneric('set_as_active'))
+setMethod('set_as_active', 'player_object',
+          function(object){
+            object@is_injured <- FALSE
+            return(object)
+          })
