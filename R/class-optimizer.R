@@ -71,7 +71,8 @@ setMethod('show', 'optimizer', function(object) {
 })
 
 
-# Methods
+#### Methods
+## Extraction
 setGeneric("extract_player_fpts", function(object) standardGeneric("extract_player_fpts"))
 #' Extracting Fantasy Points from Player objects
 #'
@@ -90,7 +91,55 @@ setMethod('extract_player_fpts',
           })
 
 
+setMethod('get_player_data', 'optimizer',
+          function(object){
 
+            players <- lapply(object@players, get_player_data)
+#            all     <- do.call('rbind', players)
+            return(data.table::rbindlist(players))
+
+          })
+
+setGeneric('get_player_id', function(object, name, team, position) standardGeneric('get_player_id'))
+#' Get a Player Id
+#'
+#' @param object Object of class Optimizer
+#' @param name Full name of player
+#' @param team team abbreviation of player (Not required)
+#' @param position position of player (Not required)
+#'
+#' @details \code{team} and \code{position} can be included to differentiate between two players with the same name, but who play for different teams and/or at different positions.
+#'
+#' @export
+setMethod(f = 'get_player_id',
+          signature = 'optimizer',
+          definition = function(object, name, team, position) {
+
+            pdata <- get_player_data(object)
+
+            # Go by name
+            player <- pdata[fullname == name]
+
+            if (!missing(team)) {
+              TM <- team
+              player <- player[team == TM]
+            }
+
+            if (!missing(position)) {
+              POS <- position
+              player <- player[position == POS]
+            }
+
+            if (nrow(player) == 0) {
+              message('Player not found!')
+              return(invisible(NULL))
+            } else {
+              return(as.character(player$id))
+            }
+
+          })
+
+## Updating
 setGeneric("add_player", function(object, pl) standardGeneric("add_player"))
 #' Method for adding a player to Optimizer object
 #'
@@ -152,26 +201,21 @@ setMethod('update_fpts',
             if (!all(c('fpts','id') %in% colnames(fpts_data))) { stop('fpts_data must have columns `fpts` and `id`')}
 
             # Update the data
-            for (i in 1:length(fpts_data)) {
+            for (i in 1:nrow(fpts_data)) {
+
+              # just for code clarity
+              ID  <- fpts_data$id[i]
+              PTS <- fpts_data$fpts[i]
+
               # check for existence
-              if (is.null(object@players[[fpts_data$id[i]]])) {
-                break
+              if (is.null(object@players[[ID]])) {
+                next
               } else {
-                object@players[[fpts_data$id[i]]]@fpts <- fpts_data$fpts[i]
+                object@players[[ID]] <- set_fpts(object@players[[ID]], PTS)
               }
 
             }
-
             return(object)
-
-          })
-
-setMethod('get_player_data', 'optimizer',
-          function(object){
-
-            players <- lapply(object@players, get_player_data)
-            return(data.table::rbindlist(players))
-
           })
 
 
