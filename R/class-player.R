@@ -130,6 +130,13 @@ setMethod("salary", "player_object", function(x) x@salary)
 setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
 setMethod("max_exposure", "player_object", function(x) x@max_exposure)
 
+setGeneric("blocked", function(x) standardGeneric("blocked"))
+setMethod("blocked", "player_object", function(x) as.numeric(x@blocked))
+
+setGeneric("locked", function(x) standardGeneric("locked"))
+setMethod("locked", "player_object", function(x) as.numeric(x@locked))
+
+
 
 # Formatter method
 setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
