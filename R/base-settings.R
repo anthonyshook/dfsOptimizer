@@ -5,7 +5,8 @@ dk_settings <- list(
     CLASSIC = list(
       budget = 50000,
       roster = 9,
-      min_team_req = 3
+      min_team_req = 3,
+      max_players_per_team = 9
     ),
     SHOWDOWN = list(),
     TIERS = list()
@@ -17,9 +18,10 @@ dk_settings <- list(
   ),
   GOLF = list(
     CLASSIC = list(
-      budget = 60000,
+      budget = 50000,
       roster = 6,
-      min_team_req = 1
+      min_team_req = 1,
+      max_players_per_team = 6
     ),
     SHOWDOWN = list(),
     WEEKEND = list() # Less important
@@ -33,15 +35,17 @@ yahoo_settings <- list(
       budget = 200,
       roster = 9,
       min_team_req = 3,
-      max_players_from_team = 6)
+      max_players_from_team = 6
+    )
   ),
   FOOTBALL = list(
     CLASSIC = list()
-    ),
+  ),
   GOLF = list(
     CLASSIC = list(
       budget = 200,
       roster = 6,
+      min_team_req = 1,
       max_from_one_team = 6
     )
   )
@@ -50,7 +54,12 @@ yahoo_settings <- list(
 # FanDuel Settings
 fd_settings <- list(
   HOCKEY = list(
-    CLASSIC = list(),
+    CLASSIC = list(
+      budget = 55000,
+      roster = 9,
+      min_team_req = 3,
+      max_from_one_team = 4
+    ),
     SINGLE = list()
   ),
   FOOTBALL = list(
@@ -58,7 +67,12 @@ fd_settings <- list(
     SINGLE = list()
   ),
   GOLF = list(
-    CLASSIC = list(),
+    CLASSIC = list(
+      budget = 60000,
+      roster = 6,
+      min_team_req = 1,
+      max_from_one_team = 6
+    ),
     SINGLE = list()
   )
 )

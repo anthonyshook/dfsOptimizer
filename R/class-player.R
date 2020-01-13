@@ -116,6 +116,11 @@ setMethod("fullname", "player_object", function(x) x@fullname)
 setGeneric("team", function(x) standardGeneric("team"))
 setMethod("team", "player_object", function(x) x@team)
 
+setGeneric("position", function(x) standardGeneric("position"))
+setMethod("position", "player_object", function(x) x@position)
+
+setGeneric("salary", function(x) standardGeneric("salary"))
+setMethod("salary", "player_object", function(x) x@salary)
 
 
 # #' Testing

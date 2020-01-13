@@ -33,11 +33,9 @@
 #' @export
 build_base_model <- function(size, team_vector, position_vector, pts) {
 
-  # Lengths
-  num_teams <- length(team_vector)
-  num_positions <- length(position_vector)
-
-  # Appropriate data vector
+  # Lengths (unique teams and positions)
+  num_teams <- length(unique(team_vector))
+  num_positions <- length(unique(position_vector))
 
   # Model with all appropriate variables
   base_model <- ompr::MILPModel() %>%
@@ -50,8 +48,14 @@ build_base_model <- function(size, team_vector, position_vector, pts) {
     ompr::add_variable(player_positions[i,j], i = 1:size, j = 1:num_positions, type = 'integer') %>%
     ompr::add_variable(positions[i], i = 1:num_positions, type = 'integer') %>%
     ## Basic alignment of variables (making teams == player_teams, etc.) via constraint
+    # Teams alignment
     ompr::add_constraint(player_teams[i,j] == players[i] * mask_func(j, team_vector), i = 1:size, j = 1:num_teams) %>%
-    ompr::add_constraint(teams[j] == sum_expr(player_teams[i,j], i = 1:size), j = 1:num_teams)
+    ompr::add_constraint(teams[j] == sum_expr(player_teams[i,j], i = 1:size), j = 1:num_teams) %>%
+    ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:num_teams) %>%
+    ompr::add_constraint(teams[j] <= teams_binary[j] * 10000, j = 1:num_teams) %>%
+    # Positions alignment
+    ompr::add_constraint(player_positions[i, j] == players[i] * mask_func(j, position_vector), i = 1:size, j = 1:num_positions) %>%
+    ompr::add_constraint(positions[j] == sum_expr(player_positions[i,j], i = 1:size), j = 1:num_positions)
 
 
   # Here we can also add constraints
@@ -88,17 +92,21 @@ add_budget_constraint <- function(model, player_salaries, budget) {
   return(model)
 }
 
-# Minimum Number of Teams constraint
-add_max_players_constraint <- function(model, min_team_number, team_vector) {
+# Teams Constraints (max players per team, minimum number of teams)
+add_team_number_constraints <- function(model, min_team_number, max_players_per_team) {
   N <- get_model_length(model, 'players')
   G <- get_model_length(model, 'teams')
 
   # Add constraint
   new_model <- model %>%
-    ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:G) %>%
-    ompr::add_constraint(teams[j] <= teams_binary[j] * 10000, j=1:G) %>%
-    ompr::add_constraint(sum_expr(teams_binary[j], j=1:G) >= min_team_number)
+    # Minimum Team Number
+    ompr::add_constraint(sum_expr(teams_binary[j], j=1:G) >= min_team_number) %>%
+    # Maximum Per Team
+    ompr::add_constraint(teams[j] <= max_players_per_team, j = 1:G)
 
   return(new_model)
 
 }
+
+
+# Other constraints

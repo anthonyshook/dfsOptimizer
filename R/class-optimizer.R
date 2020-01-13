@@ -198,7 +198,8 @@ setMethod('construct_model',
             # Start constructing the model
             object@model@mod <- build_base_model(
               size = length(object@players),
-              num_groups = data.table::uniqueN(sapply(object@players, team))
+              team_vector = sapply(object@players, team),
+              position_vector = sapply(object@players, position),
               pts  = extract_player_fpts(object)
             )
 
@@ -210,6 +211,11 @@ setMethod('construct_model',
             object@model@mod <- add_budget_constraint(object@model@mod,
                                                       player_salaries = salaries,
                                                       budget = base_config$budget)
+
+            # Add team size constraints
+            object@model@mod <- add_team_number_constraints(model = object@model@mod,
+                                                            min_team_number = base_config$min_team_req,
+                                                            max_players_per_team = base_config$max_players_per_team)
 
             return(object)
 
@@ -240,6 +246,5 @@ setMethod('optimize',
             })
 
             return(solution_list)
-
 
           })
