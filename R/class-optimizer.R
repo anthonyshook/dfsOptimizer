@@ -211,12 +211,36 @@ setMethod('update_fpts',
               if (is.null(object@players[[ID]])) {
                 next
               } else {
-                object@players[[ID]] <- set_fpts(object@players[[ID]], PTS)
+                object <- set_fpts_by_id(object, id = ID, fpts = PTS)
               }
 
             }
             return(object)
           })
+
+
+setGeneric("set_fpts_by_id", function(object, id, fpts) standardGeneric('set_fpts_by_id'))
+#' Method for updating fantasy points in an object
+#'
+#' @param object An object of class Optimizer
+#' @param id A Player ID to update
+#' @param fpts Value for slot \code{fpts} of Player object
+#'
+#' @export
+setMethod('set_fpts_by_id',
+          signature = 'optimizer',
+          definition = function(object, id, fpts){
+
+            # Find the player by ID
+            if (is.null(object@players[[as.character(id)]])) {
+              stop('ID not found in slot `players`')
+            }
+
+            object@players[[id]] <- set_fpts(object@players[[as.character(id)]], fpts)
+
+            return(object)
+          })
+
 
 
 setGeneric('block_players_by_id', function(object, player_ids) standardGeneric('block_players_by_id'))
