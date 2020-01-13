@@ -121,8 +121,33 @@ add_position_constraint <- function(model, position_vector, roster_key, flex_pos
 
 }
 
+#' Max Share Across Lineups
+#'
+#' @param model The model to further constrain
+#' @param roster_indx the index of players to constrain
+#' @param max_share Number indicating how many players are allowed to be shared across lineups
+#'
+#' @keywords internal
+add_max_share_constraint <- function(model, roster_indx, max_share) {
 
-#' Unique ID constraint
+  model <- model %>%
+    ompr::add_constraint(sum_expr(players[i], i = roster_indx) <= max_share)
+
+  return(model)
+}
 
 
-#' Unique Lineup constraint
+#' Unique Lineup Constraint
+#'
+#' @param model The model to further constrain
+#' @param roster_indx the index of players to constrain
+#'
+#' @keywords internal
+add_unique_lineup_constraint <- function(model, roster_indx) {
+  model <- add_max_share_constraint(model = model,
+                                    roster_indx = roster_indx,
+                                    max_share = length(roster_indx) - 1)
+
+  return(model)
+}
+
