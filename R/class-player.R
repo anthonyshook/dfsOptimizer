@@ -149,7 +149,7 @@ setMethod('get_player_data', 'player_object',
 
             names(vals) <- object_names
 
-            return(data.frame(vals, row.names = FALSE, stringsAsFactors = FALSE))
+            return(data.frame(vals, stringsAsFactors = FALSE))
 
           })
 
