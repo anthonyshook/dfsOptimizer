@@ -326,6 +326,15 @@ setMethod('construct_model',
               maximize = object@maximize
             )
 
+            # Updating exposure where it isn't set
+            object@players <- lapply(object@players, function(P) {
+              # If NA, use global, else, use primary
+              P@max_exposure <- ifelse(is.na(P@max_exposure),
+                                       config@max_exposure,
+                                       P@max_exposure)
+              return(P)
+            })
+
             # Adding roster limit
             object@model@mod <- add_roster_size_constraint(object@model@mod, roster_limit = roster_size(config))
 
@@ -376,11 +385,11 @@ setMethod('optimize',
 
             # Block Players
             M@model@mod <- add_block_constraint(M@model@mod,
-                                                block_vector = sapply(object@players, blocked))
+                                                block_vector = sapply(M@players, blocked))
 
             # Lock Players
             M@model@mod <- add_lock_constraint(M@model@mod,
-                                               lock_vector = sapply(object@players, locked))
+                                               lock_vector = sapply(M@players, locked))
 
             # Generate Lineups
             for (i in 1:num_lineups) {
@@ -392,14 +401,15 @@ setMethod('optimize',
               current_model <- add_unique_lineup_constraint(current_model, solution_vectors)
 
               # If any player is currently above their exposure rate, block them
-              if (length(solution_vectors) > 0) {
+              # But only check IF the lowest possible value of exposure is less than the max_exposure rate
+              if ( 1/(length(solution_vectors) + 1) < M@config@max_exposure) {
                 current_exposures <- calculate_exposure(solution_vectors)
-                over_exposed <- which(current_exposures > sapply(object@players, max_exposure))
+                over_exposed <- which(current_exposures > sapply(M@players, max_exposure))
 
                 # Ignore Locked and blocked
                 over_exposed <- setdiff(over_exposed,
-                                        c(which(sapply(object@players, locked) == 1),
-                                          which(sapply(object@players, blocked) == 1)))
+                                        c(which(sapply(M@players, locked) == 1),
+                                          which(sapply(M@players, blocked) == 1)))
 
                 # Add exposure constraint
                 if (length(over_exposed) > 0) {
