@@ -31,6 +31,31 @@ setMethod('show', signature = 'optimConfig', definition = function(object) {
   cat('An S4 object of class', class(object))
 })
 
+## Accessor Methods
+setGeneric("budget", function(x) standardGeneric("budget"))
+setMethod("budget", "optimConfig", function(x) x@budget)
+
+setGeneric("roster_size", function(x) standardGeneric("roster_size"))
+setMethod("roster_size", "optimConfig", function(x) x@roster_size)
+
+setGeneric("min_team_req", function(x) standardGeneric("min_team_req"))
+setMethod("min_team_req", "optimConfig", function(x) x@min_team_req)
+
+setGeneric("max_players_per_team", function(x) standardGeneric("max_players_per_team"))
+setMethod("max_players_per_team", "optimConfig", function(x) x@max_players_per_team)
+
+setGeneric("roster_key", function(x) standardGeneric("roster_key"))
+setMethod("roster_key", "optimConfig", function(x) x@roster_key)
+
+setGeneric("flex_positions", function(x) standardGeneric("flex_positions"))
+setMethod("flex_positions", "optimConfig", function(x) x@flex_positions)
+
+setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
+setMethod("max_exposure", "optimConfig", function(x) x@max_exposure)
+
+setGeneric("variance", function(x) standardGeneric("variance"))
+setMethod("variance", "optimConfig", function(x) x@variance)
+
 # Sub-classes?
 # HOCKEY
 # GOLF
