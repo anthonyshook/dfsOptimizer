@@ -16,8 +16,6 @@ player(
   locked = FALSE,
   blocked = FALSE,
   is_injured = FALSE,
-  min_exposure = 0,
-  max_exposure = 1,
   game_info
 )
 }
@@ -43,10 +41,6 @@ player(
 \item{blocked}{Whether to omit player from all lineups (Default FALSE)}
 
 \item{is_injured}{injury flag (Default FALSE)}
-
-\item{min_exposure}{Single player minimum exposure (Default 0)}
-
-\item{max_exposure}{Single player maximum exposure (Default 1)}
 
 \item{game_info}{information about the game (Default is an empty game_info object)}
 }

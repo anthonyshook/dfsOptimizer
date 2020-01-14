@@ -14,7 +14,5 @@ S4 Class of Optimization Model
 \item{\code{mod}}{The model object}
 
 \item{\code{solver}}{Method for solving; currently only 'glpk' is available}
-
-\item{\code{flex_positions}}{Character array of flex positions}
 }}
 
