@@ -44,6 +44,7 @@ optimizer <- function(site,
   # Get base config
   cfg <- base_settings[[site]][[sport]][[contest_type]]
 
+  # Check that config is really real
   if (length(cfg) == 0 || is.null(cfg)) {
     stop('Configuration for Site + Sport + Contest Type not implemented!')
   }
@@ -51,11 +52,24 @@ optimizer <- function(site,
   # Making model with flex position
   model <- optim_model(flex_positions = cfg$flex_positions)
 
+  # Making configuration, to begin with
+  modConfig <- .optimConfig(budget = cfg$budget,
+                            roster_size = as.integer(cfg$roster),
+                            min_team_req = as.integer(cfg$min_team_req),
+                            max_players_per_team = as.integer(cfg$max_players_per_team),
+                            roster_key = cfg$roster_key,
+                            flex_positions = cfg$flex_positions,
+                            max_exposure = 1,
+                            variance = 0,
+                            constraints = list())
+
+  # Adding to optimizer class
   o <- .optimizer(site = site,
                   sport = sport,
                   contest_type = contest_type,
                   players = players,
                   model = model,
+                  config = modConfig,
                   maximize = maximize)
   return(o)
 }
@@ -296,8 +310,8 @@ setMethod('construct_model',
           signature = 'optimizer',
           definition = function(object) {
 
-            # Get base config
-            base_config <- base_settings[[object@site]][[object@sport]][[object@contest_type]]
+            # Get config
+            config <- object@config
 
             # Checking for players
             if (length(object@players) == 0) {
@@ -308,31 +322,29 @@ setMethod('construct_model',
             object@model@mod <- build_base_model(
               size = length(object@players),
               team_vector = sapply(object@players, team),
-              # position_vector = sapply(object@players, position),
-              # roster_key = base_config$roster_key,
               pts  = extract_player_fpts(object),
               maximize = object@maximize
             )
 
             # Adding roster limit
-            object@model@mod <- add_roster_size_constraint(object@model@mod, roster_limit = base_config$roster)
+            object@model@mod <- add_roster_size_constraint(object@model@mod, roster_limit = roster_size(config))
 
             # Adding budget constraint
-            salaries <- sapply(object@players, function(p){p@salary})
+            salaries <- sapply(object@players, salary)
             object@model@mod <- add_budget_constraint(object@model@mod,
                                                       player_salaries = salaries,
-                                                      budget = base_config$budget)
+                                                      budget = budget(config))
 
             # Add team size constraints
             object@model@mod <- add_team_number_constraints(model = object@model@mod,
-                                                            min_team_number = base_config$min_team_req,
-                                                            max_players_per_team = base_config$max_players_per_team)
+                                                            min_team_number = min_team_req(config),
+                                                            max_players_per_team = max_players_per_team(config))
 
             # Add positional constraint
             object@model@mod <- add_position_constraint(model = object@model@mod,
                                                         position_vector = sapply(object@players, position),
-                                                        roster_key = base_config$roster_key,
-                                                        flex_positions = object@model@flex_positions)
+                                                        roster_key = roster_key(config),
+                                                        flex_positions = flex_positions(config))
 
             # Add unique ID constraint
             object@model@mod <- add_unique_id_constraint(model = object@model@mod,
