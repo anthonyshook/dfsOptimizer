@@ -36,8 +36,8 @@
                      game_info = 'gameInfo'
                    ),
                    prototype = list(
-                     min_exposure = 0,
-                     max_exposure = 1,
+                     min_exposure = NA_real_,
+                     max_exposure = NA_real_,
                      is_injured = FALSE,
                      locked = FALSE
                    ))
@@ -55,8 +55,6 @@
 #' @param locked Whether the player should be locked to all lineups (Default FALSE)
 #' @param blocked Whether to omit player from all lineups (Default FALSE)
 #' @param is_injured injury flag (Default FALSE)
-#' @param min_exposure Single player minimum exposure (Default 0)
-#' @param max_exposure Single player maximum exposure (Default 1)
 #' @param game_info information about the game (Default is an empty game_info object)
 #'
 #' @details Function that initializes a Player object.
@@ -73,8 +71,6 @@ player <- function(id,
                    locked = FALSE,
                    blocked = FALSE,
                    is_injured = FALSE,
-                   min_exposure = 0,
-                   max_exposure = 1,
                    game_info) {
 
   if (missing(game_info)){
@@ -94,8 +90,6 @@ player <- function(id,
                locked = locked,
                blocked = blocked,
                is_injured = is_injured,
-               min_exposure = min_exposure,
-               max_exposure = max_exposure,
                game_info = game_info)
 
   return(p)
