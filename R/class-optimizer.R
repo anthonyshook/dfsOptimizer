@@ -7,13 +7,15 @@
 #' @slot model The optimization model
 #' @slot maximize Logical, whether to maximize or minimize the objective function
 #'
+#' @include class-config.R class-player.R
 .optimizer <- setClass('optimizer',
                        slots = list(
                          site = 'character',
                          sport = 'character',
                          contest_type = 'character',
                          players = 'list',
-                         model = 'optim_model',
+                         model = 'optimModel',
+                         config = 'optimConfig',
                          maximize = 'logical'
                        ),
                        prototype = list(
