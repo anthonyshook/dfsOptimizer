@@ -23,9 +23,15 @@ Imports:
   methods
 RoxygenNote: 7.0.2
 Collate: 
+    'base-model.R'
+    'base-settings.R'
+    'class-config.R'
     'class-game-info.R'
-    'utils.R'
-    'class-player.R'
-    'imports.R'
     'class-optim-model.R'
+    'class-player.R'
     'class-optimizer.R'
+    'constraints.R'
+    'get-players-from-csv.R'
+    'imports.R'
+    'methods-optimizer.R'
+    'utils.R'

@@ -14,6 +14,7 @@ player(
   salary,
   fpts,
   locked = FALSE,
+  blocked = FALSE,
   is_injured = FALSE,
   min_exposure = 0,
   max_exposure = 1,
@@ -38,6 +39,8 @@ player(
 \item{fpts}{fantasy points}
 
 \item{locked}{Whether the player should be locked to all lineups (Default FALSE)}
+
+\item{blocked}{Whether to omit player from all lineups (Default FALSE)}
 
 \item{is_injured}{injury flag (Default FALSE)}
 

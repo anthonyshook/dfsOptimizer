@@ -31,6 +31,8 @@ S4 Player Class
 
 \item{\code{locked}}{Whether the player should be locked to all lineups}
 
+\item{\code{blocked}}{whether to omit player from all lineups}
+
 \item{\code{is_injured}}{injury flag}
 
 \item{\code{min_exposure}}{Single player minimum exposure}
