@@ -50,7 +50,7 @@ optimizer <- function(site,
   }
 
   # Making model with flex position
-  model <- optim_model(flex_positions = cfg$flex_positions)
+  model <- optim_model()
 
   # Making configuration, to begin with
   modConfig <- .optimConfig(budget = cfg$budget,
@@ -329,9 +329,9 @@ setMethod('construct_model',
             # Updating exposure where it isn't set
             object@players <- lapply(object@players, function(P) {
               # If NA, use global, else, use primary
-              P@max_exposure <- ifelse(is.na(P@max_exposure),
-                                       config@max_exposure,
-                                       P@max_exposure)
+              if (is.na(max_exposure(P))) {
+                P <- set_max_exposure(P, max_exposure(config))
+              }
               return(P)
             })
 
@@ -402,7 +402,7 @@ setMethod('optimize',
 
               # If any player is currently above their exposure rate, block them
               # But only check IF the lowest possible value of exposure is less than the max_exposure rate
-              if ( 1/(length(solution_vectors) + 1) < M@config@max_exposure) {
+              if ( 1/(length(solution_vectors) + 1) < max_exposure(M@config)) {
                 current_exposures <- calculate_exposure(solution_vectors)
                 over_exposed <- which(current_exposures > sapply(M@players, max_exposure))
 

@@ -121,7 +121,8 @@ setMethod("position", "player_object", function(x) x@position)
 setGeneric("salary", function(x) standardGeneric("salary"))
 setMethod("salary", "player_object", function(x) x@salary)
 
-setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
+#setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
+# Generic already set in class-config
 setMethod("max_exposure", "player_object", function(x) x@max_exposure)
 
 setGeneric("blocked", function(x) standardGeneric("blocked"))
