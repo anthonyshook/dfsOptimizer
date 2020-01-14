@@ -9,7 +9,7 @@ setOldClass('milp_model')
 #' @slot flex_positions Character array of flex positions
 #'
 #' @export
-optim_model <- setClass('optim_model',
+optim_model <- setClass('optimModel',
                         slots = list(
                           mod = 'milp_model',
                           solver = 'character',
@@ -21,7 +21,7 @@ optim_model <- setClass('optim_model',
                           flex_positions = NA_character_
                           ))
 
-setMethod('show','optim_model', function(object) {
+setMethod('show','optimModel', function(object) {
   cat(paste('Solver:', object@solver, '\n'))
   show(object@mod)
   })
