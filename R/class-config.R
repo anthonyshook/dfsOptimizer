@@ -23,7 +23,8 @@
                            constraints = 'list'
                          ),
                          prototype = list(
-                           flex_positions = NA_character_
+                           flex_positions = NA_character_,
+                           max_exposure = 1
                          )
 )
 
