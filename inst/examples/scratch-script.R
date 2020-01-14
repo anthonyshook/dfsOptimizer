@@ -12,6 +12,9 @@ testmod.hockey <- block_players_by_id(testmod.hockey, '14086443')
 # lock a player (Ethan Bear)
 testmod.hockey <- lock_players_by_id(testmod.hockey, "14086865")
 
+# Set a player to a specific max_exposure
+testmod.hockey@players[[5]] <- set_max_exposure(testmod.hockey@players[[5]], exposure = .8)
+
 # construct model
 #testmod.hockey <- construct_model(testmod.hockey)
 
