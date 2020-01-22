@@ -2,6 +2,7 @@
 #' TO DO
 #' - FanDuel Import function
 #' - Yahoo Import Function
+#' - Import from data.frame function
 #' - Formatting for Lineup output (DK, FD, and Yahoo)
 #' - Add NBA
 #' - Add MLB
@@ -12,8 +13,11 @@
 #' FEATURES TO ADD
 #' - Add Opposing Position constraints (no Pitchers against batter, no goalies against players, etc.)
 #' - Add Opposing -positive- constraints (if team A QB, then team B WR)
+#' - Positions from SAME team constraint
 #' - Add stack constraints (Line matching for hockey, depth order for baseball...)
 
 
 #' SEMI LONG-TERM TO DO
 #' - write tests
+#' - Vignettes
+#' - Updated /cleaned docs
