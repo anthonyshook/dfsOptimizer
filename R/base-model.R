@@ -184,7 +184,7 @@ add_unique_id_constraint <- function(model, ids) {
 
   for (id in repeat_ids) {
     indx <- which(ids == id)
-    model <- add_constraint(model, sum_expr(players[i], i = indx) <= 1)
+    model <- ompr::add_constraint(model, sum_expr(players[i], i = indx) <= 1)
   }
 
   return(model)
