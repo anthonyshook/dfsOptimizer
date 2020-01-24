@@ -1,0 +1,20 @@
+library(coach)
+library(tidyverse)
+library(xlsx)
+library(dplyr)
+#https://github.com/dfs-with-r/coach
+data <- read_fd("data/fd_players.csv")
+projections <- read.xlsx("data/projections.xlsx", sheetName = "Sheet1")
+colnames(projections)[colnames(projections)=="Proj..Score"] <- "fpts_proj"
+colnames(projections)[colnames(projections)=="Player.ID"] <- "player_id"
+
+
+joined_data <- inner_join(data, projections, by = c("player_id"))
+
+data <- joined_data  %>% select(1,2,3,4,5,6,7,8,9,10,16)
+colnames(data)[colnames(data)=="fpts_proj.y"] <- "fpts_proj"
+
+model <- model_fd_nfl(data)
+
+model <- add_existing_roster_constraint(model, roster_rowids)
+optimize_generic(data, model, L = 10L)
