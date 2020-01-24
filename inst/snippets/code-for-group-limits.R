@@ -23,6 +23,10 @@ m <- ompr::MILPModel() %>%
   ompr::add_variable(smallgroups[i], i = 1:4, type = 'integer') %>%
   ompr::add_variable(smallgroups2[i], i = 1:4, type = 'binary') %>%
   ompr::set_objective(sum_expr(colwise(animals$score[i]) * animal_flag[i], i = 1:nrow(animals))) %>%
+  # TESTING
+  # ompr::add_variable(specificPos[i], i = 1:9) %>%
+  # ompr::add_constraint(specificPos[i] == j, i = )
+  # Set size comparison
   ompr::add_constraint(sum_expr(animal_flag[i], i = 1:nrow(animals)) == set_size) %>%
   # This is where the real fun begins...
   ompr::add_constraint(groups[i,j] == animal_flag[i] * gr_ind(j, animals$group), i = 1:nrow(animals), j = 1:4) %>%
