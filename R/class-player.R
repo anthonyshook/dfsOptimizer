@@ -131,7 +131,14 @@ setMethod("blocked", "player_object", function(x) as.numeric(x@blocked))
 setGeneric("locked", function(x) standardGeneric("locked"))
 setMethod("locked", "player_object", function(x) as.numeric(x@locked))
 
+setGeneric('get_opposing_team', function(x) standardGeneric('get_opposing_team'))
+setMethod('get_opposing_team', 'player_object',
+          function(x){
+            opponent <- setdiff(c(home_team(x@game_info), away_team(x@game_info)),
+                                team(x))
+            return(opponent)
 
+          })
 
 # Formatter method
 setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
@@ -146,6 +153,8 @@ setMethod('get_player_data', 'player_object',
 
           })
 
+
+# Update methods
 setGeneric('lock_player', function(object) standardGeneric('lock_player'))
 setMethod('lock_player', 'player_object',
            function(object) {
