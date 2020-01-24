@@ -25,3 +25,9 @@ gameInfo <- setClass('gameInfo',
 setMethod('show','gameInfo',function(object){
   cat(object@shortname)
 })
+
+setGeneric("home_team", function(x) standardGeneric("home_team"))
+setMethod("home_team", "gameInfo", function(x) x@home_team)
+
+setGeneric("away_team", function(x) standardGeneric("away_team"))
+setMethod("away_team", "gameInfo", function(x) x@away_team)

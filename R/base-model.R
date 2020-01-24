@@ -10,7 +10,7 @@ build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
 
   # Lengths (unique teams and positions)
   num_teams <- length(unique(team_vector))
-
+#
   # Model with all appropriate variables
   base_model <- ompr::MILPModel() %>%
     ompr::add_variable(players[i], i = 1:size, type = "binary") %>%
