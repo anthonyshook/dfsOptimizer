@@ -35,4 +35,5 @@ Collate:
     'get-players-from-csv.R'
     'imports.R'
     'methods-optimizer.R'
+    'player-utils.R'
     'utils.R'
