@@ -4,18 +4,27 @@
 #' @param positions a character vector of positions to align
 #'
 #' @keywords internal
-combine_same_team_players <- function(players, positions) {
+link_players_on_same_team <- function(players, positions) {
 
-  # Get teams
-  teamvec <- sapply(players, team)
-  teams   <- unique(teamvec)
+  # Get data
+  dat <- data.table::data.table(
+    inx = 1:length(players),
+    tms = sapply(players, team),
+    pos = sapply(players, position)
+  )
 
-  # Get positions
-  posvec  <- sapply(players, position)
+  teams   <- unique(dat$tms)
 
-  browser()
-  for (TEAM in teams) {
+  X <- lapply(teams, function(TMS) {
+    tdata <- dat[tms == TMS, ]
 
-  }
+    plists <- lapply(positions, function(P){
+      return(tdata[pos==P,]$inx)
+    })
+    return(do.call('expand.grid.unique', plists))
+  })
 
+  return(
+    data.table::rbindlist(X)
+  )
 }
