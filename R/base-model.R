@@ -22,7 +22,7 @@ build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
     ompr::add_constraint(player_teams[i,j] == players[i] * mask_func(j, team_vector), i = 1:size, j = 1:num_teams) %>%
     ompr::add_constraint(teams[j] == sum_expr(player_teams[i,j], i = 1:size), j = 1:num_teams) %>%
     ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:num_teams) %>%
-    ompr::add_constraint(teams[j] <= teams_binary[j] * 10000, j = 1:num_teams)
+    ompr::add_constraint(teams[j] <= teams_binary[j] * 100, j = 1:num_teams)
 
   # Add Objective
   base_model <- add_objective(base_model, maximize = maximize, pts = pts)
