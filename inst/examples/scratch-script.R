@@ -13,7 +13,7 @@ testmod.hockey <- block_players_by_id(testmod.hockey, '14086443')
 testmod.hockey <- lock_players_by_id(testmod.hockey, "14086865")
 
 # Set a player (Auston Matthews) to a specific max_exposure
-testmod.hockey@players[[5]] <- set_max_exposure(testmod.hockey@players[[5]], exposure = .6)
+#testmod.hockey@players[[5]] <- set_max_exposure(testmod.hockey@players[[5]], exposure = .6)
 
 # construct model
 testmod.hockey <- construct_model(testmod.hockey)
@@ -34,16 +34,17 @@ s
 # construct model
 testmod.hockey <- construct_model(testmod.hockey)
 # Try a same-team stack
-testmod.hockey@model@mod <- .add_same_team_stack(testmod.hockey@model@mod, positions = c('C','G','D'), players = testmod.hockey@players)
+testmod.hockey@model@mod <- .add_team_stack(testmod.hockey@model@mod, positions = c('C','W', 'W'), players = testmod.hockey@players)
 s <- ompr::solve_model(testmod.hockey@model@mod, ompr.roi::with_ROI('glpk'))
 s
-which(ompr::get_solution(s, players[i])$value ==1)
-ompr::get_solution(s, players[i])[c(5,23,41,25,82,91,30,205,208),]
-ompr::get_solution(s, stack_count[i])
-ompr::get_solution(s, stack_flag[i])
+
+#which(ompr::get_solution(s, players[i])$value ==1)
+#ompr::get_solution(s, players[i])[c(5,23,41,25,82,91,30,205,208),]
+ompr::get_solution(s, pos_team_stack[i,j])
+ompr::get_solution(s, team_stack[i])
+get_player_data(testmod.hockey)[ompr::get_solution(s, players[i])$value ==1,]
 
 ompr::get_solution(s, positions[i])
-get_player_data(testmod.hockey)[ompr::get_solution(s, players[i])$value ==1,]
 which(ompr::get_solution(s, players[i])$value ==1)
 
 ompr::get_solution(s, teams[i])
@@ -67,3 +68,11 @@ sgolf <- solve_model(testmod.golf@model@mod, ompr.roi::with_ROI('glpk'))
 sgolf
 
 get_player_data(testmod.golf)[get_solution(sgolf, players[i])$value ==1,]
+
+#########
+df1 <- data.frame(x = 1:5, y = 6:10)
+
+M <- ompr::MILPModel() %>%
+  ompr::add_variable(df1[df1])
+
+

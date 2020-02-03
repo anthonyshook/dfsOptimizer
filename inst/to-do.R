@@ -1,6 +1,8 @@
 
 #' TO DO
-#' - A method for capturing and adding constraints to a model (since optimize uses "Construct", we can't construct up the model BEFORE hand)
+#' - A method for capturing and adding constraints to a model (since optimize uses "Construct", we can't construct the model BEFORE hand)
+#'  -- CONSTRAINT class (funcs and args); could be placed in MODEL object
+#'  -- Method for APPLYING to the model-class; wrapper method for the optimizer class?
 #' - FanDuel Import function
 #' - Yahoo Import Function
 #' - Import from data.frame function
@@ -13,8 +15,6 @@
 
 #' FEATURES TO ADD
 #' - Add Opposing -positive- constraints (if team A QB, then team B WR)
-#' - Positions from SAME team constraint
-#'   - Need a way to handle cases with multi-position stacking (i.e., )
 #' - Add stack constraints (Line matching for hockey, depth order for baseball...)
 
 
