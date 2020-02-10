@@ -4,19 +4,14 @@
 \alias{.add_team_stack}
 \title{Adds Same-Team stacks}
 \usage{
-.add_team_stack(model, positions, players)
+.add_team_stack(model, positions)
 }
 \arguments{
 \item{model}{Model object}
 
 \item{positions}{Positions for that should be stacked within a single team}
-
-\item{players}{List of Player objects}
 }
 \description{
 Adds Same-Team stacks
-}
-\details{
-
 }
 \keyword{internal}

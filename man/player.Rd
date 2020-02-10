@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-player.R
 \name{player}
 \alias{player}
-\title{Initialization Function for Player class}
+\title{Constructor Function for Player class}
 \usage{
 player(
   id,
@@ -45,7 +45,7 @@ player(
 \item{game_info}{information about the game (Default is an empty game_info object)}
 }
 \description{
-Initialization Function for Player class
+Constructor Function for Player class
 }
 \details{
 Function that initializes a Player object.

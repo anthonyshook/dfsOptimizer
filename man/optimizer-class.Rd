@@ -4,9 +4,9 @@
 \name{optimizer-class}
 \alias{optimizer-class}
 \alias{.optimizer}
-\title{S4 Class For Optimizer}
+\title{S4 Class of object Optimizer}
 \description{
-S4 Class For Optimizer
+S4 Class of object Optimizer
 }
 \section{Slots}{
 
@@ -20,6 +20,8 @@ S4 Class For Optimizer
 \item{\code{players}}{List of players to build lineups from}
 
 \item{\code{model}}{The optimization model}
+
+\item{\code{config}}{An optim config class, which contains information about the model, including additional constraints}
 
 \item{\code{maximize}}{Logical, whether to maximize or minimize the objective function}
 }}
