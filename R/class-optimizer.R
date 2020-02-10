@@ -1,14 +1,17 @@
-#' S4 Class For Optimizer
+#' S4 Class of object Optimizer
 #'
 #' @slot site The site being used for optimization
 #' @slot sport The sport being optimized
 #' @slot contest_type The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game)
 #' @slot players List of players to build lineups from
 #' @slot model The optimization model
+#' @slot config An optim config class, which contains information about the model, including additional constraints
 #' @slot maximize Logical, whether to maximize or minimize the objective function
 #'
+#' @export
+#'
 #' @include class-config.R class-player.R
-.optimizer <- setClass('optimizer',
+.optimizer <- setClass(Class = 'optimizer',
                        slots = list(
                          site = 'character',
                          sport = 'character',
@@ -22,7 +25,7 @@
                          maximize = TRUE
                        ))
 
-#' Initialization Function For Optimizer Class
+#' Create an object of Optimizer
 #'
 #' @param site The site being used for optimization
 #' @param sport The sport being optimized
@@ -30,12 +33,18 @@
 #' @param players List of players to build lineups from (defaults to empty list)
 #' @param maximize Logical, whether to maximize or minimize the objective function (Defaults to TRUE)
 #'
+#' @details This function is used to instantiate a new object of class \code{optimizer}, which is the
+#'     central component of the dfsOptimizer package.
+#'
+#' @examples
+#' mod <- optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY')
+#'
 #' @export
-optimizer <- function(site,
-                      sport,
-                      contest_type = 'CLASSIC',
-                      players = list(),
-                      maximize = TRUE) {
+create_optimizer <- function(site,
+                             sport,
+                             contest_type = 'CLASSIC',
+                             players = list(),
+                             maximize = TRUE) {
 
   site         <- toupper(site)
   sport        <- toupper(sport)
@@ -89,11 +98,11 @@ setMethod('show', 'optimizer', function(object) {
 
 #### Methods
 ## Extraction
-setGeneric("extract_player_fpts", function(object) standardGeneric("extract_player_fpts"))
 #' Extracting Fantasy Points from Player objects
 #'
 #' @param object an optimizer object
 #'
+setGeneric("extract_player_fpts", function(object) standardGeneric("extract_player_fpts"))
 setMethod('extract_player_fpts',
           signature = 'optimizer',
           definition = function(object) {
@@ -111,7 +120,7 @@ setMethod('get_player_data', 'optimizer',
           function(object){
 
             players <- lapply(object@players, get_player_data)
-#            all     <- do.call('rbind', players)
+            #            all     <- do.call('rbind', players)
             return(data.table::rbindlist(players))
 
           })
@@ -258,7 +267,6 @@ setMethod('set_fpts_by_id',
           })
 
 
-
 setGeneric('block_players_by_id', function(object, player_ids) standardGeneric('block_players_by_id'))
 #' Function to block players by ID
 #'
@@ -359,18 +367,25 @@ setMethod('construct_model',
             object@model@mod <- add_unique_id_constraint(model = object@model@mod,
                                                          ids = sapply(object@players, id))
 
+            # Add additional constraints from the config
+            if (length(object@config@constraints) > 0) {
+              for (CON in object@config@constraints){
+                object@model@mod <- apply_constraint(CON, object@model@mod)
+              }
+            }
+
             return(object)
 
           })
 
-setGeneric('optimize', function(object, num_lineups = 1) standardGeneric('optimize'))
+setGeneric('build_lineups', function(object, num_lineups = 1) standardGeneric('build_lineups'))
 #' Function to Generate lineups
 #'
 #' @param object an S4 object of class Optimizer
 #' @param num_lineups Number of lineups to generate
 #'
 #' @export
-setMethod('optimize',
+setMethod('build_lineups',
           signature = 'optimizer',
           definition = function(object, num_lineups = 1) {
 
@@ -441,5 +456,6 @@ setMethod('optimize',
             return(lineups)
 
           })
+
 
 
