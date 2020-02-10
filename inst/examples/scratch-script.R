@@ -1,16 +1,15 @@
 
 # Build optimizer
-testmod.hockey <- optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+testmod.hockey <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 
-# Add Players
-hockey_players <- get_players_from_csv(path = 'C:/Users/antho/Desktop/DFS Slate Files/hockey/DKSalaries_nhl.csv')
-testmod.hockey@players <- hockey_players
+# Add Players to optimizer
+testmod.hockey <- add_players_from_csv(testmod.hockey, filepath = 'C:/Users/antho/Desktop/DFS Slate Files/hockey/DKSalaries_nhl.csv')
 
 # Block a player (Nate MacKinnon)
-testmod.hockey <- block_players_by_id(testmod.hockey, '14086443')
+#testmod.hockey <- block_players_by_id(testmod.hockey, '14086443')
 
 # lock a player (Ethan Bear)
-testmod.hockey <- lock_players_by_id(testmod.hockey, "14086865")
+#testmod.hockey <- lock_players_by_id(testmod.hockey, "14086865")
 
 # Set a player (Auston Matthews) to a specific max_exposure
 #testmod.hockey@players[[5]] <- set_max_exposure(testmod.hockey@players[[5]], exposure = .6)
@@ -18,11 +17,8 @@ testmod.hockey <- lock_players_by_id(testmod.hockey, "14086865")
 # construct model
 testmod.hockey <- construct_model(testmod.hockey)
 
-# Try adding a position constraint
-testmod.hockey@model@mod <- .add_opposing_position_constraint(testmod.hockey@model@mod, pos1 = c('C','W','D'), pos2 = 'G', players = testmod.hockey@players)
-
 # Optimize.
-lineups <- optimize(testmod.hockey, num_lineups = 5)
+lineups <- build_lineups(testmod.hockey, num_lineups = 5)
 
 # Not exactly the method we'll use
 s <- ompr::solve_model(testmod.hockey@model@mod, ompr.roi::with_ROI('glpk'))
@@ -31,10 +27,13 @@ s
 
 
 ########### STAGE
+# Add stack constraint
+stack_con <- .constraintClass(constraint_name='stack constraint', fnc = .add_team_stack, args = list(positions = c('C','W','W'), players = testmod.hockey@players))
+testmod.hockey@config@constraints <- list(stack_con = stack_con)
+
 # construct model
 testmod.hockey <- construct_model(testmod.hockey)
 # Try a same-team stack
-testmod.hockey@model@mod <- .add_team_stack(testmod.hockey@model@mod, positions = c('C','W', 'W'), players = testmod.hockey@players)
 s <- ompr::solve_model(testmod.hockey@model@mod, ompr.roi::with_ROI('glpk'))
 s
 
@@ -53,7 +52,7 @@ ompr::get_solution(s, opps_pos2[i])
 
 ####
 # Build optimizer
-testmod.golf <- optimizer(site = 'DRAFTKINGs', sport = 'GOLF', contest_type = 'CLASSIC')
+testmod.golf <- create_optimizer(site = 'DRAFTKINGS', sport = 'GOLF', contest_type = 'CLASSIC')
 
 # Add Players
 golfers <- get_players_from_csv(path = 'C:/Users/antho/Desktop/DFS Slate Files/golf/DK_golf_salaries.csv')

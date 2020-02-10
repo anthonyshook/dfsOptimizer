@@ -114,7 +114,6 @@ add_position_constraint <- function(model, position_vector, roster_key, flex_pos
       model <- model %>%
         ompr::add_constraint(positions[J] == curr_limit)
     }
-    # Add limit to position
   }
 
   return(model)
@@ -147,7 +146,6 @@ block_one_lineup <- function(model, roster_indx) {
   model <- add_max_share_constraint(model = model,
                                     roster_indx = roster_indx,
                                     max_share = length(roster_indx) - 1)
-
   return(model)
 }
 
@@ -167,7 +165,6 @@ add_unique_lineup_constraint <- function(model, roster_indx_list) {
                                 roster_indx = which(roster_indx == 1))
     }
   }
-
   return(model)
 }
 

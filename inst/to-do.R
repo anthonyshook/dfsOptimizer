@@ -1,8 +1,7 @@
 
 #' TO DO
-#' - A method for capturing and adding constraints to a model (since optimize uses "Construct", we can't construct the model BEFORE hand)
-#'  -- CONSTRAINT class (funcs and args); could be placed in MODEL object
-#'  -- Method for APPLYING to the model-class; wrapper method for the optimizer class?
+#' - Methods for adding all the existing constraints!
+#' - Methods for Setting config fields?
 #' - FanDuel Import function
 #' - Yahoo Import Function
 #' - Import from data.frame function
@@ -22,3 +21,4 @@
 #' - write tests
 #' - Vignettes
 #' - Updated /cleaned docs
+#' - Validity checks to objects

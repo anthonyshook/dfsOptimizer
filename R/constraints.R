@@ -1,4 +1,6 @@
-#' Block Players Constraint
+#' @include class-player.R
+
+#' @title Block Players Constraint
 #'
 #' @param model Model object
 #' @param block_vector Vector where 1 indicates 'block'
@@ -43,13 +45,15 @@ add_lock_constraint <- function(model, lock_vector) {
 #' @param model Model object
 #' @param pos1 Positions for set one
 #' @param pos2 Positions for set two
-#' @param players List of Player objects
 #'
 #' @details The parameters \code{pos1} and \code{pos2} refer to the two sets of positions to keep
 #' unmatched.
 #'
 #' @keywords internal
-.add_opposing_position_constraint <- function(model, pos1, pos2, players) {
+.restrict_opposing_position <- function(model, pos1, pos2) {
+
+  # Get players from the model
+  players <- model@players
 
   # Model Data
   num_players   <- get_model_length(model, 'players')
@@ -83,12 +87,12 @@ add_lock_constraint <- function(model, lock_vector) {
 #'
 #' @param model Model object
 #' @param positions Positions for that should be stacked within a single team
-#' @param players List of Player objects
-#'
-#' @details
 #'
 #' @keywords internal
-.add_team_stack <- function(model, positions, players) {
+.add_team_stack <- function(model, positions) {
+
+  # Get players from the model
+  players <- model@players
 
   # Some info about the model
   num_players   <- get_model_length(model, 'players')

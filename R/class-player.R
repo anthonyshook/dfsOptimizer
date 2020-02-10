@@ -42,7 +42,7 @@
                      locked = FALSE
                    ))
 
-#' Initialization Function for Player class
+#' Constructor Function for Player class
 #'
 #' @param id player ID
 #' @param first_name first name
@@ -132,6 +132,7 @@ setGeneric("locked", function(x) standardGeneric("locked"))
 setMethod("locked", "player_object", function(x) as.numeric(x@locked))
 
 setGeneric('get_opposing_team', function(x) standardGeneric('get_opposing_team'))
+#' @export
 setMethod('get_opposing_team', 'player_object',
           function(x){
             opponent <- setdiff(c(home_team(x@game_info), away_team(x@game_info)),
