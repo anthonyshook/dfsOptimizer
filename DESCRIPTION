@@ -27,6 +27,7 @@ Collate:
     'base-model.R'
     'base-settings.R'
     'class-config.R'
+    'class-constraint.R'
     'class-game-info.R'
     'class-optim-model.R'
     'class-player.R'
