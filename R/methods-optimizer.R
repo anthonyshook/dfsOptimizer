@@ -98,22 +98,21 @@ setMethod(f = 'restrict_opposing_positions',
 
 
 
-setGeneric('set_roster_size', function(object, value) standardGeneric('set_roster_size'))
-#' @title Set the Roster Size
+#' @title Set the Global Max Exposure
 #'
 #' @param object An optimizer object
-#' @param value Value to set the roster size (subject to validity checks).
+#' @param exposure Value to set the roster size (subject to validity checks).
 #'
-#' @rdname set_roster_size
-#' @description Method to set the roster size requirement of an optimizer model.
+#' @rdname set_max_exposure
+#' @description Method to set the global max exposure of an optimizer model.
 #'
 #' @return Updated Optimizer object
 #'
 #' @export
-setMethod(f = 'set_roster_size',
+setMethod(f = 'set_max_exposure',
           signature = 'optimizer',
-          definition = function(object, value) {
-            roster_size(object@config) <- as.integer(value)
+          definition = function(object, exposure) {
+            max_exposure(object@config) <- exposure
             return(object)
           })
 
@@ -147,11 +146,3 @@ setMethod(f = 'set_flex_positions',
             return(object)
           })
 
-
-
-setMethod(f = 'set_max_exposure',
-          signature = 'optimizer',
-          definition = function(object, exposure) {
-            max_exposure(object@config) <- exposure
-            return(object)
-          })
