@@ -219,4 +219,5 @@ setMethod('apply_variance', 'player_object',
           function(object, varpct) {
             pct <- object@fpts * varpct
             object@fpts <- object@fpts + runif(1, min = -pct, max = pct)
+            return(object)
           })
