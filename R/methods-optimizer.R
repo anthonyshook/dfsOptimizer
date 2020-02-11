@@ -146,3 +146,10 @@ setMethod(f = 'set_flex_positions',
             return(object)
           })
 
+
+setMethod(f = 'apply_variance',
+          signature = 'optimizer',
+          definition = function(object, varpct) {
+            object@players <- lapply(object@players, 'apply_variance', varpct = varpct)
+            return(object)
+          })
