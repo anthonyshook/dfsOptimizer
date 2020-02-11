@@ -1,6 +1,7 @@
 #' S4 Class optimConfig
 #'
 #' @slot budget Lineup budget
+#' @slot min_budget the minimum budget (Default: 0)
 #' @slot roster_size Roster limitation (How many players allowed)
 #' @slot min_team_req Number of teams required to be represented in the lineup
 #' @slot max_players_per_team Maximum number of players from any one team
@@ -13,6 +14,7 @@
 .optimConfig <- setClass('optimConfig',
                          slots = list(
                            budget = 'numeric',
+                           min_budget = 'numeric',
                            roster_size = 'integer',
                            min_team_req = 'integer',
                            max_players_per_team = 'integer',
@@ -23,8 +25,10 @@
                            constraints = 'list'
                          ),
                          prototype = list(
+                           min_budget = 0,
                            flex_positions = NA_character_,
-                           max_exposure = 1
+                           max_exposure = 1,
+                           variance = 0
                          )
 )
 
@@ -58,6 +62,9 @@ setValidity('optimConfig', method = function(object) {
 setGeneric("budget", function(x) standardGeneric("budget"))
 setMethod("budget", "optimConfig", function(x) x@budget)
 
+setGeneric("min_budget", function(x) standardGeneric("min_budget"))
+setMethod("min_budget", "optimConfig", function(x) x@min_budget)
+
 setGeneric("roster_size", function(x) standardGeneric("roster_size"))
 setMethod("roster_size", "optimConfig", function(x) x@roster_size)
 
@@ -83,6 +90,13 @@ setMethod("variance", "optimConfig", function(x) x@variance)
 setGeneric('set_budget<-', function(x, value) standardGeneric('set_budget<-'))
 setMethod('set_budget<-', 'optimConfig', function(x, value) {
   x@budget <- value
+  stopifnot(validObject(x))
+  return(x)
+})
+
+setGeneric('set_min_budget<-', function(x, value) standardGeneric('set_min_budget<-'))
+setMethod('set_min_budget<-', 'optimConfig', function(x, value) {
+  x@min_budget <- value
   stopifnot(validObject(x))
   return(x)
 })
