@@ -213,3 +213,10 @@ setMethod('set_fpts', 'player_object',
             object@fpts <- pts
             return(object)
           })
+
+setGeneric('apply_variance', function(object, varpct) standardGeneric('apply_variance'))
+setMethod('apply_variance', 'player_object',
+          function(object, varpct) {
+            pct <- object@fpts * varpct
+            object@fpts <- object@fpts + runif(1, min = -pct, max = pct)
+          })
