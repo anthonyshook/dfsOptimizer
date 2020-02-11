@@ -13,6 +13,8 @@ S4 Class optimConfig
 \describe{
 \item{\code{budget}}{Lineup budget}
 
+\item{\code{min_budget}}{the minimum budget (Default: 0)}
+
 \item{\code{roster_size}}{Roster limitation (How many players allowed)}
 
 \item{\code{min_team_req}}{Number of teams required to be represented in the lineup}
