@@ -433,6 +433,9 @@ setMethod('build_lineups',
                 }
               }
 
+              # add variance constraint
+              current_model <- apply_variance(current_model, varpct = variance(testmod.hockey@config))
+
               # Solve the model
               fit_model <- ompr::solve_model(current_model,
                                              solver = ompr.roi::with_ROI(M@model@solver))
