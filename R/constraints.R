@@ -139,7 +139,7 @@ add_lock_constraint <- function(model, lock_vector) {
     }
   }
 
-  # Last condition says count the values where the team_stack > 3 and cast to boolean,
+  # Last condition says count the values where the team_stack > num_positions and cast to boolean,
   # Then constrain the model to ensure at least one of those values == 1
   model <- model %>%
     ompr::add_constraint(sum_expr(pos_team_stack[i, j], j = 1:num_positions) >= team_stack[i] * num_positions, i = 1:num_teams) %>%
