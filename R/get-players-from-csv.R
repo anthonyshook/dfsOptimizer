@@ -56,12 +56,53 @@ parse_dk_csv <- function(dat) {
 
 # Internal
 parse_yh_csv <- function(dat) {
-  return(NA)
+  lapply(seq_len(nrow(dat)),
+         function(row){
+           curr <- dat[row, ]
+           # Game Info
+           gi <- parse_game_info(paste(curr$`Game`, curr$Time))
+
+           # This fix is for hockey (LW/)
+           curr$Position <- gsub(pattern = 'LW|RW', replacement = 'W', x = curr$Position)
+
+           # Make player object
+           # Uses avg points as fpts at the moment -- need easy way to replace those.
+           pl <- player(id = curr$ID,
+                        first_name = curr$`First Name`,
+                        last_name = curr$`Last Name`,
+                        team = curr$Team,
+                        position = curr$Position,
+                        salary = curr$Salary,
+                        fpts = curr$FPPG,
+                        is_injured = curr$`Injury Status` != "",
+                        game_info = gi)
+         })
 }
 
 # Internal
 parse_fd_csv <- function(dat) {
-  return(NA)
+  lapply(seq_len(nrow(dat)),
+         function(row){
+           curr <- dat[row, ]
+
+           # Game Info
+           gi <- parse_game_info(curr$`Game`)
+
+           # This fix is for hockey (LW/)
+           curr$Position <- gsub(pattern = 'LW|RW', replacement = 'W', x = curr$Position)
+
+           # Make player object
+           # Uses avg points as fpts at the moment -- need easy way to replace those.
+           pl <- player(id = curr$Id,
+                        first_name = curr$`First Name`,
+                        last_name = curr$`Last Name`,
+                        team = curr$Team,
+                        position = curr$Position,
+                        salary = curr$Salary,
+                        fpts = curr$FPPG,
+                        is_injured = curr$`Injury Indicator` != "",
+                        game_info = gi)
+         })
 }
 
 # Checklist of parsing functions
