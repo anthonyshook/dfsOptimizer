@@ -1,8 +1,6 @@
 
 #' TO DO
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
-#' - FanDuel Import function
-#' - Yahoo Import Function
 #' - Import from data.frame function
 #' - Formatting for Lineup output (DK, FD, and Yahoo)
 #' - Add NBA
@@ -26,3 +24,6 @@
 #' - Vignettes
 #' - Updated /cleaned docs
 #' - Validity checks to objects
+
+#' NICE TO HAVE IMPROVEMENTS
+#' - fix the date parsing for non-draftkings
