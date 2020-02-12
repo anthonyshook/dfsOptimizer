@@ -221,3 +221,12 @@ setMethod('apply_variance', 'player_object',
             object@fpts <- object@fpts + runif(1, min = -pct, max = pct)
             return(object)
           })
+
+# Utility function
+#' List player attributes
+#'
+#' @returns A vector of the attributes available for player objects (i.e., the values the user can set for an individual player).
+#' @export
+list_player_attributes <- function() {
+  slotNames(.player())
+}
