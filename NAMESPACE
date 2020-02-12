@@ -2,6 +2,8 @@
 
 export(create_optimizer)
 export(get_players_from_csv)
+export(get_players_from_data_frame)
+export(list_player_attributes)
 export(player)
 exportClasses(gameInfo)
 exportClasses(optimModel)

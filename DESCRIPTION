@@ -35,6 +35,7 @@ Collate:
     'constraints.R'
     'export-utils.R'
     'get-players-from-csv.R'
+    'get-players-from-df.R'
     'imports.R'
     'line-constraint-scratch.R'
     'methods-optimizer.R'
