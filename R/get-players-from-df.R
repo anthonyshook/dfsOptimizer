@@ -44,6 +44,10 @@ get_players_from_data_frame <- function(df) {
   # make a fullname column
   df$fullname <- paste(df$first_name, df$last_name)
 
+  # Lastly, we'll want to check and ensure the values are appropriate types
+  # For now, that's mostly salary that turns out to be the sticky one
+  df$salary <- as.integer(df$salary)
+
   # Create players
   player_list <- lapply(1:nrow(df), function(i) {
     return(do.call(.player, df[i,]))
