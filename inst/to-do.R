@@ -1,7 +1,6 @@
 
 #' TO DO
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
-#' - Import from data.frame function
 #' - Formatting for Lineup output (DK, FD, and Yahoo)
 #' - Add NBA
 #' - Add MLB
