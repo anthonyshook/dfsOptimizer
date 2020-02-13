@@ -37,7 +37,7 @@
 #'     central component of the dfsOptimizer package.
 #'
 #' @examples
-#' mod <- optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY')
+#' mod <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY')
 #'
 #' @export
 create_optimizer <- function(site,

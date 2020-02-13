@@ -5,6 +5,7 @@
 #'
 #' @details Reads a CSV from a specified site, and generates objects of Player class (one per row)
 #'
+#' @include get-players-from-df.R
 #' @export
 get_players_from_csv <- function(path, site = 'DRAFTKINGS') {
 
@@ -15,7 +16,7 @@ get_players_from_csv <- function(path, site = 'DRAFTKINGS') {
          paste(names(parsing_functions), collapse = ', '))
   }
 
-  dat <- data.table::fread(path)
+  dat <- data.table::fread(path, stringsAsFactors = FALSE)
   players <- parsing_functions[[site]](dat)
 
   # Name the list elements
@@ -109,7 +110,8 @@ parse_fd_csv <- function(dat) {
 parsing_functions <- list(
   DRAFTKINGS = parse_dk_csv,
   YAHOO = parse_yh_csv,
-  FANDUEL = parse_fd_csv
+  FANDUEL = parse_fd_csv,
+  CUSTOM = get_players_from_data_frame
 )
 
 #' Function to parse string for game info (Internal)
