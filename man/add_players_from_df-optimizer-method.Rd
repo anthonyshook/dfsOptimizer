@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{add_players_from_df,optimizer-method}
 \alias{add_players_from_df,optimizer-method}
-\title{Add players to optimizer from CSV}
+\title{Add players to optimizer from a data.frame}
 \usage{
 \S4method{add_players_from_df}{optimizer}(object, df)
 }
@@ -15,7 +15,7 @@
 Optimizer model object with slot \code{players} filled
 }
 \description{
-Add players to optimizer from CSV
+Add players to optimizer from a data.frame
 }
 \examples{
 \dontrun{
