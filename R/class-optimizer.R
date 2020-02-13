@@ -10,7 +10,7 @@
 #'
 #' @export
 #'
-#' @include class-config.R class-player.R
+#' @include class-config.R class-player.R lineup-utils.R
 .optimizer <- setClass(Class = 'optimizer',
                        slots = list(
                          site = 'character',
@@ -409,6 +409,9 @@ setMethod('build_lineups',
             # Generate Lineups
             for (i in 1:num_lineups) {
 
+              # add variance constraint
+              current_model <- apply_variance(M, varpct = variance(M@config))
+
               # Temporary Model
               current_model <- M@model@mod
 
@@ -433,9 +436,6 @@ setMethod('build_lineups',
                 }
               }
 
-              # add variance constraint
-              current_model <- apply_variance(current_model, varpct = variance(testmod.hockey@config))
-
               # Solve the model
               fit_model <- ompr::solve_model(current_model,
                                              solver = ompr.roi::with_ROI(M@model@solver))
@@ -452,7 +452,14 @@ setMethod('build_lineups',
               solution_vectors[[i]] <- solution_index$value
 
               # TO DO -- get only relevant rows (not the index, but the table containing players' data)
-              lineups[[i]] <- get_player_data(object)[which(solution_vectors[[i]]==1),]
+              crlineup <- get_player_data(object)[which(solution_vectors[[i]]==1),]
+              corder   <- base_orders[[M@site]][[M@sport]][[M@contest_type]]
+
+              if (!is.null(corder)) {
+                crlineup <- reorder_lineup(crlineup, corder)
+              }
+
+              lineups[[i]] <- crlineup
 
             }
 
