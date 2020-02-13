@@ -19,7 +19,7 @@ Add a Team Stack
 }
 \examples{
 \dontrun{
-opt <- optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
 opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 
 # Add team stack, requiring a Center and Two Wingers from the same team

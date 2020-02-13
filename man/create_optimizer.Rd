@@ -31,6 +31,6 @@ This function is used to instantiate a new object of class \code{optimizer}, whi
     central component of the dfsOptimizer package.
 }
 \examples{
-mod <- optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY')
+mod <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY')
 
 }

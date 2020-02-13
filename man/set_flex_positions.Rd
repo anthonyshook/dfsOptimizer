@@ -20,7 +20,7 @@ Method for setting FLEX/UTIL positions. Can be used to limit FLEX/UTIL to a user
 }
 \examples{
 \dontrun{
-opt <- optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY')
+opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY')
 opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 
 # Default FLEX is c('C','W','D') -- here we'll remove D

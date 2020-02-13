@@ -24,7 +24,7 @@ Prevents positions from opposing teams from being included in lineups.
 }
 \examples{
 \dontrun{
-opt <- optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
 opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 
 # Restrict lineup from having Skaters and Goalies from opposite teams
