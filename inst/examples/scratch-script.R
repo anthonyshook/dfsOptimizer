@@ -18,7 +18,7 @@ testmod.hockey <- add_players_from_csv(testmod.hockey, filepath = 'C:/Users/anth
 testmod.hockey <- construct_model(testmod.hockey)
 
 # Optimize.
-lineups <- build_lineups(testmod.hockey, num_lineups = 5)
+lineups <- build_lineups(testmod.hockey, num_lineups = 1)
 
 # Not exactly the method we'll use
 s <- ompr::solve_model(testmod.hockey@model@mod, ompr.roi::with_ROI('glpk'))
