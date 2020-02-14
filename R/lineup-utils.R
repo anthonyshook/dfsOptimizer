@@ -14,6 +14,7 @@ reorder_lineup <- function(lineup, new_order) {
     lineup_index <- which(O == lineup$position)
 
     first_matches <- lineup_index[1:length(order_index)]
+    if (any(is.na(first_matches))) next
 
     lineup$posindex[first_matches] <- order_index
   }
