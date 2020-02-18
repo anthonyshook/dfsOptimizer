@@ -106,6 +106,8 @@ add_position_constraint <- function(model, position_vector, roster_key, flex_pos
       ompr::add_constraint(player_positions[i, J] == players[i] * mask_vec, i = 1:num_players, j = J) %>%
       ompr::add_constraint(positions[J] == sum_expr(player_positions[i,J], i = 1:num_players), j = J) #%>%
 
+    # TODO: This is where we'd want to update the process
+    # Instead of using just flex positions, we COULD use the key to reason about mins/maxs for each position type.
     if (all(roster_key[[J]]$positions %in% flex_positions)) {
       model <- model %>%
         ompr::add_constraint(positions[J] >= curr_limit) %>%
