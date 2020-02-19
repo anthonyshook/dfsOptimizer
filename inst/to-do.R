@@ -1,5 +1,8 @@
 
 #' TO DO
+#' - Now that Roster Key Method is in place, we can remove the current flex-position process
+#'   - add UTIL as a slot in base-settings, and use flex-position as field indicating which elements of the
+#'     roster_key to change ('UTIL' or 'FLEX', etc.)
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
 #' - Add NBA
 #' - Add MLB
