@@ -1,6 +1,13 @@
 
+#' BUG
+#'
+#' - cases where players have multiple possible positions (like PF or C in basketball) currently break things.
+#'   - we're going to need a way to fix that here
+#'   - option 1: Everybody with multiple positions gets multiple entries in player list (not ideal)
+#'   - option 2: When making masks for player positions, instead of looking for ==, we split the position by '/' and call any(...) == pos on the split
+#'     - This probably will work, but may cause something else to explode??
+
 #' TO DO
-#' - Replace 'base-orders' with the proper order of the roster_key
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
 #' - Add NBA
 #' - Add MLB

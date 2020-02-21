@@ -69,9 +69,7 @@ sgolf
 get_player_data(testmod.golf)[get_solution(sgolf, players[i])$value ==1,]
 
 #########
-df1 <- data.frame(x = 1:5, y = 6:10)
-
-M <- ompr::MILPModel() %>%
-  ompr::add_variable(df1[df1])
-
-
+testmod.basketball <- create_optimizer(site = 'DRAFTKINGS', sport = 'BASKETBALL', contest_type = 'CLASSIC')
+testmod.basketball <- add_players_from_csv(testmod.basketball, filepath = 'C:/Users/antho/Desktop/DFS Slate Files/basketball/DKSalaries.csv')
+testmod.basketball <- construct_model(testmod.basketball)
+build_lineups(testmod.basketball, num_lineups = 1)
