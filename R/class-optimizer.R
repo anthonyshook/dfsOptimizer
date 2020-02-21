@@ -67,7 +67,7 @@ create_optimizer <- function(site,
                             min_team_req = as.integer(cfg$min_team_req),
                             max_players_per_team = as.integer(cfg$max_players_per_team),
                             roster_key = cfg$roster_key,
-                            flex_positions = cfg$flex_positions,
+                            flex_position = cfg$flex_position,
                             max_exposure = 1,
                             variance = 0,
                             constraints = list())
@@ -360,8 +360,7 @@ setMethod('construct_model',
             # Add positional constraint
             object@model@mod <- add_position_constraint(model = object@model@mod,
                                                         position_vector = sapply(object@players, position),
-                                                        roster_key = roster_key(config),
-                                                        flex_positions = flex_positions(config))
+                                                        roster_key = roster_key(config))
 
             # Add unique ID constraint
             object@model@mod <- add_unique_id_constraint(model = object@model@mod,
@@ -453,7 +452,7 @@ setMethod('build_lineups',
 
               # TO DO -- get only relevant rows (not the index, but the table containing players' data)
               crlineup <- get_player_data(object)[which(solution_vectors[[i]]==1),]
-              corder   <- base_orders[[M@site]][[M@sport]][[M@contest_type]]
+              corder   <- get_roster_order(object@config)
 
               if (!is.null(corder)) {
                 crlineup <- reorder_lineup(crlineup, corder)
