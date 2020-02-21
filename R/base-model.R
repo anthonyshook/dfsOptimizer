@@ -10,7 +10,7 @@ build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
 
   # Lengths (unique teams and positions)
   num_teams <- length(unique(team_vector))
-#
+  #
   # Model with all appropriate variables
   base_model <- ompr::MILPModel() %>%
     ompr::add_variable(players[i], i = 1:size, type = "binary") %>%
@@ -79,19 +79,23 @@ add_team_number_constraints <- function(model, min_team_number, max_players_per_
 #' @param model OMPR Model object
 #' @param position_vector Vector of positions to consider
 #' @param roster_key List containing
-#' @param flex_positions Positions to be considered for flex
 #'
 #' @keywords internal
-add_position_constraint <- function(model, position_vector, roster_key, flex_positions) {
+add_position_constraint <- function(model, position_vector, roster_key) {
 
-  pos_masks <- lapply(roster_key, function(V){
-    current_positions <- V$positions
-    return(as.numeric(position_vector %in% current_positions))
+  # Parse the roster key
+  # This takes UTILS into account
+  parsed_roster <- parse_roster_key(roster_key)
+
+  # Get position masks
+  pos_masks <- lapply(parsed_roster$pos, function(CP){
+    return(as.numeric(position_vector %in% CP))
   })
+  names(pos_masks) <- parsed_roster$pos
 
   # Model length
   num_players   <- get_model_length(model, 'players')
-  num_positions <- length(roster_key)
+  num_positions <- nrow(parsed_roster)
 
   model <- model %>%
     # Position related variables
@@ -99,23 +103,19 @@ add_position_constraint <- function(model, position_vector, roster_key, flex_pos
     ompr::add_variable(positions[i], i = 1:num_positions, type = 'integer')
 
   for (J in 1:num_positions) {
-    mask_vec   <- pos_masks[[J]]
-    curr_limit <- roster_key[[J]]$num
+    mask_vec <- pos_masks[[J]]
+    curr_min <- parsed_roster[J,]$min
+    curr_max <- parsed_roster[J,]$max
+
     model <- model %>%
       # Position Alignment
       ompr::add_constraint(player_positions[i, J] == players[i] * mask_vec, i = 1:num_players, j = J) %>%
       ompr::add_constraint(positions[J] == sum_expr(player_positions[i,J], i = 1:num_players), j = J) #%>%
 
-    # TODO: This is where we'd want to update the process
-    # Instead of using just flex positions, we COULD use the key to reason about mins/maxs for each position type.
-    if (all(roster_key[[J]]$positions %in% flex_positions)) {
-      model <- model %>%
-        ompr::add_constraint(positions[J] >= curr_limit) %>%
-        ompr::add_constraint(positions[J] <= curr_limit+1)
-    } else {
-      model <- model %>%
-        ompr::add_constraint(positions[J] == curr_limit)
-    }
+    # Just do a min/max check for each position
+    model <- model %>%
+      ompr::add_constraint(positions[J] >= curr_min) %>%
+      ompr::add_constraint(positions[J] <= curr_max)
   }
 
   return(model)
