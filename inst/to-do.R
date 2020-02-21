@@ -1,8 +1,6 @@
 
 #' TO DO
-#' - Now that Roster Key Method is in place, we can remove the current flex-position process
-#'   - add UTIL as a slot in base-settings, and use flex-position as field indicating which elements of the
-#'     roster_key to change ('UTIL' or 'FLEX', etc.)
+#' - Replace 'base-orders' with the proper order of the roster_key
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
 #' - Add NBA
 #' - Add MLB
@@ -27,6 +25,7 @@
 #' - Updated /cleaned docs
 #' - Validity checks to objects
 #' - Add other sites / contest types
+#' - Add friendly error reporting for things like "You used a CSV I have never seen", etc.
 
 #' NICE TO HAVE IMPROVEMENTS
 #' - fix the date parsing for non-draftkings

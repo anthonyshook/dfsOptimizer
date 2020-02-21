@@ -1,9 +1,9 @@
 
 # Build optimizer
-testmod.hockey <- create_optimizer(site = 'YAHOO', sport = 'HOCKEY', contest_type = 'CLASSIC')
+testmod.hockey <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 
 # Add Players to optimizer
-testmod.hockey <- add_players_from_csv(testmod.hockey, filepath = 'C:/Users/antho/Desktop/DFS Slate Files/hockey/Yahoo_DF_player_export.csv')
+testmod.hockey <- add_players_from_csv(testmod.hockey, filepath = 'C:/Users/antho/Desktop/DFS Slate Files/hockey/DKSalaries_nhl.csv')
 
 # Block a player (Nate MacKinnon)
 #testmod.hockey <- block_players_by_id(testmod.hockey, '14086443')
