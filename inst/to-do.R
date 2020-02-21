@@ -6,6 +6,11 @@
 #'   - option 1: Everybody with multiple positions gets multiple entries in player list (not ideal)
 #'   - option 2: When making masks for player positions, instead of looking for ==, we split the position by '/' and call any(...) == pos on the split
 #'     - This probably will work, but may cause something else to explode??
+#'   -NOTE: Things to test --
+#'         opposing position constraint;
+#'         position_stack constraint;
+#'         roster_order -- reduced to VISUAL bug, but not actual functionality.
+
 
 #' TO DO
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)

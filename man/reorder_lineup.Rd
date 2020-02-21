@@ -4,12 +4,12 @@
 \alias{reorder_lineup}
 \title{Reorder lineups}
 \usage{
-reorder_lineup(lineup, new_order)
+reorder_lineup(lineup, config)
 }
 \arguments{
 \item{lineup}{the lineup output}
 
-\item{new_order}{The desired ordered output of the table (usually a character vector of positions equal to the nrow(lineup))}
+\item{config}{The config slot of the current optimizer. Used to determine the order, and eligible positions.}
 }
 \description{
 Reorder lineups
