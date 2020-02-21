@@ -23,7 +23,7 @@ S4 Class optimConfig
 
 \item{\code{roster_key}}{List containing roster positions and the number of each position required}
 
-\item{\code{flex_positions}}{Positions that are eligible for FLEX/UTIL slots}
+\item{\code{flex_position}}{named identifer for the flex positions}
 
 \item{\code{max_exposure}}{Maximum exposure for individual players (global)}
 

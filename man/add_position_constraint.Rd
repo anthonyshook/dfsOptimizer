@@ -4,7 +4,7 @@
 \alias{add_position_constraint}
 \title{Position constraint}
 \usage{
-add_position_constraint(model, position_vector, roster_key, flex_positions)
+add_position_constraint(model, position_vector, roster_key)
 }
 \arguments{
 \item{model}{OMPR Model object}
@@ -12,8 +12,6 @@ add_position_constraint(model, position_vector, roster_key, flex_positions)
 \item{position_vector}{Vector of positions to consider}
 
 \item{roster_key}{List containing}
-
-\item{flex_positions}{Positions to be considered for flex}
 }
 \description{
 Position constraint

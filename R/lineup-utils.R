@@ -45,10 +45,10 @@ parse_roster_key <- function(rk) {
   by_row <- lapply(rk, function(i) {
     if (length(i$positions)==1) {
       # Set max and min to the number of players for that position
-      out <- data.frame(pos = i$positions, min = i$num, max = i$num)
+      out <- data.frame(pos = i$positions, min = i$num, max = i$num, stringsAsFactors = FALSE)
     } else if (length(i$positions > 1)) {
       # Set max to the number of players for those positions leaving min as 0
-      out <- data.frame(pos = i$positions, min = 0, max = i$num)
+      out <- data.frame(pos = i$positions, min = 0, max = i$num, stringsAsFactors = FALSE)
     } else {
       # Break because it means there was no position
       stop("Length of 'positions' is less than 1!")

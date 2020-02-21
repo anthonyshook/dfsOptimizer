@@ -12,8 +12,9 @@ dk_settings <- list(
       roster_key = list('C' = list(positions = 'C', num = 2),
                         'W' = list(positions = 'W', num = 3),
                         'D' = list(positions = 'D', num = 2),
-                        'G' = list(positions = 'G', num = 1)),
-      flex_positions = c('C', 'W', 'D')
+                        'G' = list(positions = 'G', num = 1),
+                        'UTIL' = list(positions = c('C','W','D'), num = 1)),
+      flex_position = 'UTIL'
     ),
     SHOWDOWN = list(),
     TIERS = list()
@@ -34,7 +35,7 @@ dk_settings <- list(
       min_team_req = 1,
       max_players_per_team = 6,
       roster_key = list('G' = list(positions = 'G', num = 6)),
-      flex_positions = NA_character_
+      flex_position = NA_character_
     ),
     SHOWDOWN = list(),
     WEEKEND = list() # Less important
@@ -54,8 +55,9 @@ dk_settings <- list(
                         'PF' = list(positions = 'PF', num = 1),
                         'C' = list(positions = 'C', num = 1),
                         'G' = list(positions = c('PG','SG'), num = 1),
-                        'F' = list(positions = c('SF', 'PF'), num = 1)),
-      flex_positions = c('PG','SG','SF','PF','C')
+                        'F' = list(positions = c('SF', 'PF'), num = 1),
+                        'UTIL' = list(positions = c('PG','SG','SF','PF','C'), num = 1)),
+      flex_position = 'UTIL'
     )
   )
 )
@@ -74,7 +76,7 @@ yahoo_settings <- list(
                        'W' = list(positions = 'W', num = 3),
                        'D' = list(positions = 'D', num = 2),
                        'G' = list(positions = 'G', num = 2)),
-      flex_positions = NA_character_
+      flex_position = NA_character_
     )
   ),
 
@@ -91,7 +93,7 @@ yahoo_settings <- list(
       min_team_req = 1,
       max_players_per_team = 9,
       roster_key =list('G' = list(positions = 'G', num = 6)),
-      flex_positions = NA_character_
+      flex_position = NA_character_
     )
   ),
 
@@ -108,8 +110,9 @@ yahoo_settings <- list(
                         'PF' = list(positions = 'PF', num = 1),
                         'C' = list(positions = 'C', num = 1),
                         'G' = list(positions = c('PG','SG'), num = 1),
-                        'F' = list(positions = c('SF', 'PF'), num = 1)),
-      flex_positions = c('PG','SG','SF','PF','C')
+                        'F' = list(positions = c('SF', 'PF'), num = 1),
+                        'UTIL' = list(positions = c('PG','SG','SF','PF','C'), num = 1)),
+      flex_position = 'UTIL'
     )
   )
 )
@@ -129,7 +132,7 @@ fd_settings <- list(
                         'W' = list(positions = 'W', num = 4),
                         'D' = list(positions = 'D', num = 2),
                         'G' = list(positions = 'G', num = 1)),
-      flex_positions = NA_character_
+      flex_position = NA_character_
     ),
     SINGLE = list()
   ),
@@ -148,7 +151,7 @@ fd_settings <- list(
       min_team_req = 1,
       max_players_per_team = 9,
       roster_key = list('G' = list(positions = 'G', num = 6)),
-      flex_positions = NA_character_
+      flex_position = NA_character_
     ),
     SINGLE = list()
   ),
@@ -165,7 +168,7 @@ fd_settings <- list(
                         'SF' = list(positions = 'SF', num = 2),
                         'PF' = list(positions = 'PF', num = 2),
                         'C' = list(positions = 'C', num = 1)),
-      flex_positions = NA_character_
+      flex_position = NA_character_
     )
   )
 )
