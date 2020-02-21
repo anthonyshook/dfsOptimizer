@@ -6,7 +6,7 @@
 #' @slot min_team_req Number of teams required to be represented in the lineup
 #' @slot max_players_per_team Maximum number of players from any one team
 #' @slot roster_key List containing roster positions and the number of each position required
-#' @slot flex_positions Positions that are eligible for FLEX/UTIL slots
+#' @slot flex_position named identifer for the flex positions
 #' @slot max_exposure Maximum exposure for individual players (global)
 #' @slot variance Percentage variance for fantasy points -- used to add randomness to the model.
 #' @slot constraints A \code{list} containing additional constraint objects
@@ -19,14 +19,14 @@
                            min_team_req = 'integer',
                            max_players_per_team = 'integer',
                            roster_key = 'list',
-                           flex_positions = 'character',
+                           flex_position = 'character',
                            max_exposure = 'numeric',
                            variance = 'numeric',
                            constraints = 'list'
                          ),
                          prototype = list(
                            min_budget = 0,
-                           flex_positions = NA_character_,
+                           flex_position = NA_character_,
                            max_exposure = 1,
                            variance = 0
                          )
@@ -77,8 +77,8 @@ setMethod("max_players_per_team", "optimConfig", function(x) x@max_players_per_t
 setGeneric("roster_key", function(x) standardGeneric("roster_key"))
 setMethod("roster_key", "optimConfig", function(x) x@roster_key)
 
-setGeneric("flex_positions", function(x) standardGeneric("flex_positions"))
-setMethod("flex_positions", "optimConfig", function(x) x@flex_positions)
+setGeneric("flex_position", function(x) standardGeneric("flex_position"))
+setMethod("flex_position", "optimConfig", function(x) x@flex_position)
 
 setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
 setMethod("max_exposure", "optimConfig", function(x) x@max_exposure)
@@ -122,9 +122,9 @@ setMethod('set_max_players_per_team<-', 'optimConfig', function(x, value) {
   return(x)
 })
 
-setGeneric('flex_positions<-', function(x, value) standardGeneric('flex_positions<-'))
-setMethod('flex_positions<-', 'optimConfig', function(x, value) {
-  x@flex_positions <- value
+setGeneric('flex_position<-', function(x, value) standardGeneric('flex_position<-'))
+setMethod('flex_position<-', 'optimConfig', function(x, value) {
+  x@flex_position <- value
   stopifnot(validObject(x))
   return(x)
 })
@@ -157,3 +157,16 @@ setMethod('include_constraint', 'optimConfig',
             return(x)
           })
 
+setGeneric('get_roster_order', function(x) standardGeneric('get_roster_order'))
+setMethod('get_roster_order', 'optimConfig', function(x) {
+  o <- tryCatch({
+  as.character(
+    unlist(
+      sapply(names(x@roster_key),
+             function(Z) rep(Z, x@roster_key[[Z]]$num)
+             )
+      )
+    )
+  }, error = function(e) NULL)
+  return(o)
+})
