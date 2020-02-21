@@ -126,7 +126,7 @@ setMethod(f = 'restrict_opposing_positions',
           definition = function(object, pos1, pos2) {
 
             # Create constraint
-            CON <- constraintClass(constraint_name = "Opposing Positions Restriction",
+            CON <- .constraintClass(constraint_name = "Opposing Positions Restriction",
                                    fnc = .restrict_opposing_position,
                                    args = list(pos1 = pos1, pos2 = pos2))
 
