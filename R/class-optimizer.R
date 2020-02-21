@@ -369,7 +369,7 @@ setMethod('construct_model',
             # Add additional constraints from the config
             if (length(object@config@constraints) > 0) {
               for (CON in object@config@constraints){
-                object@model@mod <- apply_constraint(CON, object@model@mod)
+                object <- apply_constraint(CON, object)
               }
             }
 
@@ -452,11 +452,7 @@ setMethod('build_lineups',
 
               # TO DO -- get only relevant rows (not the index, but the table containing players' data)
               crlineup <- get_player_data(object)[which(solution_vectors[[i]]==1),]
-              corder   <- get_roster_order(object@config)
-
-              if (!is.null(corder)) {
-                crlineup <- reorder_lineup(crlineup, corder)
-              }
+              crlineup <- reorder_lineup(crlineup, object@config)
 
               lineups[[i]] <- crlineup
 
