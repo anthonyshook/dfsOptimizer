@@ -183,7 +183,10 @@ setGeneric('set_flex_positions', function(object, positions) standardGeneric('se
 setMethod(f = 'set_flex_positions',
           signature = 'optimizer',
           definition = function(object, positions) {
-            flex_positions(object@config) <- positions
+            flxind <- which(names(roster_key(object@config)) == flex_position(object@config))
+            for (i in flxind) {
+              object@config@roster_key[[i]]$positions <- positions
+            }
             return(object)
           })
 
