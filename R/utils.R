@@ -66,3 +66,12 @@ expand.grid.unique <- function(..., rep = FALSE, uniqueCombinations = TRUE) {
   return(dat)
 
 }
+
+#' make position indicator
+#'
+#' @param posvec vector of positions
+#' @param target position to flag
+make_position_indicator <- function(posvec, target) {
+  which(sapply(strsplit(posvec, "/"), function(Z) any(Z %in% target)))
+}
+
