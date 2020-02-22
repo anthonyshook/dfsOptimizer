@@ -19,7 +19,8 @@ link_players_on_same_team <- function(players, positions) {
     tdata <- dat[tms == TMS, ]
 
     plists <- lapply(positions, function(P){
-      return(tdata[pos==P,]$inx)
+      idx <- sapply(strsplit(tdata$pos, "/"), function(P2) P %in% P2)
+      return(tdata[idx,]$inx)
     })
     return(do.call('expand.grid.unique', plists))
   })
