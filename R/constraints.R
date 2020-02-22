@@ -1,3 +1,7 @@
+# CONSTRAINTS DEFINED HERE SHOULD TAKE THE OPTIMIZER OBJECT, NOT THE OMPR MODEL ITSELF.
+#   LOCK AND BLOCK BREAK THIS RULE, BUT THEY CAN BE FIXED LATER
+
+
 #' @include class-player.R
 
 #' @title Block Players Constraint
@@ -42,7 +46,7 @@ add_lock_constraint <- function(model, lock_vector) {
 
 #' Opposite Positions Constraint
 #'
-#' @param model Model object
+#' @param optObj Optimizer object
 #' @param pos1 Positions for set one
 #' @param pos2 Positions for set two
 #'
@@ -50,10 +54,13 @@ add_lock_constraint <- function(model, lock_vector) {
 #' unmatched.
 #'
 #' @keywords internal
-.restrict_opposing_position <- function(model, pos1, pos2) {
+.restrict_opposing_position <- function(optObj, pos1, pos2) {
 
   # Get players from the model
-  players <- model@players
+  players <- optObj@players
+
+  # Pull out model
+  model <- optObj@model@mod
 
   # Model Data
   num_players   <- get_model_length(model, 'players')
@@ -63,16 +70,15 @@ add_lock_constraint <- function(model, lock_vector) {
   p2_teams     <- sapply(players, team)
   num_teams   <- length(unique(p2_teams))
 
-  #
-  pos1_ind <- which(sapply(players, position) %in% pos1)
-  pos2_ind <- which(sapply(players, position) %in% pos2)
-
   # vector functions
-  pos_fn <- function(i, pos) as.numeric(sapply(players, position)[i] %in% pos)
+  pos_fn <- function(i, pos) as.numeric(make_position_indicator(sapply(players,position)[i], pos, which_or_ind = 'ind'))
+  # pos_fn <- function(i, pos) as.numeric(sapply(players, position)[i] %in% pos)
+
   team_check <- function(i, t, teamvec) {
     as.integer(teamvec[i] == t)
   }
 
+  # browser()
   penalty <- 1000
   for (j in unique(p1_opponents)) {
     model <- model %>%
@@ -80,19 +86,24 @@ add_lock_constraint <- function(model, lock_vector) {
                                               team_check(i, j, p2_teams) * pos_fn(i, pos1)) * players[i], i = 1:num_players) <= penalty)
   }
 
-  return(model)
+  optObj@model@mod <- model
+
+  return(optObj)
 }
 
 #' Adds Same-Team stacks
 #'
-#' @param model Model object
+#' @param optObj Optimizer object
 #' @param positions Positions for that should be stacked within a single team
 #'
 #' @keywords internal
-.add_team_stack <- function(model, positions) {
+.add_team_stack <- function(optObj, positions) {
 
   # Get players from the model
-  players <- model@players
+  players <- optObj@players
+
+  # Pull model
+  model <- optObj@model@mod
 
   # Some info about the model
   num_players   <- get_model_length(model, 'players')
@@ -106,8 +117,10 @@ add_lock_constraint <- function(model, lock_vector) {
     ompr::add_variable(pos_team_stack[i,j], i = 1:num_teams, j = 1:length(positions), type = 'binary') %>%
     ompr::add_variable(team_stack[i], i = 1:num_teams, type = 'binary')
 
-  # Make Positional constraint function
-  pos_fn <- function(i, pos) as.numeric(sapply(players, position)[i] %in% pos)
+  # Make Positional constraint functions
+  # pos_fn <- function(i, pos) as.numeric(sapply(players, position)[i] %in% pos)
+  pos_fn <- function(i, pos) as.numeric(make_position_indicator(sapply(players,position)[i], pos, which_or_ind = 'ind'))
+
   tpc_fun <- function(i, t, p, teamvec) {
     # Gets this is a mask that is the position and team
     mask <- as.integer(teamvec[i] == t) * pos_fn(i, positions[p])
@@ -120,30 +133,42 @@ add_lock_constraint <- function(model, lock_vector) {
   # position is repeated -- e.g., if positions = c('W','W','C'), then
   # N('W') = 2, but N('C') = 1)
   for (TMS in curr_teams) {
-    for (POS in 1:length(positions)){
-      posnum <- POS
-      tmsnum <- which(curr_teams == TMS)
+    tmsnum <- which(curr_teams == TMS)
+    pos_vector <- seq_along(positions)
+    # This constraint is meant to require the minimum number of players be represented
+    # in the case of sports with multiple positions. Effectively, we want to say that in order
+    # for the team_flag to be 1, we also need a minimum player count of num_positions
+    model <- model %>%
+      ompr::add_constraint(team_stack[i] * num_positions <= sum_expr(
+        players[k] * colwise(tpc_fun(k, TMS, p=pos_vector, teamvec)), k = 1:num_players
+      ), i = tmsnum)
+
+    for (posnum in 1:length(positions)){
       poscount <- sum(positions[posnum] == positions)
 
-        model <- model %>%
-          ompr::add_constraint((poscount - (1 - pos_team_stack[i, j=posnum])) +
-                                 (pos_team_stack[i, j=posnum] * 200) >=
-                                 sum_expr(players[k] *
-                                            colwise(tpc_fun(k, TMS, p=POS, teamvec)),
-                                          k = 1:num_players), i = tmsnum) %>%
-          ompr::add_constraint(pos_team_stack[i, j=posnum] * poscount <=
-                                 sum_expr(players[k] *
-                                            colwise(tpc_fun(k, TMS, p=POS, teamvec)),
-                                          k = 1:num_players), i = tmsnum)
+      model <- model %>%
+        ompr::add_constraint((poscount - (1 - pos_team_stack[i, j=posnum])) +
+                               (pos_team_stack[i, j=posnum] * 200) >=
+                               sum_expr(players[k] *
+                                          colwise(tpc_fun(k, TMS, p=posnum, teamvec)),
+                                        k = 1:num_players), i = tmsnum) %>%
+        ompr::add_constraint(pos_team_stack[i, j=posnum] * poscount <=
+                               sum_expr(players[k] *
+                                          colwise(tpc_fun(k, TMS, p=posnum, teamvec)),
+                                        k = 1:num_players), i = tmsnum)
       # }
     }
   }
 
-  # Last condition says count the values where the team_stack > num_positions and cast to boolean,
+  # This condition says count the values where the team_stack > num_positions and cast to boolean,
   # Then constrain the model to ensure at least one of those values == 1
   model <- model %>%
     ompr::add_constraint(sum_expr(pos_team_stack[i, j], j = 1:num_positions) >= team_stack[i] * num_positions, i = 1:num_teams) %>%
     ompr::add_constraint(sum_expr(team_stack[i], i = 1:num_teams) >= 1)
 
-  return(model)
+
+
+  optObj@model@mod <- model
+
+  return(optObj)
 }
