@@ -1,5 +1,25 @@
 #' @include class-optimizer.R
 
+
+setGeneric('add_additional_constraints', function(object) standardGeneric('add_additional_constraints'))
+#' Add additional constraints
+#'
+#' @param object Optimizer model object
+#'
+#' @details Adds constraints from object configuration.
+#'
+#' @return The Optimizer object with an updated model.
+#' @export
+setMethod('add_additional_constraints', signature = 'optimizer',
+          definition = function(object) {
+            if (length(object@config@constraints) > 0) {
+              for (CON in object@config@constraints){
+                object <- apply_constraint(CON, optObj = object)
+              }
+            }
+            return(object)
+          })
+
 setGeneric('add_players_from_csv', function(object, filepath, site) standardGeneric('add_players_from_csv'))
 #' Add players to optimizer from CSV
 #'
@@ -88,7 +108,7 @@ setMethod(f = 'add_team_stack',
           definition = function(object, positions) {
 
             # Create constraint
-            CON <- constraintClass(constraint_name = "Team Stack Constraint",
+            CON <- .constraintClass(constraint_name = "Team Stack Constraint",
                                    fnc = .add_team_stack,
                                    args = list(positions = positions))
 
@@ -126,7 +146,7 @@ setMethod(f = 'restrict_opposing_positions',
           definition = function(object, pos1, pos2) {
 
             # Create constraint
-            CON <- constraintClass(constraint_name = "Opposing Positions Restriction",
+            CON <- .constraintClass(constraint_name = "Opposing Positions Restriction",
                                    fnc = .restrict_opposing_position,
                                    args = list(pos1 = pos1, pos2 = pos2))
 

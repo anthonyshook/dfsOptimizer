@@ -1,12 +1,4 @@
 
-#' BUG
-#'
-#' - cases where players have multiple possible positions (like PF or C in basketball) currently break things.
-#'   - we're going to need a way to fix that here
-#'   - option 1: Everybody with multiple positions gets multiple entries in player list (not ideal)
-#'   - option 2: When making masks for player positions, instead of looking for ==, we split the position by '/' and call any(...) == pos on the split
-#'     - This probably will work, but may cause something else to explode??
-
 #' TO DO
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
 #' - Add NBA
@@ -15,8 +7,8 @@
 #' - Add NASCAR
 #' - Build LINEUP class to manage lineup objects
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
-#' - Consider replacing the current flex-positions process with a UTIL/FLEX position process that is more easily fixed.
-#'   - TRIED. doesn't work ATM because our position constraint is based on positions, so you can't have the final UTIL position == 1 if it's made up of the SUM of all others.  The way we're currently designed, it only works if UTIL is a specific position. NOTE -- you don't need position constraints if you have specific positions...
+#' - Make all non-base constraints take the OPTIMIZER OBJECT and not the OMPR model
+#' - remove the whole model@mod construct, just put 'solver' in the build_lineups with a glpk default
 
 #' FEATURES TO ADD
 #' - Add Opposing -positive- constraints (if team A QB, then team B WR) [force_opposing_positions]
@@ -33,6 +25,9 @@
 #' - Validity checks to objects
 #' - Add other sites / contest types
 #' - Add friendly error reporting for things like "You used a CSV I have never seen", etc.
+#' - Refactor the whole damn stacking code, potentially.  We may want to check out CVXR and see if that is better from a speed of construction perspective.
+#'   - If there is a WAY to use the pre-defined player-stacks, that would be the ideal
+#'
 
 #' NICE TO HAVE IMPROVEMENTS
 #' - fix the date parsing for non-draftkings

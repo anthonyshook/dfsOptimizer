@@ -153,7 +153,7 @@ setMethod('include_constraint', 'optimConfig',
             # This will add to the list if the field doesn't exist, but
             # replace it if it does. Makes it less likely to add various definitions
             # of the same constraint
-            x@constraints[[constraint_object$constraint_name]] <- constraint_object
+            x@constraints[[constraint_object@constraint_name]] <- constraint_object
             return(x)
           })
 

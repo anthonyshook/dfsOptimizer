@@ -1,25 +1,34 @@
 #' Reorder lineups
 #'
 #' @param lineup the lineup output
-#' @param new_order The desired ordered output of the table (usually a character vector of positions equal to the nrow(lineup))
+#' @param config The config slot of the current optimizer. Used to determine the order, and eligible positions.
 #'
 #' @keywords internal
-reorder_lineup <- function(lineup, new_order) {
+reorder_lineup <- function(lineup, config) {
 
-  # add a row for countin'
+  # Use roster_key to get order
+  new_order <- get_roster_order(config)
+
+  # Get eligible positions for each
+  eligible_positions <- lapply(config@roster_key, function(rk) rk$positions)
+
+  # add a column for inserting values
   lineup$posindex <- NA
+  for (i in seq_along(new_order)) {
+    O <- new_order[i]
 
-  for (O in unique(new_order)) {
-    order_index  <- which(O == new_order)
-    lineup_index <- which(O == lineup$position)
+    # Get indeces
+    order_index  <- i
+    elig_posits  <- eligible_positions[[O]]
+    lineup_index <- make_position_indicator(posvec = lineup$position, target = elig_posits)
 
-    first_matches <- lineup_index[1:length(order_index)]
-    if (any(is.na(first_matches))) next
-
-    lineup$posindex[first_matches] <- order_index
+    # Gets rid of the positions already filled
+    lineup_index <- setdiff(lineup_index, which(!is.na(lineup$posindex)))
+    lineup$posindex[lineup_index[1]] <- order_index
   }
 
   # There will be NAs for UTIL/FLEX
+  # So it may behave a little funny in the multi-position circumstances
   na_loc <- setdiff(1:length(new_order), lineup$posindex)
   lineup$posindex[is.na(lineup$posindex)] <- na_loc
 

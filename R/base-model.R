@@ -89,7 +89,8 @@ add_position_constraint <- function(model, position_vector, roster_key) {
 
   # Get position masks
   pos_masks <- lapply(parsed_roster$pos, function(CP){
-    return(as.numeric(position_vector %in% CP))
+    split_pos <- strsplit(x = position_vector, split = '/')
+    return(as.numeric(sapply(split_pos, function(z) any(z %in% CP))))
   })
   names(pos_masks) <- parsed_roster$pos
 

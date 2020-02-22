@@ -4,12 +4,12 @@
 \alias{apply_constraint,constraintClass-method}
 \title{Function to apply constraints to a model}
 \usage{
-\S4method{apply_constraint}{constraintClass}(object, model, ...)
+\S4method{apply_constraint}{constraintClass}(object, optObj, ...)
 }
 \arguments{
 \item{object}{The constraint object}
 
-\item{model}{An ompr model object to apply a constraint to}
+\item{optObj}{The optimizer Object}
 
 \item{...}{Additional arguments if required}
 }

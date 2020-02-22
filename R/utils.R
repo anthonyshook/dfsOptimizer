@@ -53,11 +53,11 @@ expand.grid.unique <- function(..., rep = FALSE, uniqueCombinations = TRUE) {
   # Note -- if NO matches are made, we should NOT have to remove repeats
   # because the code should define it that way
 
-  # # Removes repetitions
-  # if (!rep) {
-  #   dat <- dat[apply(dat, 1, data.table::uniqueN) >= ncol(dat)]
-  # }
-  #
+  # Removes repetitions
+  if (!rep) {
+    dat <- dat[apply(dat, 1, data.table::uniqueN) >= ncol(dat)]
+  }
+
   # # Reduce cases to unique combinations ()
   # if (uniqueCombinations) {
   #   dat <- dat[!duplicated(t(apply(as.matrix(dat), 1, sort))), ]
@@ -66,3 +66,21 @@ expand.grid.unique <- function(..., rep = FALSE, uniqueCombinations = TRUE) {
   return(dat)
 
 }
+
+#' make position indicator
+#'
+#' @param posvec vector of positions
+#' @param target position to flag
+#' @param which_or_ind Whether to return the INDEX values, or a vector of length posvec with 0/1 indicators. Default (which)
+#'
+make_position_indicator <- function(posvec, target, which_or_ind = 'which') {
+  o <- sapply(strsplit(posvec, "/"), function(Z) any(Z %in% target))
+  if (which_or_ind == 'which') {
+    return(which(o))
+  } else if (which_or_ind == 'ind') {
+    return(o)
+  } else {
+    stop('which_or_ind was neither which nor ind for `make_position_indicator()`')
+  }
+}
+

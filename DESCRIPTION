@@ -25,7 +25,6 @@ Imports:
 RoxygenNote: 7.0.2
 Collate: 
     'base-model.R'
-    'base-orders.R'
     'base-settings.R'
     'class-config.R'
     'class-constraint.R'
