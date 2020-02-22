@@ -71,13 +71,22 @@ get_player_data(testmod.golf)[get_solution(sgolf, players[i])$value ==1,]
 ######### BASKETBALL SIMPLE
 testmod.basketball <- create_optimizer(site = 'DRAFTKINGS', sport = 'BASKETBALL', contest_type = 'CLASSIC')
 testmod.basketball <- add_players_from_csv(testmod.basketball, filepath = 'C:/Users/antho/Desktop/DFS Slate Files/basketball/DKSalaries.csv')
-testmod.basketball <- construct_model(testmod.basketball)
-testmod.basketball <- restrict_opposing_positions(testmod.basketball, pos1 = 'C', pos2 = 'G')
+testmod.basketball <- add_team_stack(testmod.basketball, positions = c('C','PF', 'SF'))
+#testmod.basketball <- restrict_opposing_positions(testmod.basketball, pos1 = 'PF', pos2 = 'PG')
+#testmod.basketball <- construct_model(testmod.basketball)
 build_lineups(testmod.basketball, num_lineups = 1)
 
+s <- ompr::solve_model(testmod.basketball@model@mod, ompr.roi::with_ROI('glpk'))
+s
+
+#ompr::get_solution(s, tmpvar[i])
+
+get_player_data(testmod.basketball)[ompr::get_solution(s, players[i])$value ==1,]
 
 ######### HOCKEY SIMPLE
 testmod.hockey <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 testmod.hockey <- add_players_from_csv(testmod.hockey, filepath = 'C:/Users/antho/Desktop/DFS Slate Files/hockey/DKSalaries_nhl.csv')
+testmod.hockey <- restrict_opposing_positions(testmod.hockey, pos1 = c('C','W','D'), pos2 = 'G')
+testmod.hockey <- add_team_stack(testmod.hockey, positions = c('C','W','W'))
 testmod.hockey <- construct_model(testmod.hockey)
 build_lineups(testmod.hockey, num_lineups = 1)
