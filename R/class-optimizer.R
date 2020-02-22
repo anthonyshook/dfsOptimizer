@@ -367,11 +367,7 @@ setMethod('construct_model',
                                                          ids = sapply(object@players, id))
 
             # Add additional constraints from the config
-            if (length(object@config@constraints) > 0) {
-              for (CON in object@config@constraints){
-                object <- apply_constraint(CON, object)
-              }
-            }
+            object <- add_additional_constraints(object)
 
             return(object)
 
