@@ -20,13 +20,13 @@ setGeneric('apply_constraint', function(object, model, ...) standardGeneric('app
 #' Function to apply constraints to a model
 #'
 #' @param object The constraint object
-#' @param model An ompr model object to apply a constraint to
+#' @param optObj The optimizer Object
 #' @param ... Additional arguments if required
 #'
 #' @keywords internal
 setMethod('apply_constraint', 'constraintClass',
-          function(object, model, ...){
-            args <- c(list(model = model), object@args, ...)
+          function(object, optObj, ...){
+            args <- c(list(optObj = optObj), object@args, ...)
             new_model <- do.call(object@fnc, args)
             return(new_model)
           })
