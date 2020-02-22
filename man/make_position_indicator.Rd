@@ -4,12 +4,14 @@
 \alias{make_position_indicator}
 \title{make position indicator}
 \usage{
-make_position_indicator(posvec, target)
+make_position_indicator(posvec, target, which_or_ind = "which")
 }
 \arguments{
 \item{posvec}{vector of positions}
 
 \item{target}{position to flag}
+
+\item{which_or_ind}{Whether to return the INDEX values, or a vector of length posvec with 0/1 indicators. Default (which)}
 }
 \description{
 make position indicator
