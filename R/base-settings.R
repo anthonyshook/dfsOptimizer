@@ -42,7 +42,6 @@ dk_settings <- list(
   ),
 
   # Basketball
-  # THIS ONE IS GOING TO BE TOUGH TO SOLVE, due to the multi-position constraints
   BASKETBALL = list(
     CLASSIC = list(
       budget = 50000,
@@ -58,6 +57,36 @@ dk_settings <- list(
                         'F' = list(positions = c('SF', 'PF'), num = 1),
                         'UTIL' = list(positions = c('PG','SG','SF','PF','C'), num = 1)),
       flex_position = 'UTIL'
+    )
+  ),
+
+  # NASCAR
+  NASCAR = list(
+    CLASSIC = list(
+      budget = 50000,
+      roster = 6,
+      min_team_req = 1,
+      max_players_per_team = 6,
+      roster_key = list('D' = list(positions = 'G', num = 6)),
+      flex_position = NA_character_
+    )
+  ),
+
+  # Baseball
+  BASEBALL = list(
+    CLASSIC = list(
+      budget = 50000,
+      roster = 10,
+      min_team_req = 3,
+      max_players_per_team = 5,
+      roster_key = list('P' = list(positions = 'P', num = 2),
+                        'C' = list(positions = 'C', num = 1),
+                        '1B' = list(positions = '1B', num = 1),
+                        '2B' = list(positions = '2B', num = 1),
+                        '3B' = list(positions = '3B', num = 1),
+                        'SS' = list(positions = 'SS', num = 1),
+                        'OF' = list(positions = 'OF', num = 3)),
+      flex_positions = NA_character_
     )
   )
 )
@@ -168,6 +197,18 @@ fd_settings <- list(
                         'SF' = list(positions = 'SF', num = 2),
                         'PF' = list(positions = 'PF', num = 2),
                         'C' = list(positions = 'C', num = 1)),
+      flex_position = NA_character_
+    )
+  ),
+
+  # NASCAR
+  NASCAR = list(
+    CLASSIC = list(
+      budget = 50000,
+      roster = 5,
+      min_team_req = 1,
+      max_players_per_team = 5,
+      roster_key = list('D' = list(positions = 'G', num = 5)),
       flex_position = NA_character_
     )
   )
