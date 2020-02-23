@@ -4,12 +4,14 @@
 \alias{.add_team_stack}
 \title{Adds Same-Team stacks}
 \usage{
-.add_team_stack(optObj, positions)
+.add_team_stack(optObj, positions, nstacks = 1)
 }
 \arguments{
 \item{optObj}{Optimizer object}
 
 \item{positions}{Positions for that should be stacked within a single team}
+
+\item{nstacks}{Number of stacks to try to include (Default is 1)}
 }
 \description{
 Adds Same-Team stacks

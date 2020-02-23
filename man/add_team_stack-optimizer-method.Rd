@@ -4,12 +4,14 @@
 \alias{add_team_stack,optimizer-method}
 \title{Add a Team Stack}
 \usage{
-\S4method{add_team_stack}{optimizer}(object, positions)
+\S4method{add_team_stack}{optimizer}(object, positions, nstacks = 1)
 }
 \arguments{
 \item{object}{An optimizer model object}
 
 \item{positions}{Positions to stack within same team}
+
+\item{nstacks}{Number of stacks to include (Default is 1)}
 }
 \value{
 Updated optimizer object
