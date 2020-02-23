@@ -85,11 +85,12 @@ setMethod(f = 'add_players_from_df',
 
 
 
-setGeneric('add_team_stack', function(object, positions) standardGeneric('add_team_stack'))
+setGeneric('add_team_stack', function(object, positions, nstacks = 1) standardGeneric('add_team_stack'))
 #' Add a Team Stack
 #'
 #' @param object An optimizer model object
 #' @param positions Positions to stack within same team
+#' @param nstacks Number of stacks to include (Default is 1)
 #'
 #' @return Updated optimizer object
 #'
@@ -105,12 +106,12 @@ setGeneric('add_team_stack', function(object, positions) standardGeneric('add_te
 #'@export
 setMethod(f = 'add_team_stack',
           signature = 'optimizer',
-          definition = function(object, positions) {
+          definition = function(object, positions, nstacks = 1) {
 
             # Create constraint
             CON <- .constraintClass(constraint_name = "Team Stack Constraint",
                                    fnc = .add_team_stack,
-                                   args = list(positions = positions))
+                                   args = list(positions = positions, nstacks = nstacks))
 
             # Add it to the config object
             object@config <- include_constraint(object@config, CON)

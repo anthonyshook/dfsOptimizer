@@ -95,9 +95,10 @@ add_lock_constraint <- function(model, lock_vector) {
 #'
 #' @param optObj Optimizer object
 #' @param positions Positions for that should be stacked within a single team
+#' @param nstacks Number of stacks to try to include (Default is 1)
 #'
 #' @keywords internal
-.add_team_stack <- function(optObj, positions) {
+.add_team_stack <- function(optObj, positions, nstacks = 1) {
 
   # Get players from the model
   players <- optObj@players
@@ -156,7 +157,6 @@ add_lock_constraint <- function(model, lock_vector) {
                                sum_expr(players[k] *
                                           colwise(tpc_fun(k, TMS, p=posnum, teamvec)),
                                         k = 1:num_players), i = tmsnum)
-      # }
     }
   }
 
@@ -164,11 +164,59 @@ add_lock_constraint <- function(model, lock_vector) {
   # Then constrain the model to ensure at least one of those values == 1
   model <- model %>%
     ompr::add_constraint(sum_expr(pos_team_stack[i, j], j = 1:num_positions) >= team_stack[i] * num_positions, i = 1:num_teams) %>%
-    ompr::add_constraint(sum_expr(team_stack[i], i = 1:num_teams) >= 1)
+    ompr::add_constraint(sum_expr(team_stack[i], i = 1:num_teams) >= nstacks)
 
-
-
+  # Put the model back and return the updated object
   optObj@model@mod <- model
-
   return(optObj)
 }
+
+
+
+
+# THIS WAS A TEST THAT ONLY KIND OF WORKED
+# team_stack_2 <- function(optObj, positions) {
+#
+#   # This is just my attempt to test a quick thing
+#   lineup_groups <- link_players_on_same_team(optObj@players, positions = positions)
+#
+#   model <- optObj@model@mod
+#
+#   tmpfn <- function(indx) {
+#     tmp <- rep(0, times = 309)
+#     tmp[as.numeric(lineup_groups[indx,])] <- 1
+#     return(tmp)
+#   }
+#
+#   # indvector <- lapply(1:nrow(lineup_groups), function(a) tmpfn(1:309, indx=a))
+#   # npossibile <- length(TST)
+#   indeces <- lapply(1:nrow(lineup_groups), function(a) as.numeric(lineup_groups[a,]))
+#   indfun <- function(k) unlist(lineup_groups)[k]
+#
+#   # browser()
+#   print(nrow(lineup_groups))
+#   model <- model %>%
+#     ######## sum for every grouping
+#     # ompr::add_variable(tstgroups[i], i = 1:nrow(lineup_groups), type = 'integer') %>%
+#     # ompr::add_constraint(
+#     #   sum_expr(players[i]) == tstgroups[j], i = 1:309, j = 1:nrow(lineup_groups)) %>%
+#     ######## one sum
+#     ompr::add_variable(tst, type = 'integer') %>%
+#     ompr::add_constraint(tst == sum_expr(
+#       players[i], i = unlist(indeces)
+#     ))
+#
+#   # Loop test...
+#   # browser()
+#   # for (i in 1:length(indeces)) {
+#   #   cind <- tmpfn(i)
+#   #   model <- model %>%
+#   #     ompr::add_constraint(sum_expr(players[j] * colwise(cind), j = 1:309) == tstgroups[i])
+#   # }
+#
+#   optObj@model@mod <- model
+#
+#   return(optObj)
+#
+# }
+#
