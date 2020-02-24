@@ -10,7 +10,7 @@
 
 #' FEATURES TO ADD
 #' - Add Opposing -positive- constraints (if team A QB, then team B WR) [force_opposing_positions]
-#' - Add grouped-stack constraints (Line matching for hockey, depth order for baseball...)
+#' - Add grouped-stack constraints (Line matching for hockey, depth order for baseball...) [would be easier with sport/site based subclasses?]
 #' - Add method for specifying optional stack elements (like QB and *ONE OF* WR / TE -- possibly changing the input structure from single vector to list)
 #' - Minimum Budget Constraint
 #' - Max repeating players (code exists, function to set it does not)
