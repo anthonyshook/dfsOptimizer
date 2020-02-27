@@ -1,11 +1,18 @@
 # CONSTRAINTS DEFINED HERE SHOULD TAKE THE OPTIMIZER OBJECT, NOT THE OMPR MODEL ITSELF.
 #   LOCK AND BLOCK BREAK THIS RULE, BUT THEY CAN BE FIXED LATER
+#   ANOTHER OPTION = ALL MODELS TAKE THE SAME DATA AT APPLY TIME, THROUGH ..., WHETHER THEY USE IT OR NOT
+#      THAT WOULD BE THINGS LIKE -- PLAYERS, ETC.  THEN, THE ONLY THING WE *KNOW* NEEDS TO GET PASSED IS THE OMPR MODEL,
+#      NOT THE OPTIMIZER OBJECT.
+#      OR maybe they all just take the same three things -- player list, config object, and ompr model, plus whatever ELSE they need?
 
 # Minimum budget constraint
 minimum_budget_constraint <- function(optObj) {
+  player_salaries <- sapply(optObj@players, salary)
+  N <- get_model_length(optObj@model, 'players')
+
   # Add constraint
   optObj@model <- optObj@model %>%
-    ompr::add_constraint(sum_expr(players[i], i = 1:length(optObj@players)) >= min_budget(optObj@config))
+    ompr::add_constraint(sum_expr(players[i] * (colwise(player_salaries[i]), i = 1:N) >= min_budget(optObj@config))
   return(optObj)
 }
 
