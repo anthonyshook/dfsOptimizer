@@ -1,3 +1,6 @@
+# Necessary for @mod to not complain
+setOldClass('milp_model')
+
 #' S4 Class of object Optimizer
 #'
 #' @slot site The site being used for optimization
@@ -17,11 +20,12 @@
                          sport = 'character',
                          contest_type = 'character',
                          players = 'list',
-                         model = 'optimModel',
+                         model = 'milp_model',
                          config = 'optimConfig',
                          maximize = 'logical'
                        ),
                        prototype = list(
+                         model = ompr::MILPModel(),
                          maximize = TRUE
                        ))
 
@@ -58,9 +62,6 @@ create_optimizer <- function(site,
     stop('Configuration for Site + Sport + Contest Type not implemented!')
   }
 
-  # Making model with flex position
-  model <- optim_model()
-
   # Making configuration, to begin with
   modConfig <- .optimConfig(budget = cfg$budget,
                             roster_size = as.integer(cfg$roster),
@@ -73,11 +74,11 @@ create_optimizer <- function(site,
                             constraints = list())
 
   # Adding to optimizer class
+  # Defaults to an 'empty' MILPmodel
   o <- .optimizer(site = site,
                   sport = sport,
                   contest_type = contest_type,
                   players = players,
-                  model = model,
                   config = modConfig,
                   maximize = maximize)
   return(o)
@@ -327,7 +328,7 @@ setMethod('construct_model',
             }
 
             # Start constructing the model
-            object@model@mod <- build_base_model(
+            object@model <- build_base_model(
               size = length(object@players),
               team_vector = sapply(object@players, team),
               pts  = extract_player_fpts(object),
@@ -344,26 +345,26 @@ setMethod('construct_model',
             })
 
             # Adding roster limit
-            object@model@mod <- add_roster_size_constraint(object@model@mod, roster_limit = roster_size(config))
+            object@model <- add_roster_size_constraint(object@model, roster_limit = roster_size(config))
 
             # Adding budget constraint
             salaries <- sapply(object@players, salary)
-            object@model@mod <- add_budget_constraint(object@model@mod,
+            object@model <- add_budget_constraint(object@model,
                                                       player_salaries = salaries,
                                                       budget = budget(config))
 
             # Add team size constraints
-            object@model@mod <- add_team_number_constraints(model = object@model@mod,
+            object@model <- add_team_number_constraints(model = object@model,
                                                             min_team_number = min_team_req(config),
                                                             max_players_per_team = max_players_per_team(config))
 
             # Add positional constraint
-            object@model@mod <- add_position_constraint(model = object@model@mod,
+            object@model <- add_position_constraint(model = object@model,
                                                         position_vector = sapply(object@players, position),
                                                         roster_key = roster_key(config))
 
             # Add unique ID constraint
-            object@model@mod <- add_unique_id_constraint(model = object@model@mod,
+            object@model <- add_unique_id_constraint(model = object@model,
                                                          ids = sapply(object@players, id))
 
             # Add additional constraints from the config
@@ -373,7 +374,7 @@ setMethod('construct_model',
 
           })
 
-setGeneric('build_lineups', function(object, num_lineups = 1) standardGeneric('build_lineups'))
+setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk') standardGeneric('build_lineups'))
 #' Function to Generate lineups
 #'
 #' @param object an S4 object of class Optimizer
@@ -382,7 +383,7 @@ setGeneric('build_lineups', function(object, num_lineups = 1) standardGeneric('b
 #' @export
 setMethod('build_lineups',
           signature = 'optimizer',
-          definition = function(object, num_lineups = 1) {
+          definition = function(object, num_lineups = 1, solver= 'glpk') {
 
             # Construct Model
             # Necessary to do this now so we do just-in-time construction
@@ -394,11 +395,11 @@ setMethod('build_lineups',
             lineups <- vector(mode = 'list', length = num_lineups)
 
             # Block Players
-            M@model@mod <- add_block_constraint(M@model@mod,
+            M@model <- add_block_constraint(M@model,
                                                 block_vector = sapply(M@players, blocked))
 
             # Lock Players
-            M@model@mod <- add_lock_constraint(M@model@mod,
+            M@model <- add_lock_constraint(M@model,
                                                lock_vector = sapply(M@players, locked))
 
             # Generate Lineups
@@ -408,7 +409,7 @@ setMethod('build_lineups',
               current_model <- apply_variance(M, varpct = variance(M@config))
 
               # Temporary Model
-              current_model <- M@model@mod
+              current_model <- M@model
 
               # Add unique roster constraint
               current_model <- add_unique_lineup_constraint(current_model, solution_vectors)
@@ -433,7 +434,7 @@ setMethod('build_lineups',
 
               # Solve the model
               fit_model <- ompr::solve_model(current_model,
-                                             solver = ompr.roi::with_ROI(M@model@solver))
+                                             solver = ompr.roi::with_ROI(solver))
 
               # Break if not optimal
               if (fit_model$status != 'optimal') {
