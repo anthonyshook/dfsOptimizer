@@ -60,7 +60,7 @@ add_lock_constraint <- function(model, lock_vector) {
   players <- optObj@players
 
   # Pull out model
-  model <- optObj@model@mod
+  model <- optObj@model
 
   # Model Data
   num_players   <- get_model_length(model, 'players')
@@ -86,7 +86,7 @@ add_lock_constraint <- function(model, lock_vector) {
                                               team_check(i, j, p2_teams) * pos_fn(i, pos1)) * players[i], i = 1:num_players) <= penalty)
   }
 
-  optObj@model@mod <- model
+  optObj@model <- model
 
   return(optObj)
 }
@@ -104,7 +104,7 @@ add_lock_constraint <- function(model, lock_vector) {
   players <- optObj@players
 
   # Pull model
-  model <- optObj@model@mod
+  model <- optObj@model
 
   # Some info about the model
   num_players   <- get_model_length(model, 'players')
@@ -167,7 +167,7 @@ add_lock_constraint <- function(model, lock_vector) {
     ompr::add_constraint(sum_expr(team_stack[i], i = 1:num_teams) >= nstacks)
 
   # Put the model back and return the updated object
-  optObj@model@mod <- model
+  optObj@model <- model
   return(optObj)
 }
 
@@ -180,7 +180,7 @@ add_lock_constraint <- function(model, lock_vector) {
 #   # This is just my attempt to test a quick thing
 #   lineup_groups <- link_players_on_same_team(optObj@players, positions = positions)
 #
-#   model <- optObj@model@mod
+#   model <- optObj@model
 #
 #   tmpfn <- function(indx) {
 #     tmp <- rep(0, times = 309)
@@ -214,7 +214,7 @@ add_lock_constraint <- function(model, lock_vector) {
 #   #     ompr::add_constraint(sum_expr(players[j] * colwise(cind), j = 1:309) == tstgroups[i])
 #   # }
 #
-#   optObj@model@mod <- model
+#   optObj@model <- model
 #
 #   return(optObj)
 #
