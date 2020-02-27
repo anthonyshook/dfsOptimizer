@@ -1,6 +1,14 @@
 # CONSTRAINTS DEFINED HERE SHOULD TAKE THE OPTIMIZER OBJECT, NOT THE OMPR MODEL ITSELF.
 #   LOCK AND BLOCK BREAK THIS RULE, BUT THEY CAN BE FIXED LATER
 
+# Minimum budget constraint
+minimum_budget_constraint <- function(optObj) {
+  # Add constraint
+  optObj@model <- optObj@model %>%
+    ompr::add_constraint(sum_expr(players[i], i = 1:length(optObj@players)) >= min_budget(optObj@config))
+  return(optObj)
+}
+
 
 #' @include class-player.R
 
