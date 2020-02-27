@@ -21,7 +21,7 @@ testmod.hockey <- construct_model(testmod.hockey)
 lineups <- build_lineups(testmod.hockey, num_lineups = 1)
 
 # Not exactly the method we'll use
-s <- ompr::solve_model(testmod.hockey@model@mod, ompr.roi::with_ROI('glpk'))
+s <- ompr::solve_model(testmod.hockey@model, ompr.roi::with_ROI('glpk'))
 s
 ## get_player_data(testmod.hockey)[ompr::get_solution(s, players[i])$value ==1,]
 
@@ -34,7 +34,7 @@ testmod.hockey@config@constraints <- list(stack_con = stack_con)
 # construct model
 testmod.hockey <- construct_model(testmod.hockey)
 # Try a same-team stack
-s <- ompr::solve_model(testmod.hockey@model@mod, ompr.roi::with_ROI('glpk'))
+s <- ompr::solve_model(testmod.hockey@model, ompr.roi::with_ROI('glpk'))
 s
 
 #which(ompr::get_solution(s, players[i])$value ==1)
@@ -63,7 +63,7 @@ testmod.golf <- construct_model(testmod.golf)
 optimize(testmod.golf, num_lineups = 5)
 
 # Not exactly the method we'll use
-sgolf <- solve_model(testmod.golf@model@mod, ompr.roi::with_ROI('glpk'))
+sgolf <- solve_model(testmod.golf@model, ompr.roi::with_ROI('glpk'))
 sgolf
 
 get_player_data(testmod.golf)[get_solution(sgolf, players[i])$value ==1,]
@@ -76,7 +76,7 @@ testmod.basketball <- add_team_stack(testmod.basketball, positions = c('C','PF',
 #testmod.basketball <- construct_model(testmod.basketball)
 build_lineups(testmod.basketball, num_lineups = 1)
 
-s <- ompr::solve_model(testmod.basketball@model@mod, ompr.roi::with_ROI('glpk'))
+s <- ompr::solve_model(testmod.basketball@model, ompr.roi::with_ROI('glpk'))
 s
 
 #ompr::get_solution(s, tmpvar[i])
@@ -92,7 +92,7 @@ testmod.hockey <- add_team_stack(testmod.hockey, positions = c('C','W','W'))
 
 testmod.hockey <- construct_model(testmod.hockey)
 testmod.hockey <- team_stack_2(testmod.hockey, c('C','W', 'W'))
-s <- ompr::solve_model(testmod.hockey@model@mod, ompr.roi::with_ROI('glpk'))
+s <- ompr::solve_model(testmod.hockey@model, ompr.roi::with_ROI('glpk'))
 s
 
 ompr::get_solution(s, tst)

@@ -1,16 +1,16 @@
 
 #' TO DO
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
-#' -~ Add MLB (may need to wait until we can get files; DK added)
-#' - Add NFL (may need to wait if I can't find old files)
+#' -~ Add MLB (may need to wait until we can get files; * DK added (FD and YAHOO not yet available))
+#' -~ Add NFL (may need to wait if I can't find old files, unless XFL does the trick)
 #' - Build LINEUP class to manage lineup objects
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
 #' - Make all non-base constraints take the OPTIMIZER OBJECT and not the OMPR model
-#' - remove the whole model@mod construct, just put 'solver' in the build_lineups with a glpk default
+#' - Add base constraints to the constraint list of the config??
 
 #' FEATURES TO ADD
 #' - Add Opposing -positive- constraints (if team A QB, then team B WR) [force_opposing_positions]
-#' - Add grouped-stack constraints (Line matching for hockey, depth order for baseball...) [would be easier with sport/site based subclasses?]
+#' - Add grouped-stack constraints (Line matching for hockey, depth order for baseball...) [would be easier with sport/site/contest_type based subclasses?]
 #' - Add method for specifying optional stack elements (like QB and *ONE OF* WR / TE -- possibly changing the input structure from single vector to list)
 #' - Minimum Budget Constraint
 #' - Max repeating players (code exists, function to set it does not)

@@ -4,7 +4,7 @@
 \alias{build_lineups,optimizer-method}
 \title{Function to Generate lineups}
 \usage{
-\S4method{build_lineups}{optimizer}(object, num_lineups = 1)
+\S4method{build_lineups}{optimizer}(object, num_lineups = 1, solver = "glpk")
 }
 \arguments{
 \item{object}{an S4 object of class Optimizer}
