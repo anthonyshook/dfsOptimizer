@@ -86,9 +86,12 @@ setMethod("max_exposure", "optimConfig", function(x) x@max_exposure)
 setGeneric("variance", function(x) standardGeneric("variance"))
 setMethod("variance", "optimConfig", function(x) x@variance)
 
+setGeneric("min_budget", function(x) standardGeneric("min_budget"))
+setMethod("min_budget", "optimConfig", function(x) x@min_budget)
+
 ### Setter Methods
-setGeneric('set_budget<-', function(x, value) standardGeneric('set_budget<-'))
-setMethod('set_budget<-', 'optimConfig', function(x, value) {
+setGeneric('set_max_budget<-', function(x, value) standardGeneric('set_max_budget<-'))
+setMethod('set_max_budget<-', 'optimConfig', function(x, value) {
   x@budget <- value
   stopifnot(validObject(x))
   return(x)
