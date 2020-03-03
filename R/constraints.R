@@ -4,17 +4,18 @@
 #      THAT WOULD BE THINGS LIKE -- PLAYERS, ETC.  THEN, THE ONLY THING WE *KNOW* NEEDS TO GET PASSED IS THE OMPR MODEL,
 #      NOT THE OPTIMIZER OBJECT.
 #      OR maybe they all just take the same three things -- player list, config object, and ompr model, plus whatever ELSE they need?
+#      There is a pleasant simplicity to that...
 
 # Minimum budget constraint
-minimum_budget_constraint <- function(optObj) {
-  player_salaries <- sapply(optObj@players, salary)
-  N <- get_model_length(optObj@model, 'players')
-
-  # Add constraint
-  optObj@model <- optObj@model %>%
-    ompr::add_constraint(sum_expr(players[i] * (colwise(player_salaries[i]), i = 1:N) >= min_budget(optObj@config))
-  return(optObj)
-}
+# minimum_budget_constraint <- function(optObj) {
+#   player_salaries <- sapply(optObj@players, salary)
+#   N <- get_model_length(optObj@model, 'players')
+#
+#   # Add constraint
+#   optObj@model <- optObj@model %>%
+#     ompr::add_constraint(sum_expr(players[i] * (colwise(player_salaries[i]), i = 1:N) >= min_budget(optObj@config))
+#   return(optObj)
+# }
 
 
 #' @include class-player.R
