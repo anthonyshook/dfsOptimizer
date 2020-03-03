@@ -122,7 +122,7 @@ setMethod(f = 'add_team_stack',
 
 
 setGeneric('restrict_opposing_positions', function(object, pos1, pos2) standardGeneric('restrict_opposing_positions'))
-#' Add a Team Stack
+#' Restrict Opposing Positions
 #'
 #' @param object An optimizer model object
 #' @param pos1 Positions for set one
