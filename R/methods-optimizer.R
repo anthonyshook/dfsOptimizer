@@ -218,3 +218,217 @@ setMethod(f = 'apply_variance',
             object@players <- lapply(object@players, 'apply_variance', varpct = varpct)
             return(object)
           })
+
+
+
+#### Methods
+## Extraction
+#' Extracting Fantasy Points from Player objects
+#'
+#' @param object an optimizer object
+#'
+setGeneric("extract_player_fpts", function(object) standardGeneric("extract_player_fpts"))
+setMethod('extract_player_fpts',
+          signature = 'optimizer',
+          definition = function(object) {
+            if (length(object@players) == 0) {
+              message('No Players in optimizer!')
+              out <- NULL
+            } else {
+              out <- sapply(object@players, fpts)
+            }
+            return(out)
+          })
+
+
+setMethod('get_player_data', 'optimizer',
+          function(object){
+
+            players <- lapply(object@players, get_player_data)
+            #            all     <- do.call('rbind', players)
+            return(data.table::rbindlist(players))
+
+          })
+
+setGeneric('get_player_id', function(object, name, team, position) standardGeneric('get_player_id'))
+#' Get a Player Id
+#'
+#' @param object Object of class Optimizer
+#' @param name Full name of player
+#' @param team team abbreviation of player (Not required)
+#' @param position position of player (Not required)
+#'
+#' @details \code{team} and \code{position} can be included to differentiate between two players with the same name, but who play for different teams and/or at different positions.
+#'
+#' @export
+setMethod(f = 'get_player_id',
+          signature = 'optimizer',
+          definition = function(object, name, team, position) {
+
+            pdata <- get_player_data(object)
+
+            # Go by name
+            player <- pdata[fullname == name]
+
+            if (!missing(team)) {
+              TM <- team
+              player <- player[team == TM]
+            }
+
+            if (!missing(position)) {
+              POS <- position
+              player <- player[position == POS]
+            }
+
+            if (nrow(player) == 0) {
+              message('Player not found!')
+              return(invisible(NULL))
+            } else {
+              return(as.character(player$id))
+            }
+
+          })
+
+## Updating
+setGeneric("add_player", function(object, pl) standardGeneric("add_player"))
+#' Method for adding a player to Optimizer object
+#'
+#' @param object an S4 optimizer object
+#' @param pl an object of class Player
+#'
+#' @export
+setMethod('add_player',
+          signature = 'optimizer',
+          definition = function(object, pl) {
+
+            # Check that if player exists, they aren't added again
+            if (any(sapply(object@players, identical, pl))) {
+              warning('Player already exists')
+            } else {
+              object@players <- c(object@players, pl)
+            }
+
+            return(object)
+          })
+
+
+setGeneric("remove_player", function(object, id) standardGeneric("remove_player"))
+#' Method for removing a player from Optimizer object
+#'
+#' @param object an S4 optimizer object
+#' @param id ID of player to remove
+#'
+#' @export
+setMethod('remove_player',
+          signature = 'optimizer',
+          definition = function(object, id) {
+            index_to_remove <- which(sapply(object@players, id) == id)
+
+            if (length(index_to_remove) == 0) {
+              stop("Could not find player with ID equal to ", id)
+            } else if (length(index_to_remove) > 1) {
+              stop("Found more than one player with ID of ", id)
+            } else {
+              object@players[[index_to_remove]] <- NULL
+            }
+            return(object)
+          })
+
+setGeneric("update_fpts", function(object, fpts_data) standardGeneric('update_fpts'))
+#' Method for updating fantasy points in an object
+#'
+#' @param object An object of class Optimizer
+#' @param fpts_data a data.frame containing players and points. See details.
+#'
+#' @details The data.frame passed in fpts_data should contain two columns - \code{id} and \code{fpts}.
+#'
+#' @export
+setMethod('update_fpts',
+          signature = 'optimizer',
+          definition = function(object, fpts_data){
+
+            # Check for columns
+            if (!all(c('fpts','id') %in% colnames(fpts_data))) { stop('fpts_data must have columns `fpts` and `id`')}
+
+            # Update the data
+            for (i in 1:nrow(fpts_data)) {
+
+              # just for code clarity
+              ID  <- fpts_data$id[i]
+              PTS <- fpts_data$fpts[i]
+
+              # check for existence
+              if (is.null(object@players[[ID]])) {
+                next
+              } else {
+                object <- set_fpts_by_id(object, id = ID, fpts = PTS)
+              }
+
+            }
+            return(object)
+          })
+
+
+setGeneric("set_fpts_by_id", function(object, id, fpts) standardGeneric('set_fpts_by_id'))
+#' Method for updating fantasy points in an object
+#'
+#' @param object An object of class Optimizer
+#' @param id A Player ID to update
+#' @param fpts Value for slot \code{fpts} of Player object
+#'
+#' @export
+setMethod('set_fpts_by_id',
+          signature = 'optimizer',
+          definition = function(object, id, fpts){
+
+            # Find the player by ID
+            if (is.null(object@players[[as.character(id)]])) {
+              stop('ID not found in slot `players`')
+            }
+
+            object@players[[id]] <- set_fpts(object@players[[as.character(id)]], fpts)
+
+            return(object)
+          })
+
+
+setGeneric('block_players_by_id', function(object, player_ids) standardGeneric('block_players_by_id'))
+#' Function to block players by ID
+#'
+#' @param object an S4 object of class Optimizer
+#' @param player_ids IDs of players to block
+#'
+#' @export
+setMethod('block_players_by_id', 'optimizer',
+          function(object, player_ids) {
+            # Find player
+            for (pid in player_ids){
+              indx <- which(sapply(object@players, id) == pid)
+              for (i in indx) {
+                object@players[[i]] <- block_player(object@players[[i]])
+              }
+            }
+            return(object)
+          })
+
+
+setGeneric('lock_players_by_id', function(object, player_ids) standardGeneric('lock_players_by_id'))
+#' Function to block players by ID
+#'
+#' @param object an S4 object of class Optimizer
+#' @param player_ids IDs of players to block
+#'
+#' @export
+setMethod('lock_players_by_id', 'optimizer',
+          function(object, player_ids) {
+            # Find player
+            for (pid in player_ids){
+              indx <- which(sapply(object@players, id) == pid)
+              for (i in indx) {
+                object@players[[i]] <- lock_player(object@players[[i]])
+              }
+            }
+            return(object)
+          })
+
+
