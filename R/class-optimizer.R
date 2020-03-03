@@ -350,22 +350,25 @@ setMethod('construct_model',
             # Adding budget constraint
             salaries <- sapply(object@players, salary)
             object@model <- add_budget_constraint(object@model,
-                                                      player_salaries = salaries,
-                                                      budget = budget(config))
+                                                  player_salaries = salaries,
+                                                  budget = budget(config),
+                                                  min_budget = min_budget(config))
+
+
 
             # Add team size constraints
             object@model <- add_team_number_constraints(model = object@model,
-                                                            min_team_number = min_team_req(config),
-                                                            max_players_per_team = max_players_per_team(config))
+                                                        min_team_number = min_team_req(config),
+                                                        max_players_per_team = max_players_per_team(config))
 
             # Add positional constraint
             object@model <- add_position_constraint(model = object@model,
-                                                        position_vector = sapply(object@players, position),
-                                                        roster_key = roster_key(config))
+                                                    position_vector = sapply(object@players, position),
+                                                    roster_key = roster_key(config))
 
             # Add unique ID constraint
             object@model <- add_unique_id_constraint(model = object@model,
-                                                         ids = sapply(object@players, id))
+                                                     ids = sapply(object@players, id))
 
             # Add additional constraints from the config
             object <- add_additional_constraints(object)
@@ -396,11 +399,11 @@ setMethod('build_lineups',
 
             # Block Players
             M@model <- add_block_constraint(M@model,
-                                                block_vector = sapply(M@players, blocked))
+                                            block_vector = sapply(M@players, blocked))
 
             # Lock Players
             M@model <- add_lock_constraint(M@model,
-                                               lock_vector = sapply(M@players, locked))
+                                           lock_vector = sapply(M@players, locked))
 
             # Generate Lineups
             for (i in 1:num_lineups) {
