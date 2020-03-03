@@ -1,4 +1,9 @@
 
+#' Big Thing to do!
+#' - Convert Optimizer class into VIRTUAL with Site/Sport/Type specific subclasses
+#' - Sport/Type will define initialization of objects and models
+#' - Site will define baseline rules, input parsing and output parsing.
+
 #' TO DO
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
 #' -~ Add MLB (may need to wait until we can get files; * DK added (FD and YAHOO not yet available))
@@ -6,13 +11,13 @@
 #' - Build LINEUP class to manage lineup objects
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
 #' - Make all non-base constraints take the OPTIMIZER OBJECT and not the OMPR model
-#' - Add base constraints to the constraint list of the config??
+#' - Add base constraints to the constraint list of the config?? (instead of in 'construct model')
+#' - Convert base-settings to config objects (OR just set those configs as defaults for subclasses by site/sport/type)
 
 #' FEATURES TO ADD
 #' - Add Opposing -positive- constraints (if team A QB, then team B WR) [force_opposing_positions]
 #' - Add grouped-stack constraints (Line matching for hockey, depth order for baseball...) [would be easier with sport/site/contest_type based subclasses?]
 #' - Add method for specifying optional stack elements (like QB and *ONE OF* WR / TE -- possibly changing the input structure from single vector to list)
-#' - Minimum Budget Constraint
 #' - Max repeating players (code exists, function to set it does not)
 #' - Consider adding variance as a player-level option (perhaps with min/max variance options.)
 

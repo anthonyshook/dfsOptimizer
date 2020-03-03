@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{restrict_opposing_positions,optimizer-method}
 \alias{restrict_opposing_positions,optimizer-method}
-\title{Add a Team Stack}
+\title{Restrict Opposing Positions}
 \usage{
 \S4method{restrict_opposing_positions}{optimizer}(object, pos1, pos2)
 }
@@ -17,7 +17,7 @@
 Updated optimizer object
 }
 \description{
-Add a Team Stack
+Restrict Opposing Positions
 }
 \details{
 Prevents positions from opposing teams from being included in lineups.
