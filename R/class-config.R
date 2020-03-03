@@ -43,13 +43,14 @@ setValidity('optimConfig', method = function(object) {
   # msg <- c()
 
   msg <- c(if (object@max_players_per_team > object@roster_size) "Cannot have more players per team than total roster size",
-           if (object@min_team_req < 1) "Minimum team requirment must be at least 1",
+           if (object@min_team_req < 1) "Minimum team requirement must be at least 1",
            if (object@max_exposure > 1 |
                object@max_exposure < 0) "max exposure must be between 0 and 1",
            if (object@variance > 1 |
-               object@variance < 0) "max exposure must be between 0 and 1",
+               object@variance < 0) "variance must be between 0 and 1",
            if (length(object@constraints) > 0 &&
                !all(sapply(object@constraints, class) == 'constraintClass')) "Invalid object(s) found in constraints slot! List may only contain constraintClass objects"
+           if (object@budget < object@min_budget) "Min budget cannot be less than max budget"
   )
   if (!is.null(msg)) {
     validcheck <- FALSE
