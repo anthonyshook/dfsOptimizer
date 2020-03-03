@@ -39,5 +39,6 @@ Collate:
     'imports.R'
     'line-constraint-scratch.R'
     'methods-optimizer.R'
+    'optimizer-build-methods.R'
     'player-utils.R'
     'utils.R'
