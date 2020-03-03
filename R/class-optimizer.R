@@ -29,6 +29,21 @@ setOldClass('milp_model')
                          maximize = TRUE
                        ))
 
+
+# Base Methods
+setMethod('show', 'optimizer', function(object) {
+  cat(
+    paste0('Optimizer Object (S4 class)\n',
+           'Site: ', object@site, '\n',
+           'Sport: ', object@sport, '\n',
+           'Contest Type: ', object@contest_type, '\n',
+           'Number of Players: ', length(object@players)
+    )
+  )
+})
+
+
+### Initialization Function
 #' Create an object of Optimizer
 #'
 #' @param site The site being used for optimization
@@ -84,15 +99,4 @@ create_optimizer <- function(site,
   return(o)
 }
 
-# Base Methods
-setMethod('show', 'optimizer', function(object) {
-  cat(
-    paste0('Optimizer Object (S4 class)\n',
-           'Site: ', object@site, '\n',
-           'Sport: ', object@sport, '\n',
-           'Contest Type: ', object@contest_type, '\n',
-           'Number of Players: ', length(object@players)
-    )
-  )
-})
 
