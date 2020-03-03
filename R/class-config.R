@@ -49,7 +49,7 @@ setValidity('optimConfig', method = function(object) {
            if (object@variance > 1 |
                object@variance < 0) "variance must be between 0 and 1",
            if (length(object@constraints) > 0 &&
-               !all(sapply(object@constraints, class) == 'constraintClass')) "Invalid object(s) found in constraints slot! List may only contain constraintClass objects"
+               !all(sapply(object@constraints, class) == 'constraintClass')) "Invalid object(s) found in constraints slot! List may only contain constraintClass objects",
            if (object@budget < object@min_budget) "Min budget cannot be less than max budget"
   )
   if (!is.null(msg)) {

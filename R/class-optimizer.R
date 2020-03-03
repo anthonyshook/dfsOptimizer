@@ -14,20 +14,20 @@ setOldClass('milp_model')
 #' @export
 #'
 #' @include class-config.R class-player.R lineup-utils.R
-.optimizer <- setClass(Class = 'optimizer',
-                       slots = list(
-                         site = 'character',
-                         sport = 'character',
-                         contest_type = 'character',
-                         players = 'list',
-                         model = 'milp_model',
-                         config = 'optimConfig',
-                         maximize = 'logical'
-                       ),
-                       prototype = list(
-                         model = ompr::MILPModel(),
-                         maximize = TRUE
-                       ))
+setClass(Class = 'optimizer',
+         slots = list(
+           site = 'character',
+           sport = 'character',
+           contest_type = 'character',
+           players = 'list',
+           model = 'milp_model',
+           config = 'optimConfig',
+           maximize = 'logical'
+         ),
+         prototype = list(
+           model = ompr::MILPModel(),
+           maximize = TRUE
+         ))
 
 
 # Base Methods
@@ -42,6 +42,15 @@ setMethod('show', 'optimizer', function(object) {
   )
 })
 
+
+# Site Sub-classes
+setClass(Class = 'Draftkings', contains = 'optimizer')
+
+
+setClass(Class = 'Fanduel', contains = 'optimizer')
+
+
+setClass(Class = 'Yahoo', contains = 'optimizer')
 
 ### Initialization Function
 #' Create an object of Optimizer
@@ -90,12 +99,13 @@ create_optimizer <- function(site,
 
   # Adding to optimizer class
   # Defaults to an 'empty' MILPmodel
-  o <- .optimizer(site = site,
-                  sport = sport,
-                  contest_type = contest_type,
-                  players = players,
-                  config = modConfig,
-                  maximize = maximize)
+  o <- new(Class = 'optimizer',
+           site = site,
+           sport = sport,
+           contest_type = contest_type,
+           players = players,
+           config = modConfig,
+           maximize = maximize)
   return(o)
 }
 
