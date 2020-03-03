@@ -51,12 +51,16 @@ add_roster_size_constraint <- function(model, roster_limit) {
 }
 
 # Budget Constraint
-add_budget_constraint <- function(model, player_salaries, budget) {
+add_budget_constraint <- function(model, player_salaries, budget, min_budget) {
   N <- get_model_length(model, 'players')
   model <- ompr::add_constraint(.model = model,
                                 .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) <= budget)
+  # Add constraint
+  model <- ompr::add_constraint(.model = model,
+                                .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) >= min_budget)
   return(model)
 }
+
 
 # Teams Constraints (max players per team, minimum number of teams)
 add_team_number_constraints <- function(model, min_team_number, max_players_per_team) {
