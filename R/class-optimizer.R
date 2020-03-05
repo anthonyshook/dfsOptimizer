@@ -44,9 +44,9 @@ setMethod('show', 'optimizer', function(object) {
 
 
 # Site Sub-classes
-setClass(Class = 'DRAFTKINGS', contains = 'optimizer', prototype = list(site = 'DRAFTKINGS'))
-setClass(Class = 'FANDUEL', contains = 'optimizer', prototype = list(site = 'FANDUEL'))
-setClass(Class = 'YAHOO', contains = 'optimizer', prototype = list(site = 'YAHOO'))
+setClass(Class = 'DraftkingsOptim', contains = 'optimizer', prototype = list(site = 'DRAFTKINGS'))
+setClass(Class = 'FanduelOptim', contains = 'optimizer', prototype = list(site = 'FANDUEL'))
+setClass(Class = 'YahooOptim', contains = 'optimizer', prototype = list(site = 'YAHOO'))
 
 
 ### Initialization Function
@@ -81,7 +81,8 @@ create_optimizer <- function(site,
 
   # Adding to optimizer class
   # Defaults to an 'empty' MILPmodel
-  o <- new(Class = 'optimizer',
+  class_name <- paste0(capitalize(site), 'Optim')
+  o <- new(Class = class_name,
            site = site,
            sport = sport,
            contest_type = contest_type,
