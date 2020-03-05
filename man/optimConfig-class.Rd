@@ -3,7 +3,6 @@
 \docType{class}
 \name{optimConfig-class}
 \alias{optimConfig-class}
-\alias{.optimConfig}
 \title{S4 Class optimConfig}
 \description{
 S4 Class optimConfig

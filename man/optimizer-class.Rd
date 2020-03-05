@@ -3,7 +3,6 @@
 \docType{class}
 \name{optimizer-class}
 \alias{optimizer-class}
-\alias{.optimizer}
 \title{S4 Class of object Optimizer}
 \description{
 S4 Class of object Optimizer
