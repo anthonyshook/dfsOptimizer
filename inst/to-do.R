@@ -1,5 +1,6 @@
 
 #' TO DO
+#' - Convert Model Construction process to operate on CONFIGS
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
 #' -~ Add MLB (may need to wait until we can get files; * DK added (FD and YAHOO not yet available))
 #' -~ Add NFL (may need to wait if I can't find old files, unless XFL does the trick)
