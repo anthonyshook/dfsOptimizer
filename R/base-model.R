@@ -1,3 +1,5 @@
+# This currently builds a base CLASSIC model
+# Will need to rework this to function with SHOWDOWN style models.
 
 #' Build Base Model
 #'
@@ -15,7 +17,7 @@ build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
   base_model <- ompr::MILPModel() %>%
     ompr::add_variable(players[i], i = 1:size, type = "binary") %>%
     # Team related variables
-    ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>% # j is the number of unique animals.
+    ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>%
     ompr::add_variable(teams[i], i = 1:num_teams, type = 'integer') %>%
     ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary') %>%
     # Teams alignment
