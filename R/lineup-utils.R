@@ -41,7 +41,7 @@ reorder_lineup <- function(lineup, config) {
 
 #' Parse roster key item
 #'
-#' @param rk Roster key from base_settings
+#' @param rk Roster key from configuration object
 #'
 #' @details This function will take all single and multiplayer slots from the roster key, and
 #'     build a table containing mins/maxes for each position.  These are then used to set the
