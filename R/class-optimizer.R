@@ -27,7 +27,8 @@ setClass(Class = 'optimizer',
          prototype = list(
            model = ompr::MILPModel(),
            maximize = TRUE
-         ))
+         ),
+         contains = 'VIRTUAL')
 
 
 # Base Methods
