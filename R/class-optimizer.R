@@ -57,6 +57,8 @@ setClass(Class = 'YahooOptim', contains = 'optimizer', prototype = list(site = '
 #' @param sport The sport being optimized
 #' @param contest_type The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game). Default: CLASSIC
 #' @param players List of players to build lineups from (defaults to empty list)
+#' @param filepath Alternate method for adding players at time of creation. Passing a filepath will result in an internal call to
+#'     \code{add_players_from_csv}. If \code{players} is provided, filepath will be ignored.
 #' @param maximize Logical, whether to maximize or minimize the objective function (Defaults to TRUE)
 #'
 #' @details This function is used to instantiate a new object of class \code{optimizer}, which is the
@@ -70,8 +72,9 @@ create_optimizer <- function(site,
                              sport,
                              contest_type = 'CLASSIC',
                              players = list(),
+                             filepath = NULL,
                              maximize = TRUE) {
-
+  # Convert to ALL CAPS
   site         <- toupper(site)
   sport        <- toupper(sport)
   contest_type <- toupper(contest_type)
@@ -87,9 +90,14 @@ create_optimizer <- function(site,
            site = site,
            sport = sport,
            contest_type = contest_type,
-           players = players,
            config = modConfig,
            maximize = maximize)
+
+  # Add players
+  if (length(players) == 0 &&
+      !is.null(filepath)) {
+    o <- add_players_from_csv(o, filepath)
+  }
   return(o)
 }
 
