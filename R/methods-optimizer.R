@@ -159,7 +159,7 @@ setMethod(f = 'restrict_opposing_positions',
           })
 
 
-
+setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
 #' @title Set the Global Max Exposure
 #'
 #' @param object An optimizer object
@@ -211,7 +211,7 @@ setMethod(f = 'set_flex_positions',
             return(object)
           })
 
-
+setGeneric('apply_variance', function(object, varpct) standardGeneric('apply_variance'))
 setMethod(f = 'apply_variance',
           signature = 'optimizer',
           definition = function(object, varpct) {
@@ -240,7 +240,7 @@ setMethod('extract_player_fpts',
             return(out)
           })
 
-
+setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
 setMethod('get_player_data', 'optimizer',
           function(object){
 

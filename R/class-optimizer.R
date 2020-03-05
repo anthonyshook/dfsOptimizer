@@ -44,13 +44,10 @@ setMethod('show', 'optimizer', function(object) {
 
 
 # Site Sub-classes
-setClass(Class = 'Draftkings', contains = 'optimizer')
-
-
+setClass(Class = 'Draftkings', contains = 'optimizer', prototype = list(site = 'DRAFTKINGS'))
 setClass(Class = 'Fanduel', contains = 'optimizer')
-
-
 setClass(Class = 'Yahoo', contains = 'optimizer')
+
 
 ### Initialization Function
 #' Create an object of Optimizer
@@ -78,24 +75,17 @@ create_optimizer <- function(site,
   sport        <- toupper(sport)
   contest_type <- toupper(contest_type)
 
-  # Get base config
-  cfg <- base_settings[[site]][[sport]][[contest_type]]
-
-  # Check that config is really real
-  if (length(cfg) == 0 || is.null(cfg)) {
-    stop('Configuration for Site + Sport + Contest Type not implemented!')
-  }
+  # # Get base config
+  # cfg <- new()
+  #
+  # # Check that config is really real
+  # if (length(cfg) == 0 || is.null(cfg)) {
+  #   stop('Configuration for Site + Sport + Contest Type not implemented!')
+  # }
 
   # Making configuration, to begin with
-  modConfig <- .optimConfig(budget = cfg$budget,
-                            roster_size = as.integer(cfg$roster),
-                            min_team_req = as.integer(cfg$min_team_req),
-                            max_players_per_team = as.integer(cfg$max_players_per_team),
-                            roster_key = cfg$roster_key,
-                            flex_position = cfg$flex_position,
-                            max_exposure = 1,
-                            variance = 0,
-                            constraints = list())
+  modConfig <- tryCatch(new(Class = get_correct_config(site = site, sport = sport, contest_type = contest_type)),
+                        error = function(e){stop('Configuration for Site + Sport + Contest Type not implemented!')})
 
   # Adding to optimizer class
   # Defaults to an 'empty' MILPmodel
