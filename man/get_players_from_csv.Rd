@@ -4,12 +4,12 @@
 \alias{get_players_from_csv}
 \title{Create Players from CSV}
 \usage{
-get_players_from_csv(path, site = "DRAFTKINGS")
+get_players_from_csv(object, path)
 }
 \arguments{
-\item{path}{Path to CSV or text file}
+\item{object}{Optimizer object}
 
-\item{site}{Site (Default is DRAFTKINGS)}
+\item{path}{Path to CSV or text file}
 }
 \description{
 Create Players from CSV

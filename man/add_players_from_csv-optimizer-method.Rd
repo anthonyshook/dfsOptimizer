@@ -4,16 +4,15 @@
 \alias{add_players_from_csv,optimizer-method}
 \title{Add players to optimizer from CSV}
 \usage{
-\S4method{add_players_from_csv}{optimizer}(object, filepath, site)
+\S4method{add_players_from_csv}{optimizer}(object, filepath, custom = FALSE)
 }
 \arguments{
 \item{object}{An optimizer model object}
 
 \item{filepath}{Filepath location of the CSV}
 
-\item{site}{The site from which the CSV was obtained. If not provided, the site is inferred from
-the model object. For user-generated CSVs with player data, one can set this argument to 'CUSTOM',
-and the data will be parsed by \code{get_players_from_date_frame}}
+\item{custom}{Set to TRUE to use user-generated CSVs with player data; the data will be
+parsed using \code{get_players_from_date_frame}}
 }
 \value{
 Optimizer model object with slot \code{players} filled
