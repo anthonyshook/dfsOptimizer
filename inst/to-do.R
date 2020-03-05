@@ -1,9 +1,4 @@
 
-#' Big Thing to do!
-#' - Convert Optimizer class into VIRTUAL with Site/Sport/Type specific subclasses
-#' - Sport/Type will define initialization of objects and models
-#' - Site will define baseline rules, input parsing and output parsing.
-
 #' TO DO
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
 #' -~ Add MLB (may need to wait until we can get files; * DK added (FD and YAHOO not yet available))
