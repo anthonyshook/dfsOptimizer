@@ -20,14 +20,13 @@ setMethod('add_additional_constraints', signature = 'optimizer',
             return(object)
           })
 
-setGeneric('add_players_from_csv', function(object, filepath, site) standardGeneric('add_players_from_csv'))
+setGeneric('add_players_from_csv', function(object, filepath, custom = FALSE) standardGeneric('add_players_from_csv'))
 #' Add players to optimizer from CSV
 #'
 #' @param object An optimizer model object
 #' @param filepath Filepath location of the CSV
-#' @param site The site from which the CSV was obtained. If not provided, the site is inferred from
-#'    the model object. For user-generated CSVs with player data, one can set this argument to 'CUSTOM',
-#'    and the data will be parsed by \code{get_players_from_date_frame}
+#' @param custom Set to TRUE to use user-generated CSVs with player data; the data will be
+#'     parsed using \code{get_players_from_date_frame}
 #'
 #' @return Optimizer model object with slot \code{players} filled
 #'
@@ -40,14 +39,15 @@ setGeneric('add_players_from_csv', function(object, filepath, site) standardGene
 #' @export
 setMethod(f = 'add_players_from_csv',
           signature = 'optimizer',
-          definition = function(object, filepath, site) {
-
-            if (missing('site')) {
-              site = object@site
-            }
+          definition = function(object, filepath, custom = FALSE) {
 
             # Read in the players and put them in the players slot
-            object@players <- get_players_from_csv(path = filepath, site = toupper(site))
+            if (custom) {
+              dat <- data.table::fread(filepath, stringsAsFactors = FALSE)
+              object@players <- get_players_from_data_frame(dat)
+            } else {
+              object@players <- get_players_from_csv(object, path = filepath)
+            }
             return(object)
           })
 
@@ -110,8 +110,8 @@ setMethod(f = 'add_team_stack',
 
             # Create constraint
             CON <- .constraintClass(constraint_name = "Team Stack Constraint",
-                                   fnc = .add_team_stack,
-                                   args = list(positions = positions, nstacks = nstacks))
+                                    fnc = .add_team_stack,
+                                    args = list(positions = positions, nstacks = nstacks))
 
             # Add it to the config object
             object@config <- include_constraint(object@config, CON)
@@ -148,8 +148,8 @@ setMethod(f = 'restrict_opposing_positions',
 
             # Create constraint
             CON <- .constraintClass(constraint_name = "Opposing Positions Restriction",
-                                   fnc = .restrict_opposing_position,
-                                   args = list(pos1 = pos1, pos2 = pos2))
+                                    fnc = .restrict_opposing_position,
+                                    args = list(pos1 = pos1, pos2 = pos2))
 
             # Add it to the config object
             object@config <- include_constraint(object@config, CON)
