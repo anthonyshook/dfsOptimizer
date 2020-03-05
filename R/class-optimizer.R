@@ -44,9 +44,9 @@ setMethod('show', 'optimizer', function(object) {
 
 
 # Site Sub-classes
-setClass(Class = 'Draftkings', contains = 'optimizer', prototype = list(site = 'DRAFTKINGS'))
-setClass(Class = 'Fanduel', contains = 'optimizer')
-setClass(Class = 'Yahoo', contains = 'optimizer')
+setClass(Class = 'DRAFTKINGS', contains = 'optimizer', prototype = list(site = 'DRAFTKINGS'))
+setClass(Class = 'FANDUEL', contains = 'optimizer', prototype = list(site = 'FANDUEL'))
+setClass(Class = 'YAHOO', contains = 'optimizer', prototype = list(site = 'YAHOO'))
 
 
 ### Initialization Function
@@ -75,15 +75,7 @@ create_optimizer <- function(site,
   sport        <- toupper(sport)
   contest_type <- toupper(contest_type)
 
-  # # Get base config
-  # cfg <- new()
-  #
-  # # Check that config is really real
-  # if (length(cfg) == 0 || is.null(cfg)) {
-  #   stop('Configuration for Site + Sport + Contest Type not implemented!')
-  # }
-
-  # Making configuration, to begin with
+  # Making configuration
   modConfig <- tryCatch(new(Class = get_correct_config(site = site, sport = sport, contest_type = contest_type)),
                         error = function(e){stop('Configuration for Site + Sport + Contest Type not implemented!')})
 
