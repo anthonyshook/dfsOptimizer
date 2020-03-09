@@ -22,7 +22,7 @@ setMethod('construct_model',
               size = length(object@players),
               team_vector = sapply(object@players, team),
               pts  = extract_player_fpts(object),
-              maximize = object@maximize
+              maximize = object@config@maximize
             )
 
             # Updating exposure where it isn't set
