@@ -12,8 +12,8 @@ setGeneric('add_additional_constraints', function(object) standardGeneric('add_a
 #' @export
 setMethod('add_additional_constraints', signature = 'optimizer',
           definition = function(object) {
-            if (length(object@config@constraints) > 0) {
-              for (CON in object@config@constraints){
+            if (length(object@constraints) > 0) {
+              for (CON in object@constraints){
                 object <- apply_constraint(CON, optObj = object)
               }
             }
