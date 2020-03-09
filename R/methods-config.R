@@ -92,11 +92,6 @@ setMethod('variance<-', 'optimConfig', function(x, value) {
 # GOLF
 
 
-##### Construct Model #####
-#' Generate a basic model from a construction object
-setGeneric('generate_base_model', function(object) standardGeneric('generate_base_model'))
-
-
 ##### Constraint and Util methods #####
 setGeneric('include_constraint', function(x, constraint_object) standardGeneric('include_constraint'))
 setMethod('include_constraint', 'optimConfig',
