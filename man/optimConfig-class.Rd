@@ -28,6 +28,6 @@ S4 Class optimConfig
 
 \item{\code{variance}}{Percentage variance for fantasy points -- used to add randomness to the model.}
 
-\item{\code{constraints}}{A \code{list} containing additional constraint objects}
+\item{\code{maximize}}{Logical, whether to maximize or minimize the objective function}
 }}
 

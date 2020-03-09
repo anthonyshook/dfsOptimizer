@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{The constraint object}
 
-\item{optObj}{The optimizer Object}
+\item{optObj}{The optimizer Object (Optimizer Object, not OMPR)}
 
 \item{...}{Additional arguments if required}
 }
