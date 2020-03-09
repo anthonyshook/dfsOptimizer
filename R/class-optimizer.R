@@ -8,8 +8,8 @@ setOldClass('milp_model')
 #' @slot contest_type The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game)
 #' @slot players List of players to build lineups from
 #' @slot model The optimization model
-#' @slot config An optim config class, which contains information about the model, including additional constraints
-#' @slot maximize Logical, whether to maximize or minimize the objective function
+#' @slot config An optim config class, which contains information about the model and how to build it
+#' @slot constraints A \code{list} containing additional constraint objects
 #'
 #' @export
 #'
@@ -22,11 +22,10 @@ setClass(Class = 'optimizer',
            players = 'list',
            model = 'milp_model',
            config = 'optimConfig',
-           maximize = 'logical'
+           constraints = 'list'
          ),
          prototype = list(
-           model = ompr::MILPModel(),
-           maximize = TRUE
+           model = ompr::MILPModel()
          ),
          contains = 'VIRTUAL')
 

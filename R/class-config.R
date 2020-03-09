@@ -9,7 +9,7 @@
 #' @slot flex_position named identifer for the flex positions
 #' @slot max_exposure Maximum exposure for individual players (global)
 #' @slot variance Percentage variance for fantasy points -- used to add randomness to the model.
-#' @slot constraints A \code{list} containing additional constraint objects
+#' @slot maximize Logical, whether to maximize or minimize the objective function
 #'
 setClass('optimConfig',
          slots = list(
@@ -22,13 +22,14 @@ setClass('optimConfig',
            flex_position = 'character',
            max_exposure = 'numeric',
            variance = 'numeric',
-           constraints = 'list'
+           maximize = 'logical'
          ),
          prototype = list(
            min_budget = 0,
            flex_position = NA_character_,
            max_exposure = 1,
-           variance = 0
+           variance = 0,
+           maximize = TRUE
          )
 )
 
