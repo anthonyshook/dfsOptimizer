@@ -4,11 +4,11 @@
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API)
 #' -~ Add MLB (may need to wait until we can get files; * DK added (FD and YAHOO not yet available))
 #' -~ Add NFL (may need to wait if I can't find old files, unless XFL does the trick)
-#' - Build LINEUP class to manage lineup objects
+#' - Build LINEUP class to manage lineup objects [determine if necessary... useful for passing back to model]
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
 #' - Make all non-base constraints take the OPTIMIZER OBJECT and not the OMPR model
 #' - Add base constraints to the constraint list of the config?? (instead of in 'construct model')
-#' - Convert base-settings to config objects (OR just set those configs as defaults for subclasses by site/sport/type)
+#' - Add functionality to include predefined lineups (Mostly useful when randomness is included, or the model will likely produce exactly the same values).
 
 #' FEATURES TO ADD
 #' - Add Opposing -positive- constraints (if team A QB, then team B WR) [force_opposing_positions]
