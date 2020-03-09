@@ -9,7 +9,7 @@ add_unique_lineup_constraint(model, roster_indx_list)
 \arguments{
 \item{model}{The model to further constrain}
 
-\item{roster_indx}{the index of players to constrain}
+\item{roster_indx_list}{the index of players to constrain}
 }
 \description{
 Unique Lineup Constraint

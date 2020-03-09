@@ -7,7 +7,7 @@
 build_classic_model(size, team_vector, pts, maximize = TRUE)
 }
 \arguments{
-\item{size}{number of units}
+\item{size}{number of players}
 
 \item{team_vector}{vector of teams}
 
