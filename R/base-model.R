@@ -3,7 +3,7 @@
 
 #' Build Base Model
 #'
-#' @param size number of units
+#' @param size number of players
 #' @param team_vector vector of teams
 #' @param pts vector of length 'size' containing points to use in objective function
 #' @param maximize Whether to maximize the objective (if FALSE, the objective is minimized)
@@ -33,7 +33,7 @@ build_classic_model <- function(size, team_vector, pts, maximize = TRUE) {
 }
 
 
-##### Base objective #####
+##### CLASSIC objective #####
 add_classic_objective  <- function(model, maximize = TRUE, pts) {
   N <- get_model_length(model, 'players')
   objdir <- ifelse(maximize, 'max', 'min')
@@ -161,7 +161,7 @@ block_one_lineup <- function(model, roster_indx) {
 #' Unique Lineup Constraint
 #'
 #' @param model The model to further constrain
-#' @param roster_indx the index of players to constrain
+#' @param roster_indx_list the index of players to constrain
 #'
 #' @keywords internal
 add_unique_lineup_constraint <- function(model, roster_indx_list) {
