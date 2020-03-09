@@ -8,7 +8,7 @@
 #' @param pts vector of length 'size' containing points to use in objective function
 #' @param maximize Whether to maximize the objective (if FALSE, the objective is minimized)
 #'
-build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
+build_classic_model <- function(size, team_vector, pts, maximize = TRUE) {
 
   # Lengths (unique teams and positions)
   num_teams <- length(unique(team_vector))
@@ -27,14 +27,14 @@ build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
     ompr::add_constraint(teams[j] <= teams_binary[j] * 100, j = 1:num_teams)
 
   # Add Objective
-  base_model <- add_objective(base_model, maximize = maximize, pts = pts)
+  base_model <- add_classic_objective(base_model, maximize = maximize, pts = pts)
 
   return(base_model)
 }
 
 
 ##### Base objective #####
-add_objective  <- function(model, maximize = TRUE, pts) {
+add_classic_objective  <- function(model, maximize = TRUE, pts) {
   N <- get_model_length(model, 'players')
   objdir <- ifelse(maximize, 'max', 'min')
   model <- ompr::set_objective(model,

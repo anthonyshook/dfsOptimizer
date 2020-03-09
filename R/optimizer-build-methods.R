@@ -18,7 +18,7 @@ setMethod('construct_model',
             }
 
             # Start constructing the model
-            object@model <- build_base_model(
+            object@model <- build_classic_model(
               size = length(object@players),
               team_vector = sapply(object@players, team),
               pts  = extract_player_fpts(object),
