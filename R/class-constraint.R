@@ -16,11 +16,11 @@
                              ))
 
 # Apply method for adding constraints
-setGeneric('apply_constraint', function(object, model, ...) standardGeneric('apply_constraint'))
+setGeneric('apply_constraint', function(object, optObj, ...) standardGeneric('apply_constraint'))
 #' Function to apply constraints to a model
 #'
 #' @param object The constraint object
-#' @param optObj The optimizer Object
+#' @param optObj The optimizer Object (Optimizer Object, not OMPR)
 #' @param ... Additional arguments if required
 #'
 #' @keywords internal
