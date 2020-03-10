@@ -43,11 +43,24 @@ setMethod('show', 'optimizer', function(object) {
 })
 
 
-# Site Sub-classes
+## Site Sub-classes
+# (Manages input/output of data)
 setClass(Class = 'DraftkingsOptim', contains = 'optimizer', prototype = list(site = 'DRAFTKINGS'))
 setClass(Class = 'FanduelOptim', contains = 'optimizer', prototype = list(site = 'FANDUEL'))
 setClass(Class = 'YahooOptim', contains = 'optimizer', prototype = list(site = 'YAHOO'))
 
+## Contest Type Sub-classes
+# Classic
+setClass(Class = 'DraftkingsClassicOptim', contains = c('DraftkingsOptim'))
+setClass(Class = 'FanduelClassicOptim', contains = c('FanduelOptim'))
+setClass(Class = 'YahooClassicOptim', contains = c('YahooOptim'))
+
+# Showdown / Captain Mode / Single Game??
+# setClass(Class = 'DraftkingsShowdownOptim', contains = c('DraftkingsOptim'))
+# setClass(Class = 'FanDuelShowdownOptim', contains = c('FanDuelOptim'))
+# setClass(Class = 'YahooShowdownOptim', contains = c('YahooOptim'))
+
+# Tiers??
 
 ### Initialization Function
 #' Create an object of Optimizer
@@ -78,19 +91,18 @@ create_optimizer <- function(site,
   sport        <- toupper(sport)
   contest_type <- toupper(contest_type)
 
-  # Making configuration
-  modConfig <- tryCatch(new(Class = get_correct_config(site = site, sport = sport, contest_type = contest_type)),
-                        error = function(e){stop('Configuration for Site + Sport + Contest Type not implemented!')})
+  # Creating correct configuration
+  modConfig <- tryCatch(new(Class = get_correct_config(site = site, sport = sport, contest_type = contest_type), maximize=maximize),
+                        error = function(e){stop('Configuration for ', site,' / ', sport, ' / ', contest_type, ' not implemented!\n')})
 
   # Adding to optimizer class
   # Defaults to an 'empty' MILPmodel
-  class_name <- paste0(capitalize(site), 'Optim')
+  class_name <- paste0(capitalize(site), capitalize(contest_type), 'Optim')
   o <- new(Class = class_name,
            site = site,
            sport = sport,
            contest_type = contest_type,
-           config = modConfig,
-           maximize = maximize)
+           config = modConfig)
 
   # Add players
   if (length(players) == 0 &&
