@@ -43,6 +43,7 @@ add_classic_objective  <- function(model, maximize = TRUE, pts) {
   return(model)
 }
 
+
 ##### Base Constraints #####
 # Roster Size Constraint
 add_roster_size_constraint <- function(model, roster_limit) {
@@ -51,6 +52,7 @@ add_roster_size_constraint <- function(model, roster_limit) {
                                 .constraint_expr = sum_expr(players[i], i = 1:N) == roster_limit)
   return(model)
 }
+
 
 # Budget Constraint
 add_budget_constraint <- function(model, player_salaries, budget, min_budget) {
@@ -79,6 +81,7 @@ add_team_number_constraints <- function(model, min_team_number, max_players_per_
   return(new_model)
 
 }
+
 
 #' Position constraint
 #'
@@ -129,6 +132,7 @@ add_position_constraint <- function(model, position_vector, roster_key) {
 
 }
 
+
 #' Max Share Across Lineups
 #'
 #' @param model The model to further constrain
@@ -157,6 +161,7 @@ block_one_lineup <- function(model, roster_indx) {
                                     max_share = length(roster_indx) - 1)
   return(model)
 }
+
 
 #' Unique Lineup Constraint
 #'

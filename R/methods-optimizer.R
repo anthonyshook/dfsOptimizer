@@ -20,6 +20,7 @@ setMethod('add_additional_constraints', signature = 'optimizer',
             return(object)
           })
 
+
 setGeneric('add_players_from_csv', function(object, filepath, custom = FALSE) standardGeneric('add_players_from_csv'))
 #' Add players to optimizer from CSV
 #'
@@ -245,7 +246,7 @@ setMethod('get_player_data', 'optimizer',
           function(object){
 
             players <- lapply(object@players, get_player_data)
-            #            all     <- do.call('rbind', players)
+                       # all     <- do.call('rbind', players)
             return(data.table::rbindlist(players))
 
           })
@@ -333,6 +334,7 @@ setMethod('remove_player',
             }
             return(object)
           })
+
 
 setGeneric("update_fpts", function(object, fpts_data) standardGeneric('update_fpts'))
 #' Method for updating fantasy points in an object

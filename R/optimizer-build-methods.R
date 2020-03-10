@@ -67,6 +67,7 @@ setMethod('construct_model',
 
           })
 
+
 setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk') standardGeneric('build_lineups'))
 #' Function to Generate lineups
 #'
