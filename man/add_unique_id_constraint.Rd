@@ -4,7 +4,7 @@
 \alias{add_unique_id_constraint}
 \title{Unique ID constraint}
 \usage{
-add_unique_id_constraint(model, ids)
+add_unique_id_constraint(model, players)
 }
 \description{
 On sites with multi-position eligibility, players will show up once for every

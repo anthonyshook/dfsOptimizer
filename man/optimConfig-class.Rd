@@ -27,7 +27,5 @@ S4 Class optimConfig
 \item{\code{max_exposure}}{Maximum exposure for individual players (global)}
 
 \item{\code{variance}}{Percentage variance for fantasy points -- used to add randomness to the model.}
-
-\item{\code{maximize}}{Logical, whether to maximize or minimize the objective function}
 }}
 

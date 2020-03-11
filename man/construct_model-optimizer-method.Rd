@@ -4,7 +4,7 @@
 \alias{construct_model,optimizer-method}
 \title{Method for constructing the optimization model}
 \usage{
-\S4method{construct_model}{optimizer}(object)
+\S4method{construct_model}{optimizer}(object, maximize = TRUE)
 }
 \arguments{
 \item{object}{an S4 object of class Optimizer}

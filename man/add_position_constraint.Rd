@@ -4,14 +4,14 @@
 \alias{add_position_constraint}
 \title{Position constraint}
 \usage{
-add_position_constraint(model, position_vector, roster_key)
+add_position_constraint(model, players, roster_key)
 }
 \arguments{
 \item{model}{OMPR Model object}
 
-\item{position_vector}{Vector of positions to consider}
-
 \item{roster_key}{List containing}
+
+\item{position_vector}{Vector of positions to consider}
 }
 \description{
 Position constraint
