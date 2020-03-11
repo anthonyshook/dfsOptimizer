@@ -71,7 +71,6 @@ setClass(Class = 'YahooClassicOptim', contains = c('YahooOptim'))
 #' @param players List of players to build lineups from (defaults to empty list)
 #' @param filepath Alternate method for adding players at time of creation. Passing a filepath will result in an internal call to
 #'     \code{add_players_from_csv}. If \code{players} is provided, filepath will be ignored.
-#' @param maximize Logical, whether to maximize or minimize the objective function (Defaults to TRUE)
 #'
 #' @details This function is used to instantiate a new object of class \code{optimizer}, which is the
 #'     central component of the dfsOptimizer package.
@@ -84,15 +83,14 @@ create_optimizer <- function(site,
                              sport,
                              contest_type = 'CLASSIC',
                              players = list(),
-                             filepath = NULL,
-                             maximize = TRUE) {
+                             filepath = NULL) {
   # Convert to ALL CAPS
   site         <- toupper(site)
   sport        <- toupper(sport)
   contest_type <- toupper(contest_type)
 
   # Creating correct configuration
-  modConfig <- tryCatch(new(Class = get_correct_config(site = site, sport = sport, contest_type = contest_type), maximize=maximize),
+  modConfig <- tryCatch(new(Class = get_correct_config(site = site, sport = sport, contest_type = contest_type)),
                         error = function(e){stop('Configuration for ', site,' / ', sport, ' / ', contest_type, ' not implemented!\n')})
 
   # Adding to optimizer class
