@@ -107,6 +107,7 @@ add_lock_constraint <- function(model, lock_vector) {
   return(optObj)
 }
 
+
 #' Adds Same-Team stacks
 #'
 #' @param optObj Optimizer object

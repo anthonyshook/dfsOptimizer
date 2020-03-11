@@ -89,7 +89,7 @@ add_team_number_constraints <- function(model, players, min_team_number, max_pla
 #' Position constraint
 #'
 #' @param model OMPR Model object
-#' @param position_vector Vector of positions to consider
+#' @param players List of player objects
 #' @param roster_key List containing
 #'
 #' @keywords internal
@@ -197,6 +197,7 @@ add_unique_lineup_constraint <- function(model, roster_indx_list) {
 #' On sites with multi-position eligibility, players will show up once for every
 #' position they are eligible. We want to ensure a player is not selected more than
 #' once on the same lineup
+#'
 #' @keywords internal
 add_unique_id_constraint <- function(model, players) {
   ids <- sapply(players, id)

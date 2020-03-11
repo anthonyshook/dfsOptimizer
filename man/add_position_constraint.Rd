@@ -9,9 +9,9 @@ add_position_constraint(model, players, roster_key)
 \arguments{
 \item{model}{OMPR Model object}
 
-\item{roster_key}{List containing}
+\item{players}{List of player objects}
 
-\item{position_vector}{Vector of positions to consider}
+\item{roster_key}{List containing}
 }
 \description{
 Position constraint

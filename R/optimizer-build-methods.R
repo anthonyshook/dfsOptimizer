@@ -73,6 +73,8 @@ setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk', m
 #'
 #' @param object an S4 object of class Optimizer
 #' @param num_lineups Number of lineups to generate
+#' @param solver The solver method (defaults to 'glpk').
+#' @param maximize Whether the model is intended to maximize (the default) or minimize the objective function
 #'
 #' @export
 setMethod('build_lineups',

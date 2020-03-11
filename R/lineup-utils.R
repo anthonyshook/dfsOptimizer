@@ -39,6 +39,7 @@ reorder_lineup <- function(lineup, config) {
   return(lineup)
 }
 
+
 #' Parse roster key item
 #'
 #' @param rk Roster key from configuration object

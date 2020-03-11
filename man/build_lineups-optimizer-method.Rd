@@ -10,6 +10,10 @@
 \item{object}{an S4 object of class Optimizer}
 
 \item{num_lineups}{Number of lineups to generate}
+
+\item{solver}{The solver method (defaults to 'glpk').}
+
+\item{maximize}{Whether the model is intended to maximize (the default) or minimize the objective function}
 }
 \description{
 Function to Generate lineups
