@@ -1,5 +1,5 @@
 ########## Running Models
-setGeneric('construct_model', function(object) standardGeneric('construct_model'))
+setGeneric('construct_model', function(object, maximize = TRUE) standardGeneric('construct_model'))
 #' Method for constructing the optimization model
 #'
 #' @param object an S4 object of class Optimizer
@@ -7,7 +7,7 @@ setGeneric('construct_model', function(object) standardGeneric('construct_model'
 #' @export
 setMethod('construct_model',
           signature = 'optimizer',
-          definition = function(object) {
+          definition = function(object, maximize = TRUE) {
 
             # Get config
             config <- object@config
@@ -22,7 +22,7 @@ setMethod('construct_model',
               size = length(object@players),
               team_vector = sapply(object@players, team),
               pts  = extract_player_fpts(object),
-              maximize = object@config@maximize
+              maximize = maximize
             )
 
             # Updating exposure where it isn't set
@@ -35,12 +35,11 @@ setMethod('construct_model',
             })
 
             # Adding roster limit
-            object@model <- add_roster_size_constraint(object@model, roster_limit = roster_size(config))
+            object@model <- add_roster_size_constraint(object@model, object@players, roster_limit = roster_size(config))
 
             # Adding budget constraint
-            salaries <- sapply(object@players, salary)
             object@model <- add_budget_constraint(object@model,
-                                                  player_salaries = salaries,
+                                                  players = object@players,
                                                   budget = budget(config),
                                                   min_budget = min_budget(config))
 
@@ -48,17 +47,18 @@ setMethod('construct_model',
 
             # Add team size constraints
             object@model <- add_team_number_constraints(model = object@model,
+                                                        players = object@players,
                                                         min_team_number = min_team_req(config),
                                                         max_players_per_team = max_players_per_team(config))
 
             # Add positional constraint
             object@model <- add_position_constraint(model = object@model,
-                                                    position_vector = sapply(object@players, position),
+                                                    players = object@players,
                                                     roster_key = roster_key(config))
 
             # Add unique ID constraint
             object@model <- add_unique_id_constraint(model = object@model,
-                                                     ids = sapply(object@players, id))
+                                                     players = object@players)
 
             # Add additional constraints from the config
             object <- add_additional_constraints(object)
@@ -68,7 +68,7 @@ setMethod('construct_model',
           })
 
 
-setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk') standardGeneric('build_lineups'))
+setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk', maximize = TRUE) standardGeneric('build_lineups'))
 #' Function to Generate lineups
 #'
 #' @param object an S4 object of class Optimizer
@@ -77,11 +77,11 @@ setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk') s
 #' @export
 setMethod('build_lineups',
           signature = 'optimizer',
-          definition = function(object, num_lineups = 1, solver= 'glpk') {
+          definition = function(object, num_lineups = 1, solver= 'glpk', maximize = TRUE) {
 
             # Construct Model
             # Necessary to do this now so we do just-in-time construction
-            M <- construct_model(object)
+            M <- construct_model(object, maximize = maximize)
 
             # Build a player data set
             # We can then filter from this below, where we need the relevant rows the optimizer solved for
