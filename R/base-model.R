@@ -46,8 +46,8 @@ add_classic_objective  <- function(model, maximize = TRUE, pts) {
 
 ##### Base Constraints #####
 # Roster Size Constraint
-add_roster_size_constraint <- function(model, roster_limit) {
-  N <- get_model_length(model, 'players')
+add_roster_size_constraint <- function(model, players, roster_limit) {
+  N <- length(players)
   model <- ompr::add_constraint(.model = model,
                                 .constraint_expr = sum_expr(players[i], i = 1:N) == roster_limit)
   return(model)
@@ -55,11 +55,14 @@ add_roster_size_constraint <- function(model, roster_limit) {
 
 
 # Budget Constraint
-add_budget_constraint <- function(model, player_salaries, budget, min_budget) {
-  N <- get_model_length(model, 'players')
+add_budget_constraint <- function(model, players, budget, min_budget) {
+  N <- length(players)
+  player_salaries <- sapply(players, salary)
+
+  # Max budget Constraint
   model <- ompr::add_constraint(.model = model,
                                 .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) <= budget)
-  # Add constraint
+  # Min Budget Constraint
   model <- ompr::add_constraint(.model = model,
                                 .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) >= min_budget)
   return(model)
@@ -67,9 +70,9 @@ add_budget_constraint <- function(model, player_salaries, budget, min_budget) {
 
 
 # Teams Constraints (max players per team, minimum number of teams)
-add_team_number_constraints <- function(model, min_team_number, max_players_per_team) {
-  N <- get_model_length(model, 'players')
-  G <- get_model_length(model, 'teams')
+add_team_number_constraints <- function(model, players, min_team_number, max_players_per_team) {
+  N <- length(players)
+  G <- length(unique(sapply(players, team)))
 
   # Add constraint
   new_model <- model %>%
@@ -90,7 +93,10 @@ add_team_number_constraints <- function(model, min_team_number, max_players_per_
 #' @param roster_key List containing
 #'
 #' @keywords internal
-add_position_constraint <- function(model, position_vector, roster_key) {
+add_position_constraint <- function(model, players, roster_key) {
+
+  # Position vector
+  position_vector <- sapply(players, position)
 
   # Parse the roster key
   # This takes UTILS into account
@@ -132,6 +138,9 @@ add_position_constraint <- function(model, position_vector, roster_key) {
 
 }
 
+
+#### These below are internal and
+#### Do not need the 'players' object
 
 #' Max Share Across Lineups
 #'
@@ -189,7 +198,8 @@ add_unique_lineup_constraint <- function(model, roster_indx_list) {
 #' position they are eligible. We want to ensure a player is not selected more than
 #' once on the same lineup
 #' @keywords internal
-add_unique_id_constraint <- function(model, ids) {
+add_unique_id_constraint <- function(model, players) {
+  ids <- sapply(players, id)
   id_cnt     <- table(ids)
   repeat_ids <- names(id_cnt)[id_cnt > 1]
 
