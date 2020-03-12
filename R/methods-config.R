@@ -93,16 +93,6 @@ setMethod('variance<-', 'optimConfig', function(x, value) {
 
 
 ##### Constraint and Util methods #####
-setGeneric('include_constraint', function(x, constraint_object) standardGeneric('include_constraint'))
-setMethod('include_constraint', 'optimConfig',
-          function(x, constraint_object) {
-            # This will add to the list if the field doesn't exist, but
-            # replace it if it does. Makes it less likely to add various definitions
-            # of the same constraint
-            x@constraints[[constraint_object@constraint_name]] <- constraint_object
-            return(x)
-          })
-
 setGeneric('get_roster_order', function(x) standardGeneric('get_roster_order'))
 setMethod('get_roster_order', 'optimConfig', function(x) {
   o <- tryCatch({
