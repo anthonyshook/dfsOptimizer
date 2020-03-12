@@ -68,18 +68,19 @@ setMethod('construct_model',
           })
 
 
-setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk', maximize = TRUE) standardGeneric('build_lineups'))
+setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk', maximize = TRUE, verbose = TRUE) standardGeneric('build_lineups'))
 #' Function to Generate lineups
 #'
 #' @param object an S4 object of class Optimizer
 #' @param num_lineups Number of lineups to generate
 #' @param solver The solver method (defaults to 'glpk').
 #' @param maximize Whether the model is intended to maximize (the default) or minimize the objective function
+#' @param verbose Whether to show a progress bar when building models. Defaults to TRUE.
 #'
 #' @export
 setMethod('build_lineups',
           signature = 'optimizer',
-          definition = function(object, num_lineups = 1, solver= 'glpk', maximize = TRUE) {
+          definition = function(object, num_lineups = 1, solver= 'glpk', maximize = TRUE, verbose = TRUE) {
 
             # Construct Model
             # Necessary to do this now so we do just-in-time construction
@@ -92,14 +93,16 @@ setMethod('build_lineups',
 
             # Block Players
             M@model <- add_block_constraint(M@model,
-                                            block_vector = sapply(M@players, blocked))
+                                            players = M@players)
 
             # Lock Players
             M@model <- add_lock_constraint(M@model,
-                                           lock_vector = sapply(M@players, locked))
+                                           players = M@players)
 
             # Generate Lineups
+            if (verbose) pb <- txtProgressBar(min = 0, max = num_lineups, initial = 0, char = '#', style = 3)
             for (i in 1:num_lineups) {
+              if (verbose) setTxtProgressBar(pb, i)
 
               # add variance constraint
               current_model <- apply_variance(M, varpct = variance(M@config))
