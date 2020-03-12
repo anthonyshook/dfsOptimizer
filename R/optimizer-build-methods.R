@@ -60,7 +60,7 @@ setMethod('construct_model',
             object@model <- add_unique_id_constraint(model = object@model,
                                                      players = object@players)
 
-            # Add additional constraints from the config
+            # Add additional constraints that are specific to the current model
             object <- add_additional_constraints(object)
 
             return(object)
