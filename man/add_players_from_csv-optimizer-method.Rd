@@ -22,7 +22,7 @@ Add players to optimizer from CSV
 }
 \examples{
 \dontrun{
-opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+opt <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 }
 

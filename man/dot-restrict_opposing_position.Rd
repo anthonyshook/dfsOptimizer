@@ -4,10 +4,12 @@
 \alias{.restrict_opposing_position}
 \title{Opposite Positions Constraint}
 \usage{
-.restrict_opposing_position(optObj, pos1, pos2)
+.restrict_opposing_position(model, players, pos1, pos2)
 }
 \arguments{
-\item{optObj}{Optimizer object}
+\item{model}{Model object}
+
+\item{players}{List of player objects}
 
 \item{pos1}{Positions for set one}
 

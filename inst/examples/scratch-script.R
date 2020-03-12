@@ -18,7 +18,7 @@ testmod.hockey <- block_players_by_id(testmod.hockey, '14086443')
 testmod.hockey <- construct_model(testmod.hockey)
 
 # Optimize.
-lineups <- build_lineups(testmod.hockey, num_lineups = 1)
+lineups <- build_lineups(testmod.hockey, num_lineups = 5)
 
 # Not exactly the method we'll use
 s <- ompr::solve_model(testmod.hockey@model, ompr.roi::with_ROI('glpk'))

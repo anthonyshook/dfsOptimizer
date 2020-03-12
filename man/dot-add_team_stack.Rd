@@ -4,10 +4,12 @@
 \alias{.add_team_stack}
 \title{Adds Same-Team stacks}
 \usage{
-.add_team_stack(optObj, positions, nstacks = 1)
+.add_team_stack(model, players, positions, nstacks = 1)
 }
 \arguments{
-\item{optObj}{Optimizer object}
+\item{model}{Model object}
+
+\item{players}{List of player objects}
 
 \item{positions}{Positions for that should be stacked within a single team}
 

@@ -4,14 +4,17 @@
 \alias{apply_constraint,constraintClass-method}
 \title{Function to apply constraints to a model}
 \usage{
-\S4method{apply_constraint}{constraintClass}(object, optObj, ...)
+\S4method{apply_constraint}{constraintClass}(object, model, ...)
 }
 \arguments{
 \item{object}{The constraint object}
 
-\item{optObj}{The optimizer Object (Optimizer Object, not OMPR)}
+\item{model}{Model object}
 
 \item{...}{Additional arguments if required}
+}
+\value{
+milp_model object
 }
 \description{
 Function to apply constraints to a model

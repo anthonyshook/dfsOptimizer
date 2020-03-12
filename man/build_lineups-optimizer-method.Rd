@@ -4,7 +4,13 @@
 \alias{build_lineups,optimizer-method}
 \title{Function to Generate lineups}
 \usage{
-\S4method{build_lineups}{optimizer}(object, num_lineups = 1, solver = "glpk", maximize = TRUE)
+\S4method{build_lineups}{optimizer}(
+  object,
+  num_lineups = 1,
+  solver = "glpk",
+  maximize = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{object}{an S4 object of class Optimizer}
@@ -14,6 +20,8 @@
 \item{solver}{The solver method (defaults to 'glpk').}
 
 \item{maximize}{Whether the model is intended to maximize (the default) or minimize the objective function}
+
+\item{verbose}{Whether to show a progress bar when building models. Defaults to TRUE.}
 }
 \description{
 Function to Generate lineups

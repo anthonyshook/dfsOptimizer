@@ -7,7 +7,7 @@
 \S4method{restrict_opposing_positions}{optimizer}(object, pos1, pos2)
 }
 \arguments{
-\item{object}{An optimizer model object}
+\item{object}{An optimizer object}
 
 \item{pos1}{Positions for set one}
 
