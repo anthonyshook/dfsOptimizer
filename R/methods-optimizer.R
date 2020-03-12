@@ -253,6 +253,7 @@ setMethod('extract_player_fpts',
             return(out)
           })
 
+
 setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
 setMethod('get_player_data', 'optimizer',
           function(object){
@@ -262,6 +263,7 @@ setMethod('get_player_data', 'optimizer',
             return(data.table::rbindlist(players))
 
           })
+
 
 setGeneric('get_player_id', function(object, name, team, position) standardGeneric('get_player_id'))
 #' Get a Player Id
@@ -301,6 +303,7 @@ setMethod(f = 'get_player_id',
             }
 
           })
+
 
 ## Updating
 setGeneric("add_player", function(object, pl) standardGeneric("add_player"))
