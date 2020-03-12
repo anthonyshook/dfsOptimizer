@@ -28,7 +28,7 @@ s
 
 ########### STAGE
 # Add stack constraint
-stack_con <- .constraintClass(constraint_name='stack constraint', fnc = .add_team_stack, args = list(positions = c('C','W','W'), players = testmod.hockey@players))
+stack_con <- .constraintClass(constraint_name='stack constraint', fnc = constr_team_stack, args = list(positions = c('C','W','W'), players = testmod.hockey@players))
 testmod.hockey@config@constraints <- list(stack_con = stack_con)
 
 # construct model
