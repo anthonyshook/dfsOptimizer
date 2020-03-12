@@ -45,7 +45,7 @@ setGeneric('add_players_from_csv', function(object, filepath, custom = FALSE) st
 #'
 #' @examples
 #' \dontrun{
-#' opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+#' opt <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 #' opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 #' }
 #'
@@ -97,7 +97,6 @@ setMethod(f = 'add_players_from_df',
           })
 
 
-
 setGeneric('add_team_stack', function(object, positions, nstacks = 1) standardGeneric('add_team_stack'))
 #' Add a Team Stack
 #'
@@ -127,7 +126,7 @@ setMethod(f = 'add_team_stack',
                                     args = list(positions = positions, nstacks = nstacks))
 
             # Add it to the config object
-            object@config <- include_constraint(object@config, CON)
+            object <- include_constraint(object, CON)
 
             return(object)
 
@@ -137,7 +136,7 @@ setMethod(f = 'add_team_stack',
 setGeneric('restrict_opposing_positions', function(object, pos1, pos2) standardGeneric('restrict_opposing_positions'))
 #' Restrict Opposing Positions
 #'
-#' @param object An optimizer model object
+#' @param object An optimizer object
 #' @param pos1 Positions for set one
 #' @param pos2 Positions for set two
 #'
@@ -165,7 +164,7 @@ setMethod(f = 'restrict_opposing_positions',
                                     args = list(pos1 = pos1, pos2 = pos2))
 
             # Add it to the config object
-            object@config <- include_constraint(object@config, CON)
+            object <- include_constraint(object, CON)
 
             return(object)
 
@@ -223,6 +222,7 @@ setMethod(f = 'set_flex_positions',
             }
             return(object)
           })
+
 
 setGeneric('apply_variance', function(object, varpct) standardGeneric('apply_variance'))
 setMethod(f = 'apply_variance',
