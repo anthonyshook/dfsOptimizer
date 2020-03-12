@@ -16,17 +16,19 @@
                              ))
 
 # Apply method for adding constraints
-setGeneric('apply_constraint', function(object, optObj, ...) standardGeneric('apply_constraint'))
+setGeneric('apply_constraint', function(object, model, ...) standardGeneric('apply_constraint'))
 #' Function to apply constraints to a model
 #'
 #' @param object The constraint object
-#' @param optObj The optimizer Object (Optimizer Object, not OMPR)
+#' @param model Model object
 #' @param ... Additional arguments if required
+#'
+#' @return milp_model object
 #'
 #' @keywords internal
 setMethod('apply_constraint', 'constraintClass',
-          function(object, optObj, ...){
-            args <- c(list(optObj = optObj), object@args, ...)
+          function(object, model, ...){
+            args <- c(list(model = model), object@args, ...)
             new_model <- do.call(object@fnc, args)
             return(new_model)
           })
