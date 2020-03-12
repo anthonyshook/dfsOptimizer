@@ -12,12 +12,24 @@ setGeneric('add_additional_constraints', function(object) standardGeneric('add_a
 #' @export
 setMethod('add_additional_constraints', signature = 'optimizer',
           definition = function(object) {
+
             if (length(object@constraints) > 0) {
               for (CON in object@constraints){
-                object <- apply_constraint(CON, optObj = object)
+                object@model <- apply_constraint(CON, model = object@model, players = object@players)
               }
             }
             return(object)
+          })
+
+
+setGeneric('include_constraint', function(x, constraint_object) standardGeneric('include_constraint'))
+setMethod('include_constraint', 'optimizer',
+          function(x, constraint_object) {
+            # This will add to the list if the field doesn't exist, but
+            # replace it if it does. Makes it less likely to add various definitions
+            # of the same constraint
+            x@constraints[[constraint_object@constraint_name]] <- constraint_object
+            return(x)
           })
 
 
