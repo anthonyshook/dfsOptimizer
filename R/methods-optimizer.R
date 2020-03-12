@@ -122,7 +122,7 @@ setMethod(f = 'add_team_stack',
 
             # Create constraint
             CON <- .constraintClass(constraint_name = "Team Stack Constraint",
-                                    fnc = .add_team_stack,
+                                    fnc = constr_team_stack,
                                     args = list(positions = positions, nstacks = nstacks))
 
             # Add it to the config object
@@ -160,7 +160,7 @@ setMethod(f = 'restrict_opposing_positions',
 
             # Create constraint
             CON <- .constraintClass(constraint_name = "Opposing Positions Restriction",
-                                    fnc = .restrict_opposing_position,
+                                    fnc = constr_restrict_opposing_position,
                                     args = list(pos1 = pos1, pos2 = pos2))
 
             # Add it to the config object

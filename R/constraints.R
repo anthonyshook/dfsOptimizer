@@ -2,7 +2,9 @@
 # 1 - the OMPR Model object
 # 2 - the list of player objects
 # 3 - Any other relevant arguments.
-
+# ---------------------------------------
+# Internal Functions for constraint logic
+# ---------------------------------------
 
 #' @include class-player.R
 
@@ -57,7 +59,7 @@ add_lock_constraint <- function(model, players) {
 #' unmatched.
 #'
 #' @keywords internal
-.restrict_opposing_position <- function(model, players, pos1, pos2) {
+constr_restrict_opposing_position <- function(model, players, pos1, pos2) {
 
   # Model Data
   num_players   <- length(players)
@@ -93,7 +95,7 @@ add_lock_constraint <- function(model, players) {
 #' @param nstacks Number of stacks to try to include (Default is 1)
 #'
 #' @keywords internal
-.add_team_stack <- function(model, players, positions, nstacks = 1) {
+constr_team_stack <- function(model, players, positions, nstacks = 1) {
 
   # Some info about the model
   num_players   <- get_model_length(model, 'players')
