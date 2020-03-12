@@ -7,7 +7,7 @@
 parse_roster_key(rk)
 }
 \arguments{
-\item{rk}{Roster key from base_settings}
+\item{rk}{Roster key from configuration object}
 }
 \description{
 Parse roster key item

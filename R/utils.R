@@ -84,3 +84,32 @@ make_position_indicator <- function(posvec, target, which_or_ind = 'which') {
   }
 }
 
+
+# Get Correct Configuration Object
+get_correct_config <- function(site, sport, contest_type) {
+
+  paste0(
+    tolower(site),
+    capitalize(sport),
+    capitalize(contest_type),
+    'Config'
+  )
+
+}
+
+# Capitalization function
+#
+# @param strg a string to capitalize
+#
+# @keywords internal
+capitalize <- function(strg) {
+  strg <- tolower(strg)
+  tmp <- unlist(strsplit(strg, " "))
+  tmp <- lapply(tmp, function(S){
+    x <- unlist(strsplit(S, ""))
+    x[1] <- toupper(x[1])
+    return(paste0(x, collapse = ''))
+  })
+
+  return(paste(tmp,collapse = " "))
+}

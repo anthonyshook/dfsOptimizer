@@ -4,12 +4,12 @@
 \alias{add_block_constraint}
 \title{Block Players Constraint}
 \usage{
-add_block_constraint(model, block_vector)
+add_block_constraint(model, players)
 }
 \arguments{
 \item{model}{Model object}
 
-\item{block_vector}{Vector where 1 indicates 'block'}
+\item{players}{List of player objects}
 }
 \description{
 Block Players Constraint

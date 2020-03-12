@@ -1,12 +1,14 @@
+# This currently builds a base CLASSIC model
+# Will need to rework this to function with SHOWDOWN style models.
 
 #' Build Base Model
 #'
-#' @param size number of units
+#' @param size number of players
 #' @param team_vector vector of teams
 #' @param pts vector of length 'size' containing points to use in objective function
 #' @param maximize Whether to maximize the objective (if FALSE, the objective is minimized)
 #'
-build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
+build_classic_model <- function(size, team_vector, pts, maximize = TRUE) {
 
   # Lengths (unique teams and positions)
   num_teams <- length(unique(team_vector))
@@ -15,7 +17,7 @@ build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
   base_model <- ompr::MILPModel() %>%
     ompr::add_variable(players[i], i = 1:size, type = "binary") %>%
     # Team related variables
-    ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>% # j is the number of unique animals.
+    ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>%
     ompr::add_variable(teams[i], i = 1:num_teams, type = 'integer') %>%
     ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary') %>%
     # Teams alignment
@@ -25,14 +27,14 @@ build_base_model <- function(size, team_vector, pts, maximize = TRUE) {
     ompr::add_constraint(teams[j] <= teams_binary[j] * 100, j = 1:num_teams)
 
   # Add Objective
-  base_model <- add_objective(base_model, maximize = maximize, pts = pts)
+  base_model <- add_classic_objective(base_model, maximize = maximize, pts = pts)
 
   return(base_model)
 }
 
 
-##### Base objective #####
-add_objective  <- function(model, maximize = TRUE, pts) {
+##### CLASSIC objective #####
+add_classic_objective  <- function(model, maximize = TRUE, pts) {
   N <- get_model_length(model, 'players')
   objdir <- ifelse(maximize, 'max', 'min')
   model <- ompr::set_objective(model,
@@ -41,21 +43,26 @@ add_objective  <- function(model, maximize = TRUE, pts) {
   return(model)
 }
 
+
 ##### Base Constraints #####
 # Roster Size Constraint
-add_roster_size_constraint <- function(model, roster_limit) {
-  N <- get_model_length(model, 'players')
+add_roster_size_constraint <- function(model, players, roster_limit) {
+  N <- length(players)
   model <- ompr::add_constraint(.model = model,
                                 .constraint_expr = sum_expr(players[i], i = 1:N) == roster_limit)
   return(model)
 }
 
+
 # Budget Constraint
-add_budget_constraint <- function(model, player_salaries, budget, min_budget) {
-  N <- get_model_length(model, 'players')
+add_budget_constraint <- function(model, players, budget, min_budget) {
+  N <- length(players)
+  player_salaries <- sapply(players, salary)
+
+  # Max budget Constraint
   model <- ompr::add_constraint(.model = model,
                                 .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) <= budget)
-  # Add constraint
+  # Min Budget Constraint
   model <- ompr::add_constraint(.model = model,
                                 .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) >= min_budget)
   return(model)
@@ -63,9 +70,9 @@ add_budget_constraint <- function(model, player_salaries, budget, min_budget) {
 
 
 # Teams Constraints (max players per team, minimum number of teams)
-add_team_number_constraints <- function(model, min_team_number, max_players_per_team) {
-  N <- get_model_length(model, 'players')
-  G <- get_model_length(model, 'teams')
+add_team_number_constraints <- function(model, players, min_team_number, max_players_per_team) {
+  N <- length(players)
+  G <- length(unique(sapply(players, team)))
 
   # Add constraint
   new_model <- model %>%
@@ -78,14 +85,18 @@ add_team_number_constraints <- function(model, min_team_number, max_players_per_
 
 }
 
+
 #' Position constraint
 #'
 #' @param model OMPR Model object
-#' @param position_vector Vector of positions to consider
+#' @param players List of player objects
 #' @param roster_key List containing
 #'
 #' @keywords internal
-add_position_constraint <- function(model, position_vector, roster_key) {
+add_position_constraint <- function(model, players, roster_key) {
+
+  # Position vector
+  position_vector <- sapply(players, position)
 
   # Parse the roster key
   # This takes UTILS into account
@@ -127,6 +138,10 @@ add_position_constraint <- function(model, position_vector, roster_key) {
 
 }
 
+
+#### These below are internal and
+#### Do not need the 'players' object
+
 #' Max Share Across Lineups
 #'
 #' @param model The model to further constrain
@@ -156,10 +171,11 @@ block_one_lineup <- function(model, roster_indx) {
   return(model)
 }
 
+
 #' Unique Lineup Constraint
 #'
 #' @param model The model to further constrain
-#' @param roster_indx the index of players to constrain
+#' @param roster_indx_list the index of players to constrain
 #'
 #' @keywords internal
 add_unique_lineup_constraint <- function(model, roster_indx_list) {
@@ -181,8 +197,10 @@ add_unique_lineup_constraint <- function(model, roster_indx_list) {
 #' On sites with multi-position eligibility, players will show up once for every
 #' position they are eligible. We want to ensure a player is not selected more than
 #' once on the same lineup
+#'
 #' @keywords internal
-add_unique_id_constraint <- function(model, ids) {
+add_unique_id_constraint <- function(model, players) {
+  ids <- sapply(players, id)
   id_cnt     <- table(ids)
   repeat_ids <- names(id_cnt)[id_cnt > 1]
 

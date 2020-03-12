@@ -9,7 +9,7 @@ create_optimizer(
   sport,
   contest_type = "CLASSIC",
   players = list(),
-  maximize = TRUE
+  filepath = NULL
 )
 }
 \arguments{
@@ -21,7 +21,8 @@ create_optimizer(
 
 \item{players}{List of players to build lineups from (defaults to empty list)}
 
-\item{maximize}{Logical, whether to maximize or minimize the objective function (Defaults to TRUE)}
+\item{filepath}{Alternate method for adding players at time of creation. Passing a filepath will result in an internal call to
+\code{add_players_from_csv}. If \code{players} is provided, filepath will be ignored.}
 }
 \description{
 Create an object of Optimizer

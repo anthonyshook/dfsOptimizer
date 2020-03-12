@@ -3,7 +3,6 @@
 \docType{class}
 \name{optimConfig-class}
 \alias{optimConfig-class}
-\alias{.optimConfig}
 \title{S4 Class optimConfig}
 \description{
 S4 Class optimConfig
@@ -28,7 +27,5 @@ S4 Class optimConfig
 \item{\code{max_exposure}}{Maximum exposure for individual players (global)}
 
 \item{\code{variance}}{Percentage variance for fantasy points -- used to add randomness to the model.}
-
-\item{\code{constraints}}{A \code{list} containing additional constraint objects}
 }}
 

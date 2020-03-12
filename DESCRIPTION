@@ -1,7 +1,7 @@
 Package: dfsOptimizer
 Type: Package
 Title: Optimizer for Daily Fantasy Sports
-Version: 0.2.0.9999
+Version: 0.2.1.9999
 Authors@R: person("Anthony", "Shook", email = "anthony.shook@gmail.com", role = c("aut", "cre"))
 Description: Provides a RelR
     Use four spaces when indenting paragraphs within the Description.
@@ -25,7 +25,6 @@ Imports:
 RoxygenNote: 7.0.2
 Collate: 
     'base-model.R'
-    'base-settings.R'
     'class-config.R'
     'class-constraint.R'
     'class-game-info.R'
@@ -38,6 +37,9 @@ Collate:
     'get-players-from-csv.R'
     'imports.R'
     'line-constraint-scratch.R'
+    'methods-config.R'
     'methods-optimizer.R'
+    'methods-player.R'
+    'optimizer-build-methods.R'
     'player-utils.R'
     'utils.R'

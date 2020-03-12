@@ -9,31 +9,31 @@
 #' @slot flex_position named identifer for the flex positions
 #' @slot max_exposure Maximum exposure for individual players (global)
 #' @slot variance Percentage variance for fantasy points -- used to add randomness to the model.
-#' @slot constraints A \code{list} containing additional constraint objects
 #'
-.optimConfig <- setClass('optimConfig',
-                         slots = list(
-                           budget = 'numeric',
-                           min_budget = 'numeric',
-                           roster_size = 'integer',
-                           min_team_req = 'integer',
-                           max_players_per_team = 'integer',
-                           roster_key = 'list',
-                           flex_position = 'character',
-                           max_exposure = 'numeric',
-                           variance = 'numeric',
-                           constraints = 'list'
-                         ),
-                         prototype = list(
-                           min_budget = 0,
-                           flex_position = NA_character_,
-                           max_exposure = 1,
-                           variance = 0
-                         )
+setClass('optimConfig',
+         slots = list(
+           budget = 'numeric',
+           min_budget = 'numeric',
+           roster_size = 'integer',
+           min_team_req = 'integer',
+           max_players_per_team = 'integer',
+           roster_key = 'list',
+           flex_position = 'character',
+           max_exposure = 'numeric',
+           variance = 'numeric'
+           ),
+         prototype = list(
+           min_budget = 0,
+           flex_position = NA_character_,
+           max_exposure = 1,
+           variance = 0
+         )
 )
 
+
+##### Base Methods #####
 setMethod('show', signature = 'optimConfig', definition = function(object) {
-  cat('An S4 object of class', class(object))
+  cat(paste0('Optimizer Configuration Object (', class(object),')'))
 })
 
 setValidity('optimConfig', method = function(object) {
@@ -43,13 +43,12 @@ setValidity('optimConfig', method = function(object) {
   # msg <- c()
 
   msg <- c(if (object@max_players_per_team > object@roster_size) "Cannot have more players per team than total roster size",
-           if (object@min_team_req < 1) "Minimum team requirment must be at least 1",
+           if (object@min_team_req < 1) "Minimum team requirement must be at least 1",
            if (object@max_exposure > 1 |
                object@max_exposure < 0) "max exposure must be between 0 and 1",
            if (object@variance > 1 |
-               object@variance < 0) "max exposure must be between 0 and 1",
-           if (length(object@constraints) > 0 &&
-               !all(sapply(object@constraints, class) == 'constraintClass')) "Invalid object(s) found in constraints slot! List may only contain constraintClass objects"
+               object@variance < 0) "variance must be between 0 and 1",
+           if (object@budget < object@min_budget) "Min budget cannot be less than max budget"
   )
   if (!is.null(msg)) {
     validcheck <- FALSE
@@ -58,118 +57,202 @@ setValidity('optimConfig', method = function(object) {
   validcheck
 })
 
-## Accessor Methods
-setGeneric("budget", function(x) standardGeneric("budget"))
-setMethod("budget", "optimConfig", function(x) x@budget)
+#######################
+#     Subclassing     #
+#######################
+# Site, sport and Contest Type specific
 
-setGeneric("min_budget", function(x) standardGeneric("min_budget"))
-setMethod("min_budget", "optimConfig", function(x) x@min_budget)
+##### DRAFTKINGS #####
+# Hockey, Classic
+setClass('draftkingsHockeyClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 9L,
+           min_team_req = 3L,
+           max_players_per_team = 9L,
+           roster_key = list('C' = list(positions = 'C', num = 2),
+                             'W' = list(positions = 'W', num = 3),
+                             'D' = list(positions = 'D', num = 2),
+                             'G' = list(positions = 'G', num = 1),
+                             'UTIL' = list(positions = c('C','W','D'), num = 1)),
+           flex_position = 'UTIL'
+         ))
 
-setGeneric("roster_size", function(x) standardGeneric("roster_size"))
-setMethod("roster_size", "optimConfig", function(x) x@roster_size)
 
-setGeneric("min_team_req", function(x) standardGeneric("min_team_req"))
-setMethod("min_team_req", "optimConfig", function(x) x@min_team_req)
+# Golf, Classic
+setClass('draftkingsGolfClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 6L,
+           min_team_req = 1L,
+           max_players_per_team = 6L,
+           roster_key = list('G' = list(positions = 'G', num = 6)),
+           flex_position = NA_character_
+         ))
 
-setGeneric("max_players_per_team", function(x) standardGeneric("max_players_per_team"))
-setMethod("max_players_per_team", "optimConfig", function(x) x@max_players_per_team)
 
-setGeneric("roster_key", function(x) standardGeneric("roster_key"))
-setMethod("roster_key", "optimConfig", function(x) x@roster_key)
+# Basketball, Classic
+setClass('draftkingsBasketballClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 8L,
+           min_team_req = 2L,
+           max_players_per_team = 7L,
+           roster_key = list('PG' = list(positions = 'PG', num = 1),
+                             'SG' = list(positions = 'SG', num = 1),
+                             'SF' = list(positions = 'SF', num = 1),
+                             'PF' = list(positions = 'PF', num = 1),
+                             'C' = list(positions = 'C', num = 1),
+                             'G' = list(positions = c('PG','SG'), num = 1),
+                             'F' = list(positions = c('SF', 'PF'), num = 1),
+                             'UTIL' = list(positions = c('PG','SG','SF','PF','C'), num = 1)),
+           flex_position = 'UTIL'
+         ))
 
-setGeneric("flex_position", function(x) standardGeneric("flex_position"))
-setMethod("flex_position", "optimConfig", function(x) x@flex_position)
 
-setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
-setMethod("max_exposure", "optimConfig", function(x) x@max_exposure)
+# Nascar, Classic
+setClass('draftkingsNascarClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 6L,
+           min_team_req = 1L,
+           max_players_per_team = 6L,
+           roster_key = list('D' = list(positions = 'G', num = 6)),
+           flex_position = NA_character_
+         ))
 
-setGeneric("variance", function(x) standardGeneric("variance"))
-setMethod("variance", "optimConfig", function(x) x@variance)
 
-setGeneric("min_budget", function(x) standardGeneric("min_budget"))
-setMethod("min_budget", "optimConfig", function(x) x@min_budget)
+# Baseball, Classic
+setClass('draftkingsBaseballClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 10L,
+           min_team_req = 3L,
+           max_players_per_team = 5L,
+           roster_key = list('P' = list(positions = 'P', num = 2),
+                             'C' = list(positions = 'C', num = 1),
+                             '1B' = list(positions = '1B', num = 1),
+                             '2B' = list(positions = '2B', num = 1),
+                             '3B' = list(positions = '3B', num = 1),
+                             'SS' = list(positions = 'SS', num = 1),
+                             'OF' = list(positions = 'OF', num = 3)),
+           flex_positions = NA_character_
+         ))
 
-### Setter Methods
-setGeneric('set_max_budget<-', function(x, value) standardGeneric('set_max_budget<-'))
-setMethod('set_max_budget<-', 'optimConfig', function(x, value) {
-  x@budget <- value
-  stopifnot(validObject(x))
-  return(x)
-})
 
-setGeneric('set_min_budget<-', function(x, value) standardGeneric('set_min_budget<-'))
-setMethod('set_min_budget<-', 'optimConfig', function(x, value) {
-  x@min_budget <- value
-  stopifnot(validObject(x))
-  return(x)
-})
+##### YAHOO #####
+# Hockey, Classic
+setClass('yahooHockeyClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 200,
+           roster_size = 9L,
+           min_team_req = 3L,
+           max_players_per_team = 6L,
+           roster_key =list('C' = list(positions = 'C', num = 2),
+                            'W' = list(positions = 'W', num = 3),
+                            'D' = list(positions = 'D', num = 2),
+                            'G' = list(positions = 'G', num = 2)),
+           flex_position = NA_character_
+         ))
 
-setGeneric('roster_size<-', function(x, value) standardGeneric('roster_size<-'))
-setMethod('roster_size<-', 'optimConfig', function(x, value) {
-  x@roster_size <- value
-  stopifnot(validObject(x))
-  return(x)
-})
 
-setGeneric('set_min_team_req<-', function(x, value) standardGeneric('set_min_team_req<-'))
-setMethod('set_min_team_req<-', 'optimConfig', function(x, value) {
-  x@min_team_req <- value
-  stopifnot(validObject(x))
-  return(x)
-})
+# Golf, Classic
+setClass('yahooGolfClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 200,
+           roster_size = 6L,
+           min_team_req = 1L,
+           max_players_per_team = 9L,
+           roster_key =list('G' = list(positions = 'G', num = 6)),
+           flex_position = NA_character_
+         ))
 
-setGeneric('set_max_players_per_team<-', function(x, value) standardGeneric('set_max_players_per_team<-'))
-setMethod('set_max_players_per_team<-', 'optimConfig', function(x, value) {
-  x@max_players_per_team <- value
-  stopifnot(validObject(x))
-  return(x)
-})
 
-setGeneric('flex_position<-', function(x, value) standardGeneric('flex_position<-'))
-setMethod('flex_position<-', 'optimConfig', function(x, value) {
-  x@flex_position <- value
-  stopifnot(validObject(x))
-  return(x)
-})
+# Basketball, Classic
+setClass('yahooBasketballClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 200,
+           roster_size = 8L,
+           min_team_req = 3L,
+           max_players_per_team = 6L,
+           roster_key = list('PG' = list(positions = 'PG', num = 1),
+                             'SG' = list(positions = 'SG', num = 1),
+                             'SF' = list(positions = 'SF', num = 1),
+                             'PF' = list(positions = 'PF', num = 1),
+                             'C' = list(positions = 'C', num = 1),
+                             'G' = list(positions = c('PG','SG'), num = 1),
+                             'F' = list(positions = c('SF', 'PF'), num = 1),
+                             'UTIL' = list(positions = c('PG','SG','SF','PF','C'), num = 1)),
+           flex_position = 'UTIL'
+         ))
 
-setGeneric('max_exposure<-', function(x, value) standardGeneric('max_exposure<-'))
-setMethod('max_exposure<-', 'optimConfig', function(x, value) {
-  x@max_exposure <- value
-  stopifnot(validObject(x))
-  return(x)
-})
 
-setGeneric('variance<-', function(x, value) standardGeneric('variance<-'))
-setMethod('variance<-', 'optimConfig', function(x, value) {
-  x@variance <- value
-  stopifnot(validObject(x))
-  return(x)
-})
+##### Fanduel #####
+# Hockey, Classic
+setClass('fanduelHockeyClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 55000,
+           roster_size = 9L,
+           min_team_req = 3L,
+           max_players_per_team = 9L,
+           roster_key = list('C' = list(positions = 'C', num = 2),
+                             'W' = list(positions = 'W', num = 4),
+                             'D' = list(positions = 'D', num = 2),
+                             'G' = list(positions = 'G', num = 1)),
+           flex_position = NA_character_
+         ))
 
-# Sub-classes?
-# HOCKEY
-# GOLF
 
-setGeneric('include_constraint', function(x, constraint_object) standardGeneric('include_constraint'))
-setMethod('include_constraint', 'optimConfig',
-          function(x, constraint_object) {
-            # This will add to the list if the field doesn't exist, but
-            # replace it if it does. Makes it less likely to add various definitions
-            # of the same constraint
-            x@constraints[[constraint_object@constraint_name]] <- constraint_object
-            return(x)
-          })
+# Golf, Classic
+setClass('fanduelGolfClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 60000,
+           roster_size = 6L,
+           min_team_req = 1L,
+           max_players_per_team = 9L,
+           roster_key = list('G' = list(positions = 'G', num = 6)),
+           flex_position = NA_character_
+         ))
 
-setGeneric('get_roster_order', function(x) standardGeneric('get_roster_order'))
-setMethod('get_roster_order', 'optimConfig', function(x) {
-  o <- tryCatch({
-  as.character(
-    unlist(
-      sapply(names(x@roster_key),
-             function(Z) rep(Z, x@roster_key[[Z]]$num)
-             )
-      )
-    )
-  }, error = function(e) NULL)
-  return(o)
-})
+
+# Basketball, Classic
+setClass('fanduelBasketballClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 60000,
+           roster_size = 9L,
+           min_team_req = 3L,
+           max_players_per_team = 4L,
+           roster_key = list('PG' = list(positions = 'PG', num = 2),
+                             'SG' = list(positions = 'SG', num = 2),
+                             'SF' = list(positions = 'SF', num = 2),
+                             'PF' = list(positions = 'PF', num = 2),
+                             'C' = list(positions = 'C', num = 1)),
+           flex_position = NA_character_
+         ))
+
+
+# Nascar, Classic
+setClass('fanduelNascarClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 5L,
+           min_team_req = 1L,
+           max_players_per_team = 5L,
+           roster_key = list('D' = list(positions = 'G', num = 5)),
+           flex_position = NA_character_
+         ))
+
+
+

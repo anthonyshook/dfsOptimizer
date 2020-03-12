@@ -3,7 +3,6 @@
 \docType{class}
 \name{optimizer-class}
 \alias{optimizer-class}
-\alias{.optimizer}
 \title{S4 Class of object Optimizer}
 \description{
 S4 Class of object Optimizer
@@ -21,8 +20,8 @@ S4 Class of object Optimizer
 
 \item{\code{model}}{The optimization model}
 
-\item{\code{config}}{An optim config class, which contains information about the model, including additional constraints}
+\item{\code{config}}{An optim config class, which contains information about the model and how to build it}
 
-\item{\code{maximize}}{Logical, whether to maximize or minimize the objective function}
+\item{\code{constraints}}{A \code{list} containing additional constraint objects}
 }}
 

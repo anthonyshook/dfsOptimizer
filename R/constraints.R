@@ -1,35 +1,23 @@
-# CONSTRAINTS DEFINED HERE SHOULD TAKE THE OPTIMIZER OBJECT, NOT THE OMPR MODEL ITSELF.
-#   LOCK AND BLOCK BREAK THIS RULE, BUT THEY CAN BE FIXED LATER
-#   ANOTHER OPTION = ALL MODELS TAKE THE SAME DATA AT APPLY TIME, THROUGH ..., WHETHER THEY USE IT OR NOT
-#      THAT WOULD BE THINGS LIKE -- PLAYERS, ETC.  THEN, THE ONLY THING WE *KNOW* NEEDS TO GET PASSED IS THE OMPR MODEL,
-#      NOT THE OPTIMIZER OBJECT.
-#      OR maybe they all just take the same three things -- player list, config object, and ompr model, plus whatever ELSE they need?
-#      There is a pleasant simplicity to that...
-
-# Minimum budget constraint
-# minimum_budget_constraint <- function(optObj) {
-#   player_salaries <- sapply(optObj@players, salary)
-#   N <- get_model_length(optObj@model, 'players')
-#
-#   # Add constraint
-#   optObj@model <- optObj@model %>%
-#     ompr::add_constraint(sum_expr(players[i] * (colwise(player_salaries[i]), i = 1:N) >= min_budget(optObj@config))
-#   return(optObj)
-# }
-
+# ALL CONSTRAINTS SHOULD TAKE
+# 1 - the OMPR Model object
+# 2 - the list of player objects
+# 3 - Any other relevant arguments.
+# ---------------------------------------
+# Internal Functions for constraint logic
+# ---------------------------------------
 
 #' @include class-player.R
 
 #' @title Block Players Constraint
 #'
 #' @param model Model object
-#' @param block_vector Vector where 1 indicates 'block'
+#' @param players List of player objects
 #'
 #' @keywords internal
-add_block_constraint <- function(model, block_vector) {
-  blocks <- which(block_vector == 1)
+add_block_constraint <- function(model, players) {
+  blocks <- which(sapply(players, blocked) == 1)
 
-  if (sum(block_vector) == 0) {
+  if (length(blocks) == 0) {
     model <- model
   } else {
     model <- model %>%
@@ -43,13 +31,13 @@ add_block_constraint <- function(model, block_vector) {
 #' Lock Players Constraint
 #'
 #' @param model Model object
-#' @param lock_vector Vector where 1 indicates 'block'
+#' @param players List of player objects
 #'
 #' @keywords internal
-add_lock_constraint <- function(model, lock_vector) {
-  locks <- which(lock_vector == 1)
+add_lock_constraint <- function(model, players) {
+  locks <- which(sapply(players, locked) == 1)
 
-  if (sum(lock_vector) == 0) {
+  if (length(locks) == 0) {
     model <- model
   } else {
     model <- model %>%
@@ -62,7 +50,8 @@ add_lock_constraint <- function(model, lock_vector) {
 
 #' Opposite Positions Constraint
 #'
-#' @param optObj Optimizer object
+#' @param model Model object
+#' @param players List of player objects
 #' @param pos1 Positions for set one
 #' @param pos2 Positions for set two
 #'
@@ -70,16 +59,10 @@ add_lock_constraint <- function(model, lock_vector) {
 #' unmatched.
 #'
 #' @keywords internal
-.restrict_opposing_position <- function(optObj, pos1, pos2) {
-
-  # Get players from the model
-  players <- optObj@players
-
-  # Pull out model
-  model <- optObj@model
+constr_restrict_opposing_position <- function(model, players, pos1, pos2) {
 
   # Model Data
-  num_players   <- get_model_length(model, 'players')
+  num_players   <- length(players)
 
   # Team Vectors
   p1_opponents <- sapply(players, get_opposing_team)
@@ -88,13 +71,11 @@ add_lock_constraint <- function(model, lock_vector) {
 
   # vector functions
   pos_fn <- function(i, pos) as.numeric(make_position_indicator(sapply(players,position)[i], pos, which_or_ind = 'ind'))
-  # pos_fn <- function(i, pos) as.numeric(sapply(players, position)[i] %in% pos)
 
   team_check <- function(i, t, teamvec) {
     as.integer(teamvec[i] == t)
   }
 
-  # browser()
   penalty <- 1000
   for (j in unique(p1_opponents)) {
     model <- model %>%
@@ -102,25 +83,19 @@ add_lock_constraint <- function(model, lock_vector) {
                                               team_check(i, j, p2_teams) * pos_fn(i, pos1)) * players[i], i = 1:num_players) <= penalty)
   }
 
-  optObj@model <- model
-
-  return(optObj)
+  return(model)
 }
+
 
 #' Adds Same-Team stacks
 #'
-#' @param optObj Optimizer object
+#' @param model Model object
+#' @param players List of player objects
 #' @param positions Positions for that should be stacked within a single team
 #' @param nstacks Number of stacks to try to include (Default is 1)
 #'
 #' @keywords internal
-.add_team_stack <- function(optObj, positions, nstacks = 1) {
-
-  # Get players from the model
-  players <- optObj@players
-
-  # Pull model
-  model <- optObj@model
+constr_team_stack <- function(model, players, positions, nstacks = 1) {
 
   # Some info about the model
   num_players   <- get_model_length(model, 'players')
@@ -135,7 +110,6 @@ add_lock_constraint <- function(model, lock_vector) {
     ompr::add_variable(team_stack[i], i = 1:num_teams, type = 'binary')
 
   # Make Positional constraint functions
-  # pos_fn <- function(i, pos) as.numeric(sapply(players, position)[i] %in% pos)
   pos_fn <- function(i, pos) as.numeric(make_position_indicator(sapply(players,position)[i], pos, which_or_ind = 'ind'))
 
   tpc_fun <- function(i, t, p, teamvec) {
@@ -182,57 +156,6 @@ add_lock_constraint <- function(model, lock_vector) {
     ompr::add_constraint(sum_expr(pos_team_stack[i, j], j = 1:num_positions) >= team_stack[i] * num_positions, i = 1:num_teams) %>%
     ompr::add_constraint(sum_expr(team_stack[i], i = 1:num_teams) >= nstacks)
 
-  # Put the model back and return the updated object
-  optObj@model <- model
-  return(optObj)
+  return(model)
 }
 
-
-
-
-# THIS WAS A TEST THAT ONLY KIND OF WORKED
-# team_stack_2 <- function(optObj, positions) {
-#
-#   # This is just my attempt to test a quick thing
-#   lineup_groups <- link_players_on_same_team(optObj@players, positions = positions)
-#
-#   model <- optObj@model
-#
-#   tmpfn <- function(indx) {
-#     tmp <- rep(0, times = 309)
-#     tmp[as.numeric(lineup_groups[indx,])] <- 1
-#     return(tmp)
-#   }
-#
-#   # indvector <- lapply(1:nrow(lineup_groups), function(a) tmpfn(1:309, indx=a))
-#   # npossibile <- length(TST)
-#   indeces <- lapply(1:nrow(lineup_groups), function(a) as.numeric(lineup_groups[a,]))
-#   indfun <- function(k) unlist(lineup_groups)[k]
-#
-#   # browser()
-#   print(nrow(lineup_groups))
-#   model <- model %>%
-#     ######## sum for every grouping
-#     # ompr::add_variable(tstgroups[i], i = 1:nrow(lineup_groups), type = 'integer') %>%
-#     # ompr::add_constraint(
-#     #   sum_expr(players[i]) == tstgroups[j], i = 1:309, j = 1:nrow(lineup_groups)) %>%
-#     ######## one sum
-#     ompr::add_variable(tst, type = 'integer') %>%
-#     ompr::add_constraint(tst == sum_expr(
-#       players[i], i = unlist(indeces)
-#     ))
-#
-#   # Loop test...
-#   # browser()
-#   # for (i in 1:length(indeces)) {
-#   #   cind <- tmpfn(i)
-#   #   model <- model %>%
-#   #     ompr::add_constraint(sum_expr(players[j] * colwise(cind), j = 1:309) == tstgroups[i])
-#   # }
-#
-#   optObj@model <- model
-#
-#   return(optObj)
-#
-# }
-#
