@@ -171,6 +171,7 @@ setMethod(f = 'restrict_opposing_positions',
           })
 
 
+##### Setting Functions
 setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
 #' @title Set the Global Max Exposure
 #'

@@ -192,6 +192,27 @@ add_unique_lineup_constraint <- function(model, roster_indx_list) {
 }
 
 
+#' Max Overlap constraint
+#'
+#' @param model The model to further constrain
+#' @param roster_indx_list the index of players to constrain
+#' @param max_overlap the Maximum player overlap across lineups
+#'
+#' @keywords internal
+add_max_overlap_constraint <- function(model, roster_indx_list, max_overlap) {
+
+  if (length(roster_indx_list) == 0) {
+    return(model)
+  } else {
+    for (roster_indx in roster_indx_list){
+      model <- add_max_share_constraint(model, which(roster_indx == 1), max_overlap)
+    }
+  }
+  return(model)
+}
+
+
+
 #' Unique ID constraint
 #'
 #' On sites with multi-position eligibility, players will show up once for every

@@ -113,6 +113,9 @@ setMethod('build_lineups',
               # Add unique roster constraint
               current_model <- add_unique_lineup_constraint(current_model, solution_vectors)
 
+              # Add max overlap constraint (Note: Could be rolled into the unique roster constraint)
+              current_model <- add_max_overlap_constraint(current_model, solution_vectors, max_overlap(M@config))
+
               # If any player is currently above their exposure rate, block them
               # But only check IF the lowest possible value of exposure is less than the max_exposure rate
               if ( 1/(length(solution_vectors) + 1) < max_exposure(M@config)) {
