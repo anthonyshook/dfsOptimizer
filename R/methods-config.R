@@ -15,6 +15,9 @@ setMethod("min_team_req", "optimConfig", function(x) x@min_team_req)
 setGeneric("max_players_per_team", function(x) standardGeneric("max_players_per_team"))
 setMethod("max_players_per_team", "optimConfig", function(x) x@max_players_per_team)
 
+setGeneric("max_overlap", function(x) standardGeneric("max_overlap"))
+setMethod("max_overlap", "optimConfig", function(x) x@max_overlap)
+
 setGeneric("roster_key", function(x) standardGeneric("roster_key"))
 setMethod("roster_key", "optimConfig", function(x) x@roster_key)
 
@@ -60,6 +63,13 @@ setMethod('set_min_team_req<-', 'optimConfig', function(x, value) {
 setGeneric('set_max_players_per_team<-', function(x, value) standardGeneric('set_max_players_per_team<-'))
 setMethod('set_max_players_per_team<-', 'optimConfig', function(x, value) {
   x@max_players_per_team <- value
+  stopifnot(validObject(x))
+  return(x)
+})
+
+setGeneric('set_max_overlap<-', function(x, value) standardGeneric('set_max_overlap<-'))
+setMethod('set_max_overlap<-', 'optimConfig', function(x, value) {
+  x@max_overlap <- value
   stopifnot(validObject(x))
   return(x)
 })

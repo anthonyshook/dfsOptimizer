@@ -175,7 +175,7 @@ setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_m
 #' @title Set the Global Max Exposure
 #'
 #' @param object An optimizer object
-#' @param exposure Value to set the roster size (subject to validity checks).
+#' @param exposure Value to set the exposure
 #'
 #' @rdname set_max_exposure
 #' @description Method to set the global max exposure of an optimizer model.
@@ -187,6 +187,35 @@ setMethod(f = 'set_max_exposure',
           signature = 'optimizer',
           definition = function(object, exposure) {
             max_exposure(object@config) <- exposure
+            return(object)
+          })
+
+
+setGeneric('set_max_overlap', function(object, overlap) standardGeneric('set_max_overlap'))
+#' @title Set the maximum overlap
+#'
+#' @param object An optimizer object
+#' @param overlap Maximum player overlap across lineups
+#'
+#' @rdname set_max_overlap
+#' @description Method to set the max overlap of an optimizer model.
+#'
+#' @return Updated Optimizer object
+#'
+#' @examples
+#' \dontrun{
+#' opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+#' opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
+#'
+#' # update the max overlap
+#' opt <- set_max_overlap(object = opt, overlap = 6)
+#' }
+#'
+#' @export
+setMethod(f = 'set_max_overlap',
+          signature = 'optimizer',
+          definition = function(object, overlap) {
+            set_max_overlap(object@config) <- overlap
             return(object)
           })
 
@@ -231,6 +260,7 @@ setMethod(f = 'apply_variance',
             object@players <- lapply(object@players, 'apply_variance', varpct = varpct)
             return(object)
           })
+
 
 
 
@@ -305,7 +335,7 @@ setMethod(f = 'get_player_id',
           })
 
 
-## Updating
+## Updating Player Information
 setGeneric("add_player", function(object, pl) standardGeneric("add_player"))
 #' Method for adding a player to Optimizer object
 #'
