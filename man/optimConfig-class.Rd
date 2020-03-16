@@ -20,12 +20,14 @@ S4 Class optimConfig
 
 \item{\code{max_players_per_team}}{Maximum number of players from any one team}
 
+\item{\code{max_overlap}}{Maximum number of players allowed to overlap across lineups (Must be < roster_size)}
+
 \item{\code{roster_key}}{List containing roster positions and the number of each position required}
 
 \item{\code{flex_position}}{named identifer for the flex positions}
 
 \item{\code{max_exposure}}{Maximum exposure for individual players (global)}
 
-\item{\code{variance}}{Percentage variance for fantasy points -- used to add randomness to the model.}
+\item{\code{variance}}{Percentage global variance for fantasy points -- used to add randomness to the model.}
 }}
 

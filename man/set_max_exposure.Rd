@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{An optimizer object}
 
-\item{exposure}{Value to set the roster size (subject to validity checks).}
+\item{exposure}{Value to set the exposure}
 }
 \value{
 Updated Optimizer object
