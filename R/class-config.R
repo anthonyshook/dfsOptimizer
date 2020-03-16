@@ -5,10 +5,11 @@
 #' @slot roster_size Roster limitation (How many players allowed)
 #' @slot min_team_req Number of teams required to be represented in the lineup
 #' @slot max_players_per_team Maximum number of players from any one team
+#' @slot max_overlap Maximum number of players allowed to overlap across lineups (Must be < roster_size)
 #' @slot roster_key List containing roster positions and the number of each position required
 #' @slot flex_position named identifer for the flex positions
 #' @slot max_exposure Maximum exposure for individual players (global)
-#' @slot variance Percentage variance for fantasy points -- used to add randomness to the model.
+#' @slot variance Percentage global variance for fantasy points -- used to add randomness to the model.
 #'
 setClass('optimConfig',
          slots = list(
@@ -17,11 +18,12 @@ setClass('optimConfig',
            roster_size = 'integer',
            min_team_req = 'integer',
            max_players_per_team = 'integer',
+           max_overlap = 'numeric',
            roster_key = 'list',
            flex_position = 'character',
            max_exposure = 'numeric',
            variance = 'numeric'
-           ),
+         ),
          prototype = list(
            min_budget = 0,
            flex_position = NA_character_,
@@ -48,13 +50,36 @@ setValidity('optimConfig', method = function(object) {
                object@max_exposure < 0) "max exposure must be between 0 and 1",
            if (object@variance > 1 |
                object@variance < 0) "variance must be between 0 and 1",
-           if (object@budget < object@min_budget) "Min budget cannot be less than max budget"
+           if (object@budget < object@min_budget) "Min budget cannot be less than max budget",
+           if (object@max_overlap >= object@roster_size) "Max Overlap must be AT LEAST 1 less than roster_size",
+           if (object@max_overlap < 0) "Max Overlap cannot be negative"
   )
+
   if (!is.null(msg)) {
     validcheck <- FALSE
     message(paste0(msg, collapse = '\n'))
   }
   validcheck
+})
+
+setMethod('summary','optimConfig', function(object){
+
+  sNames <- slotNames(object)[slotNames(object) != 'roster_key']
+  roster_key <- object@roster_key
+  cat('Configuration Details:\n')
+  sapply(sNames, function(Z){cat(paste0("  ", Z, ": ", slot(object, Z),"\n"))})
+
+  X <- do.call(rbind,
+          lapply(names(roster_key), function(K){
+            curr <- roster_key[[K]]
+            data.frame(`Roster Position` = K,
+                       `Eligible Positions` = paste(roster_key[[K]]$positions, collapse = ","),
+                       `Number of Slots` = roster_key[[K]]$num,
+                       check.names = FALSE)
+          }))
+  cat("\nLineup Roster Summary:\n")
+  print(X, row.names=FALSE)
+  return(invisible(NULL))
 })
 
 #######################
@@ -71,6 +96,7 @@ setClass('draftkingsHockeyClassicConfig',
            roster_size = 9L,
            min_team_req = 3L,
            max_players_per_team = 9L,
+           max_overlap = 8,
            roster_key = list('C' = list(positions = 'C', num = 2),
                              'W' = list(positions = 'W', num = 3),
                              'D' = list(positions = 'D', num = 2),
@@ -88,6 +114,7 @@ setClass('draftkingsGolfClassicConfig',
            roster_size = 6L,
            min_team_req = 1L,
            max_players_per_team = 6L,
+           max_overlap = 5,
            roster_key = list('G' = list(positions = 'G', num = 6)),
            flex_position = NA_character_
          ))
@@ -101,6 +128,7 @@ setClass('draftkingsBasketballClassicConfig',
            roster_size = 8L,
            min_team_req = 2L,
            max_players_per_team = 7L,
+           max_overlap = 7,
            roster_key = list('PG' = list(positions = 'PG', num = 1),
                              'SG' = list(positions = 'SG', num = 1),
                              'SF' = list(positions = 'SF', num = 1),
@@ -121,6 +149,7 @@ setClass('draftkingsNascarClassicConfig',
            roster_size = 6L,
            min_team_req = 1L,
            max_players_per_team = 6L,
+           max_overlap = 5,
            roster_key = list('D' = list(positions = 'G', num = 6)),
            flex_position = NA_character_
          ))
@@ -134,6 +163,7 @@ setClass('draftkingsBaseballClassicConfig',
            roster_size = 10L,
            min_team_req = 3L,
            max_players_per_team = 5L,
+           max_overlap = 9,
            roster_key = list('P' = list(positions = 'P', num = 2),
                              'C' = list(positions = 'C', num = 1),
                              '1B' = list(positions = '1B', num = 1),
@@ -154,6 +184,7 @@ setClass('yahooHockeyClassicConfig',
            roster_size = 9L,
            min_team_req = 3L,
            max_players_per_team = 6L,
+           max_overlap = 8,
            roster_key =list('C' = list(positions = 'C', num = 2),
                             'W' = list(positions = 'W', num = 3),
                             'D' = list(positions = 'D', num = 2),
@@ -170,6 +201,7 @@ setClass('yahooGolfClassicConfig',
            roster_size = 6L,
            min_team_req = 1L,
            max_players_per_team = 9L,
+           max_overlap = 5,
            roster_key =list('G' = list(positions = 'G', num = 6)),
            flex_position = NA_character_
          ))
@@ -183,6 +215,7 @@ setClass('yahooBasketballClassicConfig',
            roster_size = 8L,
            min_team_req = 3L,
            max_players_per_team = 6L,
+           max_overlap = 7,
            roster_key = list('PG' = list(positions = 'PG', num = 1),
                              'SG' = list(positions = 'SG', num = 1),
                              'SF' = list(positions = 'SF', num = 1),
@@ -204,6 +237,7 @@ setClass('fanduelHockeyClassicConfig',
            roster_size = 9L,
            min_team_req = 3L,
            max_players_per_team = 9L,
+           max_overlap = 8,
            roster_key = list('C' = list(positions = 'C', num = 2),
                              'W' = list(positions = 'W', num = 4),
                              'D' = list(positions = 'D', num = 2),
@@ -220,6 +254,7 @@ setClass('fanduelGolfClassicConfig',
            roster_size = 6L,
            min_team_req = 1L,
            max_players_per_team = 9L,
+           max_overlap = 5,
            roster_key = list('G' = list(positions = 'G', num = 6)),
            flex_position = NA_character_
          ))
@@ -233,6 +268,7 @@ setClass('fanduelBasketballClassicConfig',
            roster_size = 9L,
            min_team_req = 3L,
            max_players_per_team = 4L,
+           max_overlap = 8,
            roster_key = list('PG' = list(positions = 'PG', num = 2),
                              'SG' = list(positions = 'SG', num = 2),
                              'SF' = list(positions = 'SF', num = 2),
@@ -250,6 +286,7 @@ setClass('fanduelNascarClassicConfig',
            roster_size = 5L,
            min_team_req = 1L,
            max_players_per_team = 5L,
+           max_overlap = 4,
            roster_key = list('D' = list(positions = 'G', num = 5)),
            flex_position = NA_character_
          ))
