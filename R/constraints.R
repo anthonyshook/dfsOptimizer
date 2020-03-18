@@ -159,3 +159,19 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
   return(model)
 }
 
+
+#' Force Opposing Position constraint
+#'
+#' @param model Model object
+#' @param players List of player objects
+#' @param pos1 Position for team
+#' @param pos2 Position for opposing team
+#'
+#' @details Accepts a single value for pos1 and pos2
+#'
+#' @keywords internal
+constr_force_opposing <- function(model, players, pos1, pos2) {
+  if (length(pos1) > 1 | length(pos2) > 1) stop("Both pos1 and pos2 must be of length 1")
+
+  browser()
+}
