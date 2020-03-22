@@ -3,7 +3,6 @@
 \docType{class}
 \name{player_object-class}
 \alias{player_object-class}
-\alias{.player}
 \title{S4 Player Class}
 \description{
 S4 Player Class
