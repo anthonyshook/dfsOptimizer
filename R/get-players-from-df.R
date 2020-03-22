@@ -50,7 +50,7 @@ get_players_from_data_frame <- function(df) {
 
   # Create players
   player_list <- lapply(1:nrow(df), function(i) {
-    return(do.call(.player, df[i,]))
+    return(do.call(new, c(Class = 'player_object', as.list(df[i,]))))
   })
 
   return(player_list)

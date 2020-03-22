@@ -124,5 +124,5 @@ setMethod('apply_variance', 'player_object',
 #' @returns A vector of the attributes available for player objects (i.e., the values the user can set for an individual player).
 #' @export
 list_player_attributes <- function() {
-  slotNames(.player())
+  slotNames('player_object')
 }
