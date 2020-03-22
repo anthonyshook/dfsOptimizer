@@ -17,30 +17,30 @@
 #' @slot game_info information about the game
 #'
 #' @keywords internal
-.player <- setClass('player_object',
-                   slots = list(
-                     id = 'character',
-                     first_name = 'character',
-                     last_name = 'character',
-                     fullname = 'character',
-                     team = 'character',
-                     position = 'character',
-                     depth = 'integer',
-                     salary = 'integer',
-                     fpts = 'numeric',
-                     locked = 'logical',
-                     blocked = 'logical',
-                     is_injured = 'logical',
-                     min_exposure = 'numeric',
-                     max_exposure = 'numeric',
-                     game_info = 'gameInfo'
-                   ),
-                   prototype = list(
-                     min_exposure = NA_real_,
-                     max_exposure = NA_real_,
-                     is_injured = FALSE,
-                     locked = FALSE
-                   ))
+setClass('player_object',
+         slots = list(
+           id = 'character',
+           first_name = 'character',
+           last_name = 'character',
+           fullname = 'character',
+           team = 'character',
+           position = 'character',
+           depth = 'integer',
+           salary = 'integer',
+           fpts = 'numeric',
+           locked = 'logical',
+           blocked = 'logical',
+           is_injured = 'logical',
+           min_exposure = 'numeric',
+           max_exposure = 'numeric',
+           game_info = 'gameInfo'
+         ),
+         prototype = list(
+           min_exposure = NA_real_,
+           max_exposure = NA_real_,
+           is_injured = FALSE,
+           locked = FALSE
+         ))
 
 #' Constructor Function for Player class
 #'
@@ -78,19 +78,20 @@ player <- function(id,
   }
 
   # Create the object
-  p <- .player(id = as.character(id),
-               first_name = first_name,
-               last_name = last_name,
-               fullname = paste(first_name, last_name),
-               team = team,
-               position = position,
-               depth = depth,
-               salary = as.integer(salary),
-               fpts = fpts,
-               locked = locked,
-               blocked = blocked,
-               is_injured = is_injured,
-               game_info = game_info)
+  p <- new('player_object',
+           id = as.character(id),
+           first_name = first_name,
+           last_name = last_name,
+           fullname = paste(first_name, last_name),
+           team = team,
+           position = position,
+           depth = depth,
+           salary = as.integer(salary),
+           fpts = fpts,
+           locked = locked,
+           blocked = blocked,
+           is_injured = is_injured,
+           game_info = game_info)
 
   return(p)
 
