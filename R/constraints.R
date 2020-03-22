@@ -171,7 +171,32 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
 #'
 #' @keywords internal
 constr_force_opposing <- function(model, players, pos1, pos2) {
+  # Assertions (for now)
   if (length(pos1) > 1 | length(pos2) > 1) stop("Both pos1 and pos2 must be of length 1")
 
-  browser()
+  # Regular data
+  teams <- sapply(players, team)
+  opps  <- sapply(players, get_opposing_team)
+  posit <- sapply(players, position)
+  team_opponent_df <- unique(data.frame(team = teams, opp = opps, stringsAsFactors = FALSE))
+
+  # Add team and opponent variables
+  model <- model %>%
+    ompr::add_variable(force_team[i], i = 1:data.table::uniqueN(teams), type = 'integer', lb = 0) %>%
+    ompr::add_variable(force_opps[i], i = 1:data.table::uniqueN(teams), type = 'integer', lb = 0) %>%
+    ompr::add_variable(force_flag[i], i = 1:data.table::uniqueN(teams), type = 'binary')
+
+  # Set variables to the count of each item
+  for (i in 1:nrow(team_opponent_df)) {
+    # Current team/opponent pair
+    cpair <- team_opponent_df[i,]
+
+    # option: count all the possible force_team gets pos1, force_opps gets pos2
+    # Those are the sum of that team/position, but constrained to 1 if greater than 0
+    # Flag is the sum of those two, constrained to 1 if equal to 2
+    # Final constraint is that sum(force_flag) >= 1
+    browser()
+  }
+
+  return(model)
 }
