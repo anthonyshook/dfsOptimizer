@@ -173,18 +173,33 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
 constr_force_opposing <- function(model, players, pos1, pos2) {
   # Assertions (for now)
   if (length(pos1) > 1 | length(pos2) > 1) stop("Both pos1 and pos2 must be of length 1")
+  combpos <- c(pos1, pos2)
 
-  # Regular data
+  # Data from players
   teams <- sapply(players, team)
   opps  <- sapply(players, get_opposing_team)
   posit <- sapply(players, position)
   team_opponent_df <- unique(data.frame(team = teams, opp = opps, stringsAsFactors = FALSE))
 
+  # Count Data
+  nump  <- length(players)
+  numpos <- 2 # Currently hardcoded.
+  numtms <- data.table::uniqueN(teams)
+
   # Add team and opponent variables
   model <- model %>%
-    ompr::add_variable(force_team[i], i = 1:data.table::uniqueN(teams), type = 'integer', lb = 0) %>%
-    ompr::add_variable(force_opps[i], i = 1:data.table::uniqueN(teams), type = 'integer', lb = 0) %>%
-    ompr::add_variable(force_flag[i], i = 1:data.table::uniqueN(teams), type = 'binary')
+    ompr::add_variable(force_team[i, j], i = 1:numtms, j = 1:numpos, type = 'binary', lb = 0) %>%
+#    ompr::add_variable(force_opp[i], i = 1:numtms, type = 'binary', lb = 0) %>%
+    ompr::add_variable(force_flag[i], i = 1:numtms, type = 'integer')
+
+  # Add Functions
+  pos_fn <- function(i, pos) as.numeric(make_position_indicator(posit[i], pos, which_or_ind = 'ind'))
+
+  fo_fun <- function(i, t, p, teamvec=teams) {
+    # Gets this is a mask that is the position and team
+    mask <- as.integer(teamvec[i] == t) * pos_fn(i, p)
+    return(mask)
+  }
 
   # Set variables to the count of each item
   for (i in 1:nrow(team_opponent_df)) {
@@ -195,8 +210,47 @@ constr_force_opposing <- function(model, players, pos1, pos2) {
     # Those are the sum of that team/position, but constrained to 1 if greater than 0
     # Flag is the sum of those two, constrained to 1 if equal to 2
     # Final constraint is that sum(force_flag) >= 1
-    browser()
+    # NOTE -- this simple version will meet the constraint if and when ANY pos1 or
+    # pos2 is inclued (i.e., there is no way to say "constraint tm1 QB with tm2 WR *AND* TE)
+    # model <- model %>%
+    #   ompr::add_constraint(force_team[i, j=1] * 100 >=
+    #                          sum_expr(players[k] *
+    #                                     colwise(fo_fun(k, cpair$team, p=pos1)),
+    #                                   k = 1:nump), i = i) %>%
+    #   ompr::add_constraint(force_team[i, j=2] * 100 >=
+    #                          sum_expr(players[k] *
+    #                                     colwise(fo_fun(k, cpair$opp, p=pos2)),
+    #                                   k = 1:nump), i = i)
+
+    for (P in 1:numpos) {
+      poscount <- 1
+
+      # Add constraints
+      model <- model %>%
+        ompr::add_constraint((poscount - (1 - force_team[i, j=P])) +
+                               (force_team[i, j=P] * 200) >=
+                               sum_expr(players[k] *
+                                          colwise(fo_fun(k, as.character(cpair)[P], p=combpos[P])),
+                                        k = 1:nump), i = i) %>%
+        ompr::add_constraint(force_team[i, j=P] * poscount <=
+                               sum_expr(players[k] *
+                                          colwise(fo_fun(k, as.character(cpair[P]), p=combpos[P])),
+                                        k = 1:nump), i = i)
+    }
+
   }
+
+  # Constrain so that at least one pair must be one
+  # As soon as this becomes an non-equal constraint (... >= force_flag * numpos),
+  # The force_team measures break apart. This is probably because in the prior method,
+  # we're forcing a *specific number at each constraint* and not just a *greater than zero*
+  # So we need to do that in the loop.
+  model <- model %>%
+    ompr::add_constraint(sum_expr(force_team[i, j], j = 1:numpos) >= force_flag[i] * numpos, i = 1:numtms) %>%
+    ompr::add_constraint(sum_expr(force_flag[i], i = 1:numtms) >= 1)
+
 
   return(model)
 }
+
+#tpc_fun(k, TMS, p=posnum, teamvec)
