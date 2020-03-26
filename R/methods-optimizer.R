@@ -336,7 +336,7 @@ setMethod('extract_player_fpts',
             return(out)
           })
 
-# This needs documentation
+
 #' Get Player data from optimizer object
 #'
 #' @param object An optimizer object
