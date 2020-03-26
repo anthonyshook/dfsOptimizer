@@ -171,6 +171,45 @@ setMethod(f = 'restrict_opposing_positions',
           })
 
 
+setGeneric('force_opposing_positions', function(object, pos1, pos2) standardGeneric('force_opposing_positions'))
+#' Force Opposing Positions
+#'
+#' @param object An optimizer object
+#' @param pos1 Positions for set one
+#' @param pos2 Positions for set two
+#'
+#' @return Updated optimizer object
+#'
+#' @details Forces positions from opposing teams from being included in lineups. Currently accepts a maximum
+#' of two positions.
+#'
+#' @examples
+#' \dontrun{
+#' opt <- create_optimizer(site = 'DRAFTKINGS', sport = 'FOOTBALL', contest_type = 'CLASSIC')
+#' opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
+#'
+#' # Force lineup to include a QB and a WR from the opposing team
+#' opt <- force_opposing_positions(object = opt, pos1 = 'QB', pos2 = 'WR')
+#' }
+#'
+#'@export
+setMethod(f = 'force_opposing_positions',
+          signature = 'optimizer',
+          definition = function(object, pos1, pos2) {
+
+            # Create constraint
+            CON <- .constraintClass(constraint_name = "Force Opposing Restrictions",
+                                    fnc = constr_force_opposing,
+                                    args = list(pos1 = pos1, pos2 = pos2))
+
+            # Add it to the config object
+            object <- include_constraint(object, CON)
+
+            return(object)
+
+          })
+
+
 ##### Setting Functions
 setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
 #' @title Set the Global Max Exposure
