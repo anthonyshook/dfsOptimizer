@@ -175,8 +175,8 @@ setGeneric('force_opposing_positions', function(object, pos1, pos2) standardGene
 #' Force Opposing Positions
 #'
 #' @param object An optimizer object
-#' @param pos1 Positions for set one
-#' @param pos2 Positions for set two
+#' @param pos1 Position for team one
+#' @param pos2 Position for opposing team
 #'
 #' @return Updated optimizer object
 #'
@@ -191,6 +191,8 @@ setGeneric('force_opposing_positions', function(object, pos1, pos2) standardGene
 #' # Force lineup to include a QB and a WR from the opposing team
 #' opt <- force_opposing_positions(object = opt, pos1 = 'QB', pos2 = 'WR')
 #' }
+#'
+#' @rdname force_opposing_positions
 #'
 #'@export
 setMethod(f = 'force_opposing_positions',

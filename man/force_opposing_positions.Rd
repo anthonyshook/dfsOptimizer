@@ -9,9 +9,9 @@
 \arguments{
 \item{object}{An optimizer object}
 
-\item{pos1}{Positions for set one}
+\item{pos1}{Position for team one}
 
-\item{pos2}{Positions for set two}
+\item{pos2}{Position for opposing team}
 }
 \value{
 Updated optimizer object
