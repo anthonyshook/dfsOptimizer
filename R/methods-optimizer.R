@@ -49,6 +49,8 @@ setGeneric('add_players_from_csv', function(object, filepath, custom = FALSE) st
 #' opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 #' }
 #'
+#' @rdname add_players_from_csv
+#'
 #' @export
 setMethod(f = 'add_players_from_csv',
           signature = 'optimizer',
@@ -87,6 +89,8 @@ setGeneric('add_players_from_df', function(object, df) standardGeneric('add_play
 #' opt <- add_players_from_df(object = opt, df = dat)
 #' }
 #'
+#' @rdname add_players_from_df
+#'
 #' @export
 setMethod(f = 'add_players_from_df',
           signature = 'optimizer',
@@ -114,6 +118,8 @@ setGeneric('add_team_stack', function(object, positions, nstacks = 1) standardGe
 #' # Add team stack, requiring a Center and Two Wingers from the same team
 #' opt <- add_team_stack(object = opt, positions = c('C','W','W'))
 #' }
+#'
+#' @rdname add_team_stack
 #'
 #'@export
 setMethod(f = 'add_team_stack',
@@ -152,6 +158,8 @@ setGeneric('restrict_opposing_positions', function(object, pos1, pos2) standardG
 #' # Restrict lineup from having Skaters and Goalies from opposite teams
 #' opt <- restrict_opposing_positions(object = opt, pos1 = c('C','W','D'), pos2 = 'G')
 #' }
+#'
+#' @rdname restrict_opposing_positions
 #'
 #'@export
 setMethod(f = 'restrict_opposing_positions',
@@ -219,10 +227,11 @@ setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_m
 #' @param object An optimizer object
 #' @param exposure Value to set the exposure
 #'
-#' @rdname set_max_exposure
 #' @description Method to set the global max exposure of an optimizer model.
 #'
 #' @return Updated Optimizer object
+#'
+#' @rdname set_max_exposure
 #'
 #' @export
 setMethod(f = 'set_max_exposure',
@@ -239,7 +248,6 @@ setGeneric('set_max_overlap', function(object, overlap) standardGeneric('set_max
 #' @param object An optimizer object
 #' @param overlap Maximum player overlap across lineups
 #'
-#' @rdname set_max_overlap
 #' @description Method to set the max overlap of an optimizer model.
 #'
 #' @return Updated Optimizer object
@@ -252,6 +260,8 @@ setGeneric('set_max_overlap', function(object, overlap) standardGeneric('set_max
 #' # update the max overlap
 #' opt <- set_max_overlap(object = opt, overlap = 6)
 #' }
+#'
+#' @rdname set_max_overlap
 #'
 #' @export
 setMethod(f = 'set_max_overlap',
@@ -268,7 +278,6 @@ setGeneric('set_flex_positions', function(object, positions) standardGeneric('se
 #' @param object An optimizer object
 #' @param positions Value to set the roster size (subject to validity checks).
 #'
-#' @rdname set_flex_positions
 #' @description Method for setting FLEX/UTIL positions. Can be used to limit FLEX/UTIL to a user-specified
 #'    set of possible positions (see examples).
 #'
@@ -282,6 +291,8 @@ setGeneric('set_flex_positions', function(object, positions) standardGeneric('se
 #' # Default FLEX is c('C','W','D') -- here we'll remove D
 #' opt <- set_flex_positions(object = opt, positions = c('C','W'))
 #' }
+#'
+#' @rdname set_flex_positions
 #'
 #' @export
 setMethod(f = 'set_flex_positions',
@@ -325,13 +336,24 @@ setMethod('extract_player_fpts',
             return(out)
           })
 
-
+# This needs documentation
+#' Get Player data from optimizer object
+#'
+#' @param object An optimizer object
+#'
+#' @details In addition to the optimizer object, this method can be run on a player object
+#' to provide details about that single player.
+#'
+#' @return Data.table containing information about the players.
+#'
+#' @rdname get_player_data
+#'
+#' @export
 setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
 setMethod('get_player_data', 'optimizer',
           function(object){
 
             players <- lapply(object@players, get_player_data)
-                       # all     <- do.call('rbind', players)
             return(data.table::rbindlist(players))
 
           })
@@ -342,10 +364,12 @@ setGeneric('get_player_id', function(object, name, team, position) standardGener
 #'
 #' @param object Object of class Optimizer
 #' @param name Full name of player
-#' @param team team abbreviation of player (Not required)
-#' @param position position of player (Not required)
+#' @param team team abbreviation of player (Optional)
+#' @param position position of player (Optional)
 #'
 #' @details \code{team} and \code{position} can be included to differentiate between two players with the same name, but who play for different teams and/or at different positions.
+#'
+#' @rdname get_player_id
 #'
 #' @export
 setMethod(f = 'get_player_id',
@@ -378,22 +402,26 @@ setMethod(f = 'get_player_id',
 
 
 ## Updating Player Information
-setGeneric("add_player", function(object, pl) standardGeneric("add_player"))
+setGeneric("add_player", function(object, player) standardGeneric("add_player"))
 #' Method for adding a player to Optimizer object
 #'
 #' @param object an S4 optimizer object
-#' @param pl an object of class Player
+#' @param player an object of class Player
+#'
+#' @return Updated optimizer object
+#'
+#' @rdname add_player
 #'
 #' @export
 setMethod('add_player',
           signature = 'optimizer',
-          definition = function(object, pl) {
+          definition = function(object, player) {
 
             # Check that if player exists, they aren't added again
-            if (any(sapply(object@players, identical, pl))) {
+            if (any(sapply(object@players, identical, player))) {
               warning('Player already exists')
             } else {
-              object@players <- c(object@players, pl)
+              object@players <- c(object@players, player)
             }
 
             return(object)
@@ -405,6 +433,10 @@ setGeneric("remove_player", function(object, id) standardGeneric("remove_player"
 #'
 #' @param object an S4 optimizer object
 #' @param id ID of player to remove
+#'
+#' @return Updated optimizer object
+#'
+#' @rdname remove_player
 #'
 #' @export
 setMethod('remove_player',
@@ -430,6 +462,10 @@ setGeneric("update_fpts", function(object, fpts_data) standardGeneric('update_fp
 #' @param fpts_data a data.frame containing players and points. See details.
 #'
 #' @details The data.frame passed in fpts_data should contain two columns - \code{id} and \code{fpts}.
+#'
+#' @return Updated optimizer object
+#'
+#' @rdname update_fpts
 #'
 #' @export
 setMethod('update_fpts',
@@ -465,6 +501,10 @@ setGeneric("set_fpts_by_id", function(object, id, fpts) standardGeneric('set_fpt
 #' @param id A Player ID to update
 #' @param fpts Value for slot \code{fpts} of Player object
 #'
+#' @return Updated optimizer object
+#'
+#' @rdname set_fpts_by_id
+#'
 #' @export
 setMethod('set_fpts_by_id',
           signature = 'optimizer',
@@ -487,6 +527,10 @@ setGeneric('block_players_by_id', function(object, player_ids) standardGeneric('
 #' @param object an S4 object of class Optimizer
 #' @param player_ids IDs of players to block
 #'
+#' @return Updated optimizer object
+#'
+#' @rdname block_players_by_id
+#'
 #' @export
 setMethod('block_players_by_id', 'optimizer',
           function(object, player_ids) {
@@ -506,6 +550,10 @@ setGeneric('lock_players_by_id', function(object, player_ids) standardGeneric('l
 #'
 #' @param object an S4 object of class Optimizer
 #' @param player_ids IDs of players to block
+#'
+#' @return Updated optimizer object
+#'
+#' @rdname lock_players_by_id
 #'
 #' @export
 setMethod('lock_players_by_id', 'optimizer',

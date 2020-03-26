@@ -11,6 +11,9 @@
 
 \item{id}{ID of player to remove}
 }
+\value{
+Updated optimizer object
+}
 \description{
 Method for removing a player from Optimizer object
 }

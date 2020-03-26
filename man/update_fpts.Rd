@@ -11,6 +11,9 @@
 
 \item{fpts_data}{a data.frame containing players and points. See details.}
 }
+\value{
+Updated optimizer object
+}
 \description{
 Method for updating fantasy points in an object
 }

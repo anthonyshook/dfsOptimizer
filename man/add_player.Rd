@@ -4,12 +4,15 @@
 \alias{add_player,optimizer-method}
 \title{Method for adding a player to Optimizer object}
 \usage{
-\S4method{add_player}{optimizer}(object, pl)
+\S4method{add_player}{optimizer}(object, player)
 }
 \arguments{
 \item{object}{an S4 optimizer object}
 
-\item{pl}{an object of class Player}
+\item{player}{an object of class Player}
+}
+\value{
+Updated optimizer object
 }
 \description{
 Method for adding a player to Optimizer object

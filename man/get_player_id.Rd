@@ -11,9 +11,9 @@
 
 \item{name}{Full name of player}
 
-\item{team}{team abbreviation of player (Not required)}
+\item{team}{team abbreviation of player (Optional)}
 
-\item{position}{position of player (Not required)}
+\item{position}{position of player (Optional)}
 }
 \description{
 Get a Player Id

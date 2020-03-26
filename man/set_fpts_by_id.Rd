@@ -13,6 +13,9 @@
 
 \item{fpts}{Value for slot \code{fpts} of Player object}
 }
+\value{
+Updated optimizer object
+}
 \description{
 Method for updating fantasy points in an object
 }
