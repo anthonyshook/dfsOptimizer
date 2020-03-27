@@ -38,6 +38,8 @@ S4 Player Class
 
 \item{\code{max_exposure}}{Single player maximum exposure}
 
+\item{\code{variance}}{Single player variance}
+
 \item{\code{game_info}}{information about the game}
 }}
 

@@ -16,6 +16,9 @@ player(
   locked = FALSE,
   blocked = FALSE,
   is_injured = FALSE,
+  min_exposure = NA_real_,
+  max_exposure = NA_real_,
+  variance = 0,
   game_info
 )
 }
@@ -41,6 +44,12 @@ player(
 \item{blocked}{Whether to omit player from all lineups (Default FALSE)}
 
 \item{is_injured}{injury flag (Default FALSE)}
+
+\item{min_exposure}{Minimum exposure across lineups}
+
+\item{max_exposure}{Maximum exposure across lineups}
+
+\item{variance}{Amount of variance to apply to fpts during optimization (percentage)}
 
 \item{game_info}{information about the game (Default is an empty game_info object)}
 }
