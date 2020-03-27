@@ -77,6 +77,9 @@ player <- function(id,
                    locked = FALSE,
                    blocked = FALSE,
                    is_injured = FALSE,
+                   min_exposure = NA_real_,
+                   max_exposure = NA_real_,
+                   variance = 0,
                    game_info) {
 
   if (missing(game_info)){
