@@ -50,10 +50,13 @@ setClass(Class = 'FanduelOptim', contains = 'optimizer', prototype = list(site =
 setClass(Class = 'YahooOptim', contains = 'optimizer', prototype = list(site = 'YAHOO'))
 
 ## Contest Type Sub-classes
+setClass(Class = 'ClassicOptim', contains = 'optimizer')
+setClass(Class = 'ShowdownOptim', contains = 'optimizer')
+
 # Classic
-setClass(Class = 'DraftkingsClassicOptim', contains = c('DraftkingsOptim'))
-setClass(Class = 'FanduelClassicOptim', contains = c('FanduelOptim'))
-setClass(Class = 'YahooClassicOptim', contains = c('YahooOptim'))
+setClass(Class = 'DraftkingsClassicOptim', contains = c('DraftkingsOptim', 'ClassicOptim'))
+setClass(Class = 'FanduelClassicOptim', contains = c('FanduelOptim', 'ClassicOptim'))
+setClass(Class = 'YahooClassicOptim', contains = c('YahooOptim', 'ClassicOptim'))
 
 # Showdown / Captain Mode / Single Game??
 # setClass(Class = 'DraftkingsShowdownOptim', contains = c('DraftkingsOptim'))
