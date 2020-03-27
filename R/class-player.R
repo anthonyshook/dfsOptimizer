@@ -14,6 +14,7 @@
 #' @slot is_injured injury flag
 #' @slot min_exposure Single player minimum exposure
 #' @slot max_exposure Single player maximum exposure
+#' @slot variance Single player variance
 #' @slot game_info information about the game
 #'
 #' @keywords internal
@@ -33,12 +34,14 @@ setClass('player_object',
            is_injured = 'logical',
            min_exposure = 'numeric',
            max_exposure = 'numeric',
+           variance = 'numeric',
            game_info = 'gameInfo'
          ),
          prototype = list(
            min_exposure = NA_real_,
            max_exposure = NA_real_,
            is_injured = FALSE,
+           variance = 0,
            locked = FALSE
          ))
 
@@ -55,6 +58,9 @@ setClass('player_object',
 #' @param locked Whether the player should be locked to all lineups (Default FALSE)
 #' @param blocked Whether to omit player from all lineups (Default FALSE)
 #' @param is_injured injury flag (Default FALSE)
+#' @param min_exposure Minimum exposure across lineups
+#' @param max_exposure Maximum exposure across lineups
+#' @param variance Amount of variance to apply to fpts during optimization (percentage)
 #' @param game_info information about the game (Default is an empty game_info object)
 #'
 #' @details Function that initializes a Player object.
@@ -96,6 +102,7 @@ player <- function(id,
   return(p)
 
 }
+
 
 # Show method
 setMethod('show', signature = 'player_object',
