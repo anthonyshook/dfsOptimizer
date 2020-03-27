@@ -12,18 +12,8 @@ setMethod('construct_model',
             # Get config
             config <- object@config
 
-            # Checking for players
-            if (length(object@players) == 0) {
-              stop('No players found, cannot construct a model!')
-            }
-
-            # Start constructing the model
-            object@model <- build_classic_model(
-              size = length(object@players),
-              team_vector = sapply(object@players, team),
-              pts  = extract_player_fpts(object),
-              maximize = maximize
-            )
+            # Build base model
+            object <- build_base_model(object, maximize = maximize)
 
             # Updating exposure where it isn't set
             object@players <- lapply(object@players, function(P) {
@@ -34,6 +24,9 @@ setMethod('construct_model',
               return(P)
             })
 
+            # Updating variance where it isn't set
+            object <- apply_global_variance(object, varpct = variance(object@config))
+
             # Adding roster limit
             object@model <- add_roster_size_constraint(object@model, object@players, roster_limit = roster_size(config))
 
@@ -42,8 +35,6 @@ setMethod('construct_model',
                                                   players = object@players,
                                                   budget = budget(config),
                                                   min_budget = min_budget(config))
-
-
 
             # Add team size constraints
             object@model <- add_team_number_constraints(model = object@model,
@@ -104,11 +95,12 @@ setMethod('build_lineups',
             for (i in 1:num_lineups) {
               if (verbose) setTxtProgressBar(pb, i)
 
-              # add variance constraint
-              current_model <- apply_variance(M, varpct = variance(M@config))
+              # Reset the variance of the model
+              current_opt <- apply_variance(M)
+              current_opt <- update_objective(current_opt, fpts = extract_player_fpts(current_opt))
 
               # Temporary Model
-              current_model <- M@model
+              current_model <- current_opt@model
 
               # Add unique roster constraint
               current_model <- add_unique_lineup_constraint(current_model, solution_vectors)
@@ -150,6 +142,7 @@ setMethod('build_lineups',
               solution_vectors[[i]] <- solution_index$value
 
               # TO DO -- get only relevant rows (not the index, but the table containing players' data)
+              # Returns the *original* FPTS, not those influenced by variance
               crlineup <- get_player_data(object)[which(solution_vectors[[i]]==1),]
               crlineup <- reorder_lineup(crlineup, object@config)
 
