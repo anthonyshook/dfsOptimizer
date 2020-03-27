@@ -306,11 +306,28 @@ setMethod(f = 'set_flex_positions',
           })
 
 
-setGeneric('apply_variance', function(object, varpct) standardGeneric('apply_variance'))
+#'@keywords internal
+setGeneric('apply_global_variance', function(object, varpct) standardGeneric('apply_global_variance'))
+setMethod(f = 'apply_global_variance', signature = 'optimizer',
+          function(object, varpct) {
+            # For any players with NA variance, replace with varpct
+            object@players <- lapply(object@players, function(P) {
+              # If NA, use global, else, use primary
+              if (is.na(variance(P))) {
+                P <- set_variance(P, variance(object@config))
+              }
+              return(P)
+            })
+            return(object)
+          })
+
+
+#' @keywords internal
+setGeneric('apply_variance', function(object) standardGeneric('apply_variance'))
 setMethod(f = 'apply_variance',
           signature = 'optimizer',
-          definition = function(object, varpct) {
-            object@players <- lapply(object@players, 'apply_variance', varpct = varpct)
+          definition = function(object) {
+            object@players <- lapply(object@players, 'apply_variance')
             return(object)
           })
 
@@ -568,4 +585,44 @@ setMethod('lock_players_by_id', 'optimizer',
             return(object)
           })
 
+##### Specific Methods for Classic Models #####
+setGeneric('build_base_model', function(object, maximize=TRUE) standardGeneric('build_base_model'))
+setMethod('build_base_model', 'ClassicOptim',
+          function(object, maximize=TRUE){
+            # Checking for players
+            if (length(object@players) == 0) {
+              stop('No players found, cannot construct a model!')
+            }
+
+            # Start constructing the model
+            object@model <- build_classic_model(
+              size = length(object@players),
+              team_vector = sapply(object@players, team),
+              pts  = extract_player_fpts(object),
+              maximize = maximize
+            )
+
+            return(object)
+          })
+
+# Updates objective based on necessary inputs
+# Since it's internal, it can remain generic
+setGeneric('update_objective', function(object, ...) standardGeneric('update_objective'))
+setMethod('update_objective', 'ClassicOptim',
+          function(object, ...){
+
+            # Check for req values
+            req_vals  <- c('fpts')
+            sub_vals  <- list(...)
+            val_check <- req_vals %in% names(sub_vals)
+
+            if (!all(val_check)) {
+              stop(paste0('Missing required argument(s): ', paste(req_vals[!val_check], collapse = ', ')))
+            }
+
+            # Update the model
+            object@model <- add_classic_objective(object@model, pts = sub_vals$fpts)
+
+            return(object)
+          })
 
