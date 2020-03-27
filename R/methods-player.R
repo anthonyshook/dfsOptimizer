@@ -48,7 +48,7 @@ setMethod('get_opposing_team', 'player_object',
           })
 
 #' @ export
-setGeneric('variance', function(x) standardGeneric('variance'))
+#setGeneric('variance', function(x) standardGeneric('variance'))
 setMethod('variance', 'player_object', function(x) x@variance)
 
 
@@ -138,12 +138,19 @@ setMethod('set_fpts', 'player_object',
 
 #' @ export
 setGeneric('set_variance', function(object, variance) standardGeneric('set_variance'))
-setMethod('set_variance', 'player_object', function(object, variance) object@variance <- variance)
+setMethod('set_variance', 'player_object', function(object, variance) {
+  object@variance <- variance
+  return(object)
+  })
 
 #setGeneric('apply_variance', function(object, varpct) standardGeneric('apply_variance'))
 setMethod('apply_variance', 'player_object',
-          function(object, varpct) {
-            pct <- object@fpts * varpct
+          function(object) {
+            # If no variance, return the object
+            if (is.na(object@variance)) return(object)
+
+            # Else, add random value based on that variance
+            pct <- object@fpts * object@variance
             object@fpts <- object@fpts + runif(1, min = -pct, max = pct)
             return(object)
           })
