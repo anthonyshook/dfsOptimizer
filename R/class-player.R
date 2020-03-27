@@ -41,7 +41,7 @@ setClass('player_object',
            min_exposure = NA_real_,
            max_exposure = NA_real_,
            is_injured = FALSE,
-           variance = 0,
+           variance = NA_real_,
            locked = FALSE
          ))
 
@@ -79,7 +79,7 @@ player <- function(id,
                    is_injured = FALSE,
                    min_exposure = NA_real_,
                    max_exposure = NA_real_,
-                   variance = 0,
+                   variance = NA_real_,
                    game_info) {
 
   if (missing(game_info)){
