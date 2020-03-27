@@ -28,7 +28,7 @@ setClass('optimConfig',
            min_budget = 0,
            flex_position = NA_character_,
            max_exposure = 1,
-           variance = 0
+           variance = NA_real_
          )
 )
 
