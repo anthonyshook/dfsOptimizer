@@ -123,6 +123,7 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
   # amount of players (where N is defined by the number of times that
   # position is repeated -- e.g., if positions = c('W','W','C'), then
   # N('W') = 2, but N('C') = 1)
+  browser()
   for (TMS in curr_teams) {
     tmsnum <- which(curr_teams == TMS)
     pos_vector <- seq_along(positions)
@@ -212,16 +213,6 @@ constr_force_opposing <- function(model, players, pos1, pos2) {
     # Final constraint is that sum(force_flag) >= 1
     # NOTE -- this simple version will meet the constraint if and when ANY pos1 or
     # pos2 is inclued (i.e., there is no way to say "constraint tm1 QB with tm2 WR *AND* TE)
-    # model <- model %>%
-    #   ompr::add_constraint(force_team[i, j=1] * 100 >=
-    #                          sum_expr(players[k] *
-    #                                     colwise(fo_fun(k, cpair$team, p=pos1)),
-    #                                   k = 1:nump), i = i) %>%
-    #   ompr::add_constraint(force_team[i, j=2] * 100 >=
-    #                          sum_expr(players[k] *
-    #                                     colwise(fo_fun(k, cpair$opp, p=pos2)),
-    #                                   k = 1:nump), i = i)
-
     for (P in 1:numpos) {
       poscount <- 1
 
@@ -241,10 +232,6 @@ constr_force_opposing <- function(model, players, pos1, pos2) {
   }
 
   # Constrain so that at least one pair must be one
-  # As soon as this becomes an non-equal constraint (... >= force_flag * numpos),
-  # The force_team measures break apart. This is probably because in the prior method,
-  # we're forcing a *specific number at each constraint* and not just a *greater than zero*
-  # So we need to do that in the loop.
   model <- model %>%
     ompr::add_constraint(sum_expr(force_team[i, j], j = 1:numpos) >= force_flag[i] * numpos, i = 1:numtms) %>%
     ompr::add_constraint(sum_expr(force_flag[i], i = 1:numtms) >= 1)
@@ -252,5 +239,3 @@ constr_force_opposing <- function(model, players, pos1, pos2) {
 
   return(model)
 }
-
-#tpc_fun(k, TMS, p=posnum, teamvec)
