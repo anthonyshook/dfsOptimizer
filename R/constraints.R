@@ -97,6 +97,9 @@ constr_restrict_opposing_position <- function(model, players, pos1, pos2) {
 #' @keywords internal
 constr_team_stack <- function(model, players, positions, nstacks = 1) {
 
+  # Convert positions to a list
+  positions <- as.list(positions)
+
   # Some info about the model
   num_players   <- get_model_length(model, 'players')
   num_teams     <- get_model_length(model, 'teams')
@@ -136,7 +139,7 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
       ), i = tmsnum)
 
     for (posnum in 1:length(positions)){
-      poscount <- sum(positions[posnum] == positions)
+      poscount <- sum(positions[[posnum]] == positions)
 
       model <- model %>%
         ompr::add_constraint((poscount - (1 - pos_team_stack[i, j=posnum])) +
