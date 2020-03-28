@@ -92,13 +92,19 @@ constr_restrict_opposing_position <- function(model, players, pos1, pos2) {
 #' @param model Model object
 #' @param players List of player objects
 #' @param positions Positions for that should be stacked within a single team
+#' @param opt_positions Optional positions -- used to add OR-level positions (e.g., stack of QB, WR & (TE | RB))
 #' @param nstacks Number of stacks to try to include (Default is 1)
 #'
 #' @keywords internal
-constr_team_stack <- function(model, players, positions, nstacks = 1) {
+constr_team_stack <- function(model, players, positions, opt_positions = NULL, nstacks = 1) {
 
   # Convert positions to a list
   positions <- as.list(positions)
+
+  if (!is.null(opt_positions)) {
+    # For now, do nothing...
+    # positions <- c(positions, list(opt_positions))
+  }
 
   # Some info about the model
   num_players   <- get_model_length(model, 'players')
@@ -113,11 +119,14 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
     ompr::add_variable(team_stack[i], i = 1:num_teams, type = 'binary')
 
   # Make Positional constraint functions
-  pos_fn <- function(i, pos) as.numeric(make_position_indicator(sapply(players,position)[i], pos, which_or_ind = 'ind'))
+  pos_fn <- function(i, pos) {
+    as.numeric(make_position_indicator(sapply(players,position)[i], pos, which_or_ind = 'ind'))
+  }
 
   tpc_fun <- function(i, t, p, teamvec) {
     # Gets this is a mask that is the position and team
-    mask <- as.integer(teamvec[i] == t) * pos_fn(i, positions[[p]])
+    cpos <- unique(unlist(positions[p]))
+    mask <- as.integer(teamvec[i] == t) * pos_fn(i, cpos)
     return(mask)
   }
 
@@ -126,7 +135,6 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
   # amount of players (where N is defined by the number of times that
   # position is repeated -- e.g., if positions = c('W','W','C'), then
   # N('W') = 2, but N('C') = 1)
-  browser()
   for (TMS in curr_teams) {
     tmsnum <- which(curr_teams == TMS)
     pos_vector <- seq_along(positions)
@@ -139,6 +147,7 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
       ), i = tmsnum)
 
     for (posnum in 1:length(positions)){
+      # Get number of times this position repeats
       poscount <- sum(sapply(positions, identical, positions[[posnum]]))
 
       model <- model %>%
