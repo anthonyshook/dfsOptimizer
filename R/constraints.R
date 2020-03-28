@@ -104,6 +104,7 @@ constr_team_stack <- function(model, players, positions, opt_positions = NULL, n
   if (!is.null(opt_positions)) {
     # For now, do nothing...
     # positions <- c(positions, list(opt_positions))
+    warning('opt_positions not yet functional')
   }
 
   # Some info about the model
@@ -149,6 +150,7 @@ constr_team_stack <- function(model, players, positions, opt_positions = NULL, n
     for (posnum in 1:length(positions)){
       # Get number of times this position repeats
       poscount <- sum(sapply(positions, identical, positions[[posnum]]))
+      print(poscount)
 
       model <- model %>%
         ompr::add_constraint((poscount - (1 - pos_team_stack[i, j=posnum])) +
