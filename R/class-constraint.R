@@ -28,7 +28,7 @@ setGeneric('apply_constraint', function(object, model, ...) standardGeneric('app
 #' @keywords internal
 setMethod('apply_constraint', 'constraintClass',
           function(object, model, ...){
-            args <- c(list(model = model), object@args, ...)
+            args <- c(list(model = model), object@args, list(...))
             new_model <- do.call(object@fnc, args)
             return(new_model)
           })
