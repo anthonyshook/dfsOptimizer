@@ -117,7 +117,7 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
 
   tpc_fun <- function(i, t, p, teamvec) {
     # Gets this is a mask that is the position and team
-    mask <- as.integer(teamvec[i] == t) * pos_fn(i, positions[p])
+    mask <- as.integer(teamvec[i] == t) * pos_fn(i, positions[[p]])
     return(mask)
   }
 
@@ -139,7 +139,7 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
       ), i = tmsnum)
 
     for (posnum in 1:length(positions)){
-      poscount <- sum(positions[[posnum]] == positions)
+      poscount <- sum(sapply(positions, identical, positions[[posnum]]))
 
       model <- model %>%
         ompr::add_constraint((poscount - (1 - pos_team_stack[i, j=posnum])) +
