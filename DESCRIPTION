@@ -1,11 +1,11 @@
 Package: dfsOptimizer
 Type: Package
 Title: Optimizer for Daily Fantasy Sports
-Version: 0.2.1.9999
+Version: 0.3.0.9999
 Authors@R: person("Anthony", "Shook", email = "anthony.shook@gmail.com", role = c("aut", "cre"))
-Description: Provides a RelR
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: Provides functions for generating optimal Daily Fantasy lineups within R, for multiple
+    sites, sports, and game-types.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:

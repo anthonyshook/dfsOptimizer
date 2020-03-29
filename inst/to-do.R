@@ -1,5 +1,5 @@
 
-### RELEASE MILESTONES
+##### RELEASE MILESTONES #####
 # When complete, move on to tests, docs, vignettes, etc.
 
 #' TO DO
@@ -9,8 +9,9 @@
 #' - Build LINEUP class to manage lineup objects [determine if necessary... useful for passing back to model]
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
 
-### FUTURE MILESTONES
 
+
+##### FUTURE MILESTONES #####
 #' SEMI LONG-TERM TO DO
 #' - write tests
 #' - Vignettes
