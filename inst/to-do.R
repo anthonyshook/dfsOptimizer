@@ -1,5 +1,5 @@
 
-### RELEASE MILESTONES
+##### RELEASE MILESTONES #####
 # When complete, move on to tests, docs, vignettes, etc.
 
 #' TO DO
@@ -9,23 +9,9 @@
 #' - Build LINEUP class to manage lineup objects [determine if necessary... useful for passing back to model]
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
 
-#' FEATURES TO ADD
-#' - Add method for specifying optional stack elements (like QB and *ONE OF* WR / TE -- possibly changing the input structure from single vector to list)
-#'   - Add argument `optional positions` where, if NA you just use 'positions' and stack the full vector.  If included,
-#'     you (A) require 'positions' to be length 1, (B) use another argument `num_included` (which defaults to 1) to identify
-#'     how many of the `optional_positions` should be included
-#'   - OR: optional positions will _always_ be "will pick one of" but it will be on-top of the previous stack.
-#'        - So (positions=c('qb','wr'), optional_positions = c('WR','TE')) will be either QB-WR-WR or QB-WR-TE
-#'        - if `optional_positions` is a list, like list(c('WR','TE'), c('RB','K')), it _could_ pick one from each (sets N to four, positions to those elements...)
-#'        - It may, theoretically, already be set up to do this...
-#'   - OR: We make an entirely different function (constr_team_stack_opt) that uses similar logic to the force opposing (but does force
-#'         same team, with options.), but can put a flag in the `add_team-stack` method to determine which to use based on arguments
-#'         - This could be the best way to handle it...
 
 
-
-### FUTURE MILESTONES
-
+##### FUTURE MILESTONES #####
 #' SEMI LONG-TERM TO DO
 #' - write tests
 #' - Vignettes
@@ -43,3 +29,9 @@
 #' - Add grouped-stack constraints (Line matching for hockey, depth order for baseball...) [would be easier with sport/site/contest_type based subclasses?]
 #'   - Could see this as a V1.2...
 
+#' TEAM STACK IMPROVEMENTS
+#' - Add 'teams' as optional in case people want to omit certain teams from stack eligibility
+#' - Add an `add_multistack` function with an API that allows team-specific stacks, and requires they ALL be met.
+#'   e.g, list(COL=c('C','W'), SJS = c('D','D')) would give you both stacks. Using just one position is also a way to
+#'   ensure that a position from a specific team gets pulled, like list(COL=c('C','W'), SJS = c('D')) ensures you get
+#'   at least one of the SJS D (tho you may be better off locking a player)

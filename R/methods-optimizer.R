@@ -101,11 +101,13 @@ setMethod(f = 'add_players_from_df',
           })
 
 
-setGeneric('add_team_stack', function(object, positions, nstacks = 1) standardGeneric('add_team_stack'))
+setGeneric('add_team_stack', function(object, positions, opt_positions=NULL, nstacks = 1) standardGeneric('add_team_stack'))
 #' Add a Team Stack
 #'
 #' @param object An optimizer model object
 #' @param positions Positions to stack within same team
+#' @param opt_positions A vector of optional positions. Used to build OR-based stacks, such as QB + WR + (TE or RB).
+#'     Always selects just one of the optional positions.
 #' @param nstacks Number of stacks to include (Default is 1)
 #'
 #' @return Updated optimizer object
@@ -117,6 +119,9 @@ setGeneric('add_team_stack', function(object, positions, nstacks = 1) standardGe
 #'
 #' # Add team stack, requiring a Center and Two Wingers from the same team
 #' opt <- add_team_stack(object = opt, positions = c('C','W','W'))
+#'
+#' # Add team stack, with a Center and a Winger, and one of either another center or winger
+#' opt <- add_team_stack(object = opt, positions = c('C','W'), opt_positions = c('C','W'))
 #' }
 #'
 #' @rdname add_team_stack
@@ -124,12 +129,12 @@ setGeneric('add_team_stack', function(object, positions, nstacks = 1) standardGe
 #'@export
 setMethod(f = 'add_team_stack',
           signature = 'optimizer',
-          definition = function(object, positions, nstacks = 1) {
+          definition = function(object, positions, opt_positions = NULL, nstacks = 1) {
 
             # Create constraint
             CON <- .constraintClass(constraint_name = "Team Stack Constraint",
                                     fnc = constr_team_stack,
-                                    args = list(positions = positions, nstacks = nstacks))
+                                    args = list(positions = positions, opt_positions = opt_positions, nstacks = nstacks))
 
             # Add it to the config object
             object <- include_constraint(object, CON)

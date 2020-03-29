@@ -29,7 +29,7 @@ s
 ########### STAGE
 # Add stack constraint
 testmod.hockey <- add_team_stack(testmod.hockey, positions = c('C','W','W'), nstacks = 1)
-#testmod.hockey@constraints <- list(stack_con = stack_con)
+build_lineups(testmod.hockey)
 
 # construct model
 testmod.hockey <- construct_model(testmod.hockey)
@@ -71,7 +71,7 @@ get_player_data(testmod.golf)[get_solution(sgolf, players[i])$value ==1,]
 ######### BASKETBALL SIMPLE
 testmod.basketball <- create_optimizer(site = 'DRAFTKINGS', sport = 'BASKETBALL', contest_type = 'CLASSIC')
 testmod.basketball <- add_players_from_csv(testmod.basketball, filepath = 'C:/Users/antho/Desktop/DFS Slate Files/basketball/DKSalaries.csv')
-testmod.basketball <- add_team_stack(testmod.basketball, positions = c('C','PF', 'SF'))
+testmod.basketball <- add_team_stack(testmod.basketball, positions = c('C','PF', 'SF'), opt_positions = c('C','SG'))
 #testmod.basketball <- restrict_opposing_positions(testmod.basketball, pos1 = 'PF', pos2 = 'PG')
 #testmod.basketball <- construct_model(testmod.basketball)
 build_lineups(testmod.basketball, num_lineups = 1)

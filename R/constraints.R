@@ -92,29 +92,51 @@ constr_restrict_opposing_position <- function(model, players, pos1, pos2) {
 #' @param model Model object
 #' @param players List of player objects
 #' @param positions Positions for that should be stacked within a single team
+#' @param opt_positions Optional positions -- used to add OR-level positions (e.g., stack of QB, WR & (TE | RB))
 #' @param nstacks Number of stacks to try to include (Default is 1)
 #'
 #' @keywords internal
-constr_team_stack <- function(model, players, positions, nstacks = 1) {
+constr_team_stack <- function(model, players, positions, opt_positions = NULL, nstacks = 1) {
 
-  # Some info about the model
+  # Generate a list of positions with min/max expectations
+  position_bounds <- data.table::data.table(table(positions))
+
+  # If opt_positions is not null, update the index and add positions
+  if (!is.null(opt_positions)) {
+    init_pci <- merge(position_bounds,
+                      data.table::data.table(table(opt_positions)),
+                      by.x = 'positions', by.y = 'opt_positions', all = TRUE)
+    init_pci[is.na(init_pci)] <- 0
+    pos_cnt_index <- init_pci[, .(posb = positions, lb = N.x, ub = N.x + N.y)][, list(posb, lb, ub)]
+  } else {
+    pos_cnt_index <- position_bounds[, .(posb = positions, lb = N, ub = N)]
+  }
+
+  # Some general info about the model
   num_players   <- get_model_length(model, 'players')
   num_teams     <- get_model_length(model, 'teams')
   teamvec       <- sapply(players, team)
   curr_teams    <- unique(teamvec)
-  num_positions <- length(positions)
+  num_positions <- length(positions) + length(opt_positions)
+  num_slots     <- length(positions) + ifelse(is.null(opt_positions), 0, 1)
+
+  # positions should now be concatenated with opt_positions
+  positions <- c(positions, opt_positions)
 
   # Add a team vector
   model <- model %>%
-    ompr::add_variable(pos_team_stack[i,j], i = 1:num_teams, j = 1:length(positions), type = 'binary') %>%
+    ompr::add_variable(pos_team_stack[i,j], i = 1:num_teams, j = 1:num_positions, type = 'binary') %>%
     ompr::add_variable(team_stack[i], i = 1:num_teams, type = 'binary')
 
   # Make Positional constraint functions
-  pos_fn <- function(i, pos) as.numeric(make_position_indicator(sapply(players,position)[i], pos, which_or_ind = 'ind'))
+  pos_fn <- function(i, pos) {
+    as.numeric(make_position_indicator(sapply(players,position)[i], pos, which_or_ind = 'ind'))
+  }
 
   tpc_fun <- function(i, t, p, teamvec) {
     # Gets this is a mask that is the position and team
-    mask <- as.integer(teamvec[i] == t) * pos_fn(i, positions[p])
+    cpos <- unique(unlist(positions[p]))
+    mask <- as.integer(teamvec[i] == t) * pos_fn(i, cpos)
     return(mask)
   }
 
@@ -123,28 +145,31 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
   # amount of players (where N is defined by the number of times that
   # position is repeated -- e.g., if positions = c('W','W','C'), then
   # N('W') = 2, but N('C') = 1)
-  browser()
   for (TMS in curr_teams) {
     tmsnum <- which(curr_teams == TMS)
     pos_vector <- seq_along(positions)
     # This constraint is meant to require the minimum number of players be represented
     # in the case of sports with multiple positions. Effectively, we want to say that in order
-    # for the team_flag to be 1, we also need a minimum player count of num_positions
+    # for the team_flag to be 1, we also need a minimum player count of num_slots
     model <- model %>%
-      ompr::add_constraint(team_stack[i] * num_positions <= sum_expr(
+      ompr::add_constraint(team_stack[i] * num_slots <= sum_expr(
         players[k] * colwise(tpc_fun(k, TMS, p=pos_vector, teamvec)), k = 1:num_players
       ), i = tmsnum)
 
-    for (posnum in 1:length(positions)){
-      poscount <- sum(positions[posnum] == positions)
+    for (posnum in 1:num_positions){
+
+      # Get number of times this position repeats
+      poscount <- sum(sapply(positions, identical, positions[posnum]))
+      poslb <- pos_cnt_index[posb == positions[posnum]]$lb
+      posub <- pos_cnt_index[posb == positions[posnum]]$ub
 
       model <- model %>%
-        ompr::add_constraint((poscount - (1 - pos_team_stack[i, j=posnum])) +
+        ompr::add_constraint((posub - (1 - pos_team_stack[i, j=posnum])) +
                                (pos_team_stack[i, j=posnum] * 200) >=
                                sum_expr(players[k] *
                                           colwise(tpc_fun(k, TMS, p=posnum, teamvec)),
                                         k = 1:num_players), i = tmsnum) %>%
-        ompr::add_constraint(pos_team_stack[i, j=posnum] * poscount <=
+        ompr::add_constraint(pos_team_stack[i, j=posnum] * poslb <=
                                sum_expr(players[k] *
                                           colwise(tpc_fun(k, TMS, p=posnum, teamvec)),
                                         k = 1:num_players), i = tmsnum)
@@ -154,7 +179,7 @@ constr_team_stack <- function(model, players, positions, nstacks = 1) {
   # This condition says count the values where the team_stack > num_positions and cast to boolean,
   # Then constrain the model to ensure at least one of those values == 1
   model <- model %>%
-    ompr::add_constraint(sum_expr(pos_team_stack[i, j], j = 1:num_positions) >= team_stack[i] * num_positions, i = 1:num_teams) %>%
+    ompr::add_constraint(sum_expr(pos_team_stack[i, j], j = 1:num_positions) >= team_stack[i] * num_slots, i = 1:num_teams) %>%
     ompr::add_constraint(sum_expr(team_stack[i], i = 1:num_teams) >= nstacks)
 
   return(model)
