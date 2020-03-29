@@ -12,7 +12,7 @@
 \item{positions}{Positions to stack within same team}
 
 \item{opt_positions}{A vector of optional positions. Used to build OR-based stacks, such as QB + WR + (TE or RB).
-Always selects just one of the optional positions}
+Always selects just one of the optional positions.}
 
 \item{nstacks}{Number of stacks to include (Default is 1)}
 }

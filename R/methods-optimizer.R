@@ -107,7 +107,7 @@ setGeneric('add_team_stack', function(object, positions, opt_positions=NULL, nst
 #' @param object An optimizer model object
 #' @param positions Positions to stack within same team
 #' @param opt_positions A vector of optional positions. Used to build OR-based stacks, such as QB + WR + (TE or RB).
-#'     Always selects just one of the optional positions
+#'     Always selects just one of the optional positions.
 #' @param nstacks Number of stacks to include (Default is 1)
 #'
 #' @return Updated optimizer object
