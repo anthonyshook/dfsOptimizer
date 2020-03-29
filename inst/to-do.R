@@ -21,6 +21,9 @@
 #'   - OR: We make an entirely different function (constr_team_stack_opt) that uses similar logic to the force opposing (but does force
 #'         same team, with options.), but can put a flag in the `add_team-stack` method to determine which to use based on arguments
 #'         - This could be the best way to handle it...
+#' - ANOTHER THING
+#'   - Stack elements PER TEAM (change the API to have positions at specific teams.  So maybe EDM = c('C','W','W'), but SJS = c('D','D'))
+#'   - Use a named-list
 
 
 

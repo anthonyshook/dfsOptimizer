@@ -4,12 +4,15 @@
 \alias{add_team_stack,optimizer-method}
 \title{Add a Team Stack}
 \usage{
-\S4method{add_team_stack}{optimizer}(object, positions, nstacks = 1)
+\S4method{add_team_stack}{optimizer}(object, positions, opt_positions = NULL, nstacks = 1)
 }
 \arguments{
 \item{object}{An optimizer model object}
 
 \item{positions}{Positions to stack within same team}
+
+\item{opt_positions}{A vector of optional positions. Used to build OR-based stacks, such as QB + WR + (TE or RB).
+Always selects just one of the optional positions}
 
 \item{nstacks}{Number of stacks to include (Default is 1)}
 }
@@ -26,6 +29,9 @@ opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 
 # Add team stack, requiring a Center and Two Wingers from the same team
 opt <- add_team_stack(object = opt, positions = c('C','W','W'))
+
+# Add team stack, with a Center and a Winger, and one of either another center or winger
+opt <- add_team_stack(object = opt, positions = c('C','W'), opt_positions = c('C','W'))
 }
 
 }

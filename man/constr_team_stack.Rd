@@ -4,7 +4,7 @@
 \alias{constr_team_stack}
 \title{Adds Same-Team stacks}
 \usage{
-constr_team_stack(model, players, positions, nstacks = 1)
+constr_team_stack(model, players, positions, opt_positions = NULL, nstacks = 1)
 }
 \arguments{
 \item{model}{Model object}
@@ -12,6 +12,8 @@ constr_team_stack(model, players, positions, nstacks = 1)
 \item{players}{List of player objects}
 
 \item{positions}{Positions for that should be stacked within a single team}
+
+\item{opt_positions}{Optional positions -- used to add OR-level positions (e.g., stack of QB, WR & (TE | RB))}
 
 \item{nstacks}{Number of stacks to try to include (Default is 1)}
 }
