@@ -31,10 +31,12 @@ setMethod('construct_model',
             object@model <- add_roster_size_constraint(object@model, object@players, roster_limit = roster_size(config))
 
             # Adding budget constraint
+            cpt_mode <- ifelse('captain_mode' %in% slotNames(object@config), object@config@captain_mode, FALSE)
             object@model <- add_budget_constraint(object@model,
                                                   players = object@players,
                                                   budget = budget(config),
-                                                  min_budget = min_budget(config))
+                                                  min_budget = min_budget(config),
+                                                  cpt_mode = cpt_mode)
 
             # Add team size constraints
             object@model <- add_team_number_constraints(model = object@model,
