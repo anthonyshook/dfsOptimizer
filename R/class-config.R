@@ -86,6 +86,7 @@ setMethod('summary','optimConfig', function(object){
 #     Subclassing     #
 #######################
 # Site, sport and Contest Type specific
+setClass('optimSingleGameConfig', contains = 'optimConfig', slots = list(captain_mode = 'logical'))
 
 ##### DRAFTKINGS #####
 # Hockey, Classic
@@ -292,4 +293,4 @@ setClass('fanduelNascarClassicConfig',
          ))
 
 
-
+###
