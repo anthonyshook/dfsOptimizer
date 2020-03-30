@@ -4,7 +4,10 @@
 
 #' TO DO
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
-#' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API -slightly less important now)
+#'    - functions written
+#'    - NEXT -- model builder, optimzer sub-classes, and config sub-classes
+#'    - ANNOYING PART -- budget is not set within a method, so it will need an if/else in construct_model
+#' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
 #' - Build LINEUP class to manage lineup objects [determine if necessary... useful for passing back to model]
