@@ -593,7 +593,7 @@ setMethod('lock_players_by_id', 'optimizer',
 ##### Specific Methods for Classic Models #####
 setGeneric('build_base_model', function(object, maximize=TRUE) standardGeneric('build_base_model'))
 setMethod('build_base_model', 'ClassicOptim',
-          function(object, maximize=TRUE){
+          function(object, maximize=TRUE) {
             # Checking for players
             if (length(object@players) == 0) {
               stop('No players found, cannot construct a model!')
@@ -609,6 +609,27 @@ setMethod('build_base_model', 'ClassicOptim',
 
             return(object)
           })
+
+setMethod('build_base_model', 'SingleGameOptim',
+          function(object, maximize=TRUE) {
+            # Checking for players
+            if (length(object@players) == 0) {
+              stop('No players found, cannot construct a model!')
+            }
+
+            # Start constructing the model
+            object@model <- build_singlegame_model(
+              size = length(object@players),
+              team_vector = sapply(object@players, team),
+              pts  = extract_player_fpts(object),
+              cpt_mode = object@config@captain_mode,
+              maximize = maximize
+            )
+
+            return(object)
+
+          })
+
 
 # Updates objective based on necessary inputs
 # Since it's internal, it can remain generic
