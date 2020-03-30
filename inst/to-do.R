@@ -5,8 +5,9 @@
 #' TO DO
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
 #'    - functions written
-#'    - NEXT -- model builder, optimzer sub-classes, and config sub-classes
-#'    - ANNOYING PART -- budget is not set within a method, so it will need an if/else in construct_model
+#'    - NEXT -- model builder, optimizer sub-classes, and config sub-classes
+#'    - ANNOYING PART -- budget _current_ uses an ifelse but it's fragile-ish.
+#'    - Also TO-DO: Lineup ordering logic (show Captain and the multiplier salary and pts)
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
