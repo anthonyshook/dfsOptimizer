@@ -82,9 +82,24 @@ build_singlegame_model <- function(size, team_vector, pts, cpt_mode = TRUE, maxi
   }
 
   # Add Objective
-  base_model <- add_classic_objective(base_model, maximize = maximize, pts = pts)
+  base_model <- add_singlegame_objective(base_model, maximize = maximize, cpt_mode = cpt_mode, pts = pts)
 
   return(base_model)
+}
+
+add_singlegame_objective  <- function(model, maximize = TRUE, cpt_mode = TRUE, pts) {
+  N <- get_model_length(model, 'players')
+  objdir <- ifelse(maximize, 'max', 'min')
+  if (cpt_mode) {
+    model <- ompr::set_objective(model,
+                                 sum_expr((colwise(pts[i]) * players[i]) +
+                                            (colwise(pts[i]) * .5 * capflag[i]), i = 1:N))
+  } else {
+    model <- ompr::set_objective(model,
+                                 sum_expr(colwise(pts[i]) * players[i], i = 1:N),
+                                 sense = objdir)
+  }
+  return(model)
 }
 
 
