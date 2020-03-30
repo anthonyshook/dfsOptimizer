@@ -51,7 +51,7 @@ setClass(Class = 'YahooOptim', contains = 'optimizer', prototype = list(site = '
 
 ## Contest Type Sub-classes
 setClass(Class = 'ClassicOptim', contains = 'optimizer')
-setClass(Class = 'ShowdownOptim', contains = 'optimizer')
+setClass(Class = 'SingleGameOptim', contains = 'optimizer')
 
 # Classic
 setClass(Class = 'DraftkingsClassicOptim', contains = c('DraftkingsOptim', 'ClassicOptim'))
