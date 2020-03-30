@@ -1,5 +1,4 @@
 # This currently builds a base CLASSIC model
-# Will need to rework this to function with SHOWDOWN style models.
 
 #' Build Base Model
 #'
@@ -8,6 +7,7 @@
 #' @param pts vector of length 'size' containing points to use in objective function
 #' @param maximize Whether to maximize the objective (if FALSE, the objective is minimized)
 #'
+#' @keywords internal
 build_classic_model <- function(size, team_vector, pts, maximize = TRUE) {
 
   # Lengths (unique teams and positions)
@@ -41,6 +41,50 @@ add_classic_objective  <- function(model, maximize = TRUE, pts) {
                                sum_expr(colwise(pts[i]) * players[i], i = 1:N),
                                sense = objdir)
   return(model)
+}
+
+
+#' Build Single Game / Showdown / Captain model
+#'
+#' @param size number of players
+#' @param team_vector vector of teams
+#' @param pts vector of length 'size' containing points to use in objective function
+#' @param cpt_mode Logical. Determines whether captain mode is used.
+#' @param maximize Whether to maximize the objective (if FALSE, the objective is minimized)
+#'
+#' @keywords internal
+build_singlegame_model <- function(size, team_vector, pts, cpt_mode = TRUE, maximize = TRUE) {
+  # Lengths (unique teams and positions)
+  num_teams <- length(unique(team_vector))
+
+  # Model with all appropriate variables
+  base_model <- ompr::MILPModel() %>%
+    ompr::add_variable(players[i], i = 1:size, type = "binary") %>%
+    # Team related variables
+    ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>%
+    ompr::add_variable(teams[i], i = 1:num_teams, type = 'integer') %>%
+    ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary') %>%
+    # Teams alignment
+    ompr::add_constraint(player_teams[i,j] == players[i] * mask_func(j, team_vector), i = 1:size, j = 1:num_teams) %>%
+    ompr::add_constraint(teams[j] == sum_expr(player_teams[i,j], i = 1:size), j = 1:num_teams) %>%
+    ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:num_teams) %>%
+    ompr::add_constraint(teams[j] <= teams_binary[j] * 100, j = 1:num_teams)
+
+  if (cpt_mode) {
+    # Add caption variable, constrain it to 1, and ensure it's a subset of players
+    base_model <- base_model %>%
+      # Variables
+      ompr::add_variable(captain[i], i = 1:size, type = 'binary') %>%
+      ompr::add_variable(capflag[i], i = 1:size, type = 'binary') %>%
+      # Constraints
+      ompr::add_constraint(captain[i] + players[i] >= capflag[i] * 2, i = 1:size) %>%
+      ompr::add_constraint(sum_expr(capflag[i], i = 1:size) == 1)
+  }
+
+  # Add Objective
+  base_model <- add_classic_objective(base_model, maximize = maximize, pts = pts)
+
+  return(base_model)
 }
 
 
