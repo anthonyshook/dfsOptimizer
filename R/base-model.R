@@ -93,7 +93,8 @@ add_singlegame_objective  <- function(model, maximize = TRUE, cpt_mode = TRUE, p
   if (cpt_mode) {
     model <- ompr::set_objective(model,
                                  sum_expr((colwise(pts[i]) * players[i]) +
-                                            (colwise(pts[i]) * .5 * capflag[i]), i = 1:N))
+                                            (colwise(pts[i]) * .5 * capflag[i]), i = 1:N),
+                                 sense = objdir)
   } else {
     model <- ompr::set_objective(model,
                                  sum_expr(colwise(pts[i]) * players[i], i = 1:N),
@@ -114,16 +115,28 @@ add_roster_size_constraint <- function(model, players, roster_limit) {
 
 
 # Budget Constraint
-add_budget_constraint <- function(model, players, budget, min_budget) {
+add_budget_constraint <- function(model, players, budget, min_budget, cpt_mode = FALSE) {
   N <- length(players)
   player_salaries <- sapply(players, salary)
 
-  # Max budget Constraint
-  model <- ompr::add_constraint(.model = model,
-                                .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) <= budget)
-  # Min Budget Constraint
-  model <- ompr::add_constraint(.model = model,
-                                .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) >= min_budget)
+  ## If CPT MODE, we need to also add in the extra .5 salary
+  if (cpt_mode) {
+    # Max budget Constraint
+    model <- ompr::add_constraint(.model = model,
+                                  .constraint_expr = sum_expr(colwise((player_salaries[i]) * players[i]) +
+                                                                colwise((player_salaries[i]) * capflag[i] * .5), i = 1:N) <= budget)
+    # Min Budget Constraint
+    model <- ompr::add_constraint(.model = model,
+                                  .constraint_expr = sum_expr(colwise((player_salaries[i]) * players[i]) +
+                                                                colwise((player_salaries[i]) * capflag[i] * .5), i = 1:N) >= min_budget)
+  } else {
+    # Max budget Constraint
+    model <- ompr::add_constraint(.model = model,
+                                  .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) <= budget)
+    # Min Budget Constraint
+    model <- ompr::add_constraint(.model = model,
+                                  .constraint_expr = sum_expr(colwise(player_salaries[i]) * players[i], i = 1:N) >= min_budget)
+  }
   return(model)
 }
 
