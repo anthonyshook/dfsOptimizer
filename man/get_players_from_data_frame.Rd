@@ -10,7 +10,7 @@ get_players_from_data_frame(df)
 \item{df}{A data.frame with columns for player related information.  This can contain any/all of the player related info.
 If a column coincides with a slot in objects of class \code{player_object}, it will be included when the
 data.frame is converted into unique player objects. The one exception is slot \code{game_info}, which is
-ignored in the conversion. \n}
+ignored in the conversion.}
 }
 \value{
 A list containing values of class \code{player_objects}, one per player (i.e., row) in the data set.
