@@ -3,7 +3,7 @@
 #' @param df A data.frame with columns for player related information.  This can contain any/all of the player related info.
 #'    If a column coincides with a slot in objects of class \code{player_object}, it will be included when the
 #'    data.frame is converted into unique player objects. The one exception is slot \code{game_info}, which is
-#'    ignored in the conversion. \n
+#'    ignored in the conversion.
 #' @details The following columns that are required, in order to avoid issues with the optimizer model:
 #' \itemize{
 #'   \item{first_name}
