@@ -28,7 +28,7 @@ expand.grid.unique <- function(..., rep = FALSE, uniqueCombinations = TRUE) {
   dat <- data.table::CJ(..., unique = TRUE)
 
   # Get possible combinations
-  matind     <- combn(colnames(dat), 2)
+  matind     <- utils::combn(colnames(dat), 2)
   matchcheck <- 0
   intercheck <- 0
 

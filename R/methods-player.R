@@ -151,7 +151,7 @@ setMethod('apply_variance', 'player_object',
 
             # Else, add random value based on that variance
             pct <- object@fpts * object@variance
-            object@fpts <- object@fpts + runif(1, min = -pct, max = pct)
+            object@fpts <- object@fpts + stats::runif(1, min = -pct, max = pct)
             return(object)
           })
 

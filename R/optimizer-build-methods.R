@@ -93,9 +93,9 @@ setMethod('build_lineups',
                                            players = M@players)
 
             # Generate Lineups
-            if (verbose) pb <- txtProgressBar(min = 0, max = num_lineups, initial = 0, char = '#', style = 3)
+            if (verbose) pb <- utils::txtProgressBar(min = 0, max = num_lineups, initial = 0, char = '#', style = 3)
             for (i in 1:num_lineups) {
-              if (verbose) setTxtProgressBar(pb, i)
+              if (verbose) utils::setTxtProgressBar(pb, i)
 
               # Reset the variance of the model
               current_opt <- apply_variance(M)
