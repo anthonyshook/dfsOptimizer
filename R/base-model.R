@@ -123,12 +123,12 @@ add_budget_constraint <- function(model, players, budget, min_budget, cpt_mode =
   if (cpt_mode) {
     # Max budget Constraint
     model <- ompr::add_constraint(.model = model,
-                                  .constraint_expr = sum_expr(colwise((player_salaries[i]) * players[i]) +
-                                                                colwise((player_salaries[i]) * capflag[i] * .5), i = 1:N) <= budget)
+                                  .constraint_expr = sum_expr((colwise(player_salaries[i]) * players[i]) +
+                                                                (colwise(player_salaries[i]) * capflag[i] * .5), i = 1:N) <= budget)
     # Min Budget Constraint
     model <- ompr::add_constraint(.model = model,
-                                  .constraint_expr = sum_expr(colwise((player_salaries[i]) * players[i]) +
-                                                                colwise((player_salaries[i]) * capflag[i] * .5), i = 1:N) >= min_budget)
+                                  .constraint_expr = sum_expr((colwise(player_salaries[i]) * players[i]) +
+                                                                (colwise(player_salaries[i]) * capflag[i] * .5), i = 1:N) >= min_budget)
   } else {
     # Max budget Constraint
     model <- ompr::add_constraint(.model = model,
