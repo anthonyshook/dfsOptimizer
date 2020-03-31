@@ -4,8 +4,8 @@
 
 #' TO DO
 #' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
-#'    - functions written
 #'    - NEXT -- model builder, optimizer sub-classes, and config sub-classes
+#'    - [NEED TO HAVE SingleGame METHOD FOR UPDATE_OBJECTIVE]
 #'    - ANNOYING PART -- budget _currently_ uses an ifelse but it's fragile-ish.
 #'        (Would be better if the construction process was at the method level -- AFAIK, only budget and pts differ in construction, everything
 #'        else is config-controlled already)
