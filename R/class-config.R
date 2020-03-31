@@ -176,6 +176,21 @@ setClass('draftkingsBaseballClassicConfig',
          ))
 
 
+## Single Game
+setClass('draftkingsHockeyShowdownConfig',
+         contains = 'optimSingleGameConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 6L,
+           min_team_req = 2L,
+           max_players_per_team = 5L,
+           max_overlap = 5,
+           roster_key = list('FLEX' = list(positions = c('C','W','D','G'), num = 6)),
+           flex_positions = NA_character_,
+           captain_mode = TRUE
+         ))
+
+
 ##### YAHOO #####
 # Hockey, Classic
 setClass('yahooHockeyClassicConfig',
