@@ -185,7 +185,9 @@ setClass('draftkingsHockeyShowdownConfig',
            min_team_req = 2L,
            max_players_per_team = 5L,
            max_overlap = 5,
-           roster_key = list('FLEX' = list(positions = c('C','W','D','G'), num = 6)),
+           roster_key = list(
+             'CAPTAIN' = list(positions = c('C','W','D','G'), num = 1),
+             'FLEX' = list(positions = c('C','W','D','G'), num = 5)),
            flex_positions = NA_character_,
            captain_mode = TRUE
          ))
