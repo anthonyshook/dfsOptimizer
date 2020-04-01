@@ -652,3 +652,20 @@ setMethod('update_objective', 'ClassicOptim',
             return(object)
           })
 
+setMethod('update_objective', 'SingleGameOptim',
+          function(object, ...){
+
+            # Check for req values
+            req_vals  <- c('fpts')
+            sub_vals  <- list(...)
+            val_check <- req_vals %in% names(sub_vals)
+
+            if (!all(val_check)) {
+              stop(paste0('Missing required argument(s): ', paste(req_vals[!val_check], collapse = ', ')))
+            }
+
+            # Update the model
+            object@model <- add_singlegame_objective(object@model, pts = sub_vals$fpts, cpt_mode = object@config@captain_mode)
+
+            return(object)
+          })
