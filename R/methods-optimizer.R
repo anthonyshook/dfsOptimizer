@@ -590,7 +590,30 @@ setMethod('lock_players_by_id', 'optimizer',
             return(object)
           })
 
-##### Specific Methods for Classic Models #####
+
+##### Lineup Methods #####
+setGeneric('new_lineup_object', function(object, num_lineups) standardGeneric('new_lineup_object'))
+setMethod('new_lineup_object',
+          'ClassicOptim',
+          function(object, num_lineups) {
+            lc <- new('lineupClassic',
+                      num_lineups = num_lineups,
+                      lineups = vector('list', num_lineups))
+            return(lc)
+          })
+
+
+setMethod('new_lineup_object',
+          'SingleGameOptim',
+          function(object, num_lineups) {
+            lc <- new('lineupSingle',
+                      num_lineups = num_lineups,
+                      lineups = vector('list', num_lineups))
+            return(lc)
+          })
+
+
+##### Methods for Building Models #####
 setGeneric('build_base_model', function(object, maximize=TRUE) standardGeneric('build_base_model'))
 setMethod('build_base_model', 'ClassicOptim',
           function(object, maximize=TRUE) {
