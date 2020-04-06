@@ -19,7 +19,7 @@
 #'     - We have a function, now we need a method
 #'   - add export utilities for the lineup objects, which are really based on optimizer methods...
 #'     - When the lineups are being generated, perhaps we pass in the appropriate function or (more likely) pre-format based on appropriate site/sport export
-#'   - convert the process within the `build_lineups` method to use this logic.
+#'   - convert the process within the `build_lineups` class-optimizer method to use this logic.
 #'   - Is there some metric of `similarity across lineups` I can provide that gives people a way of measuring slate variance?
 
 
