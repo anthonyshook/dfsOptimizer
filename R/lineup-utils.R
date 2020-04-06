@@ -70,3 +70,31 @@ parse_roster_key <- function(rk) {
 
   return(sum_table)
 }
+
+
+#' Calculate Player percentages across lineups
+#'
+#' @param lineups a list of lineups
+#'
+#' @keywords internal
+get_player_summary <- function(lineups) {
+  num_comp_lineups <- sum(!sapply(lineups, is.null))
+  all_lineups <- data.table::rbindlist(lineups)
+  freq <- all_lineups[,
+                      .(Lineups = .N, Percent = .N/num_comp_lineups * 100),
+                      by = 'fullname'][order(-Percent)]
+  freq <- data.table::setnames(freq, 'fullname','Player')
+  return(freq)
+}
+
+
+#' Calculate Team percentages across lineups
+#'
+#' @param lineups a list of lineups
+#'
+#' @keywords internal
+get_team_summary <- function(lineups) {
+  num_comp_lineups <- sum(!sapply(lineups, is.null))
+  all_lineups <- data.table::rbindlist(lineups)
+  return(table(all_lineups$team))
+}
