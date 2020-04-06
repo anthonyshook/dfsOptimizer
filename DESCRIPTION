@@ -28,6 +28,7 @@ Collate:
     'class-config.R'
     'class-constraint.R'
     'class-game-info.R'
+    'class-lineups.R'
     'lineup-utils.R'
     'class-player.R'
     'class-optimizer.R'

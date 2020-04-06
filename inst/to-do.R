@@ -14,7 +14,13 @@
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
 #' - Build LINEUP class to manage lineup objects [determine if necessary... useful for passing back to model]
-#'   - Actually this would be really nice for things like running "summary" and getting % breakdowns of players
+#'   - add simple `getter` function for pulling lineups from the object.
+#'   - add `lineup_exposures` method to calculate player exposures across lineups
+#'     - We have a function, now we need a method
+#'   - add export utilities for the lineup objects, which are really based on optimizer methods...
+#'     - When the lineups are being generated, perhaps we pass in the appropriate function or (more likely) pre-format based on appropriate site/sport export
+#'   - convert the process within the `build_lineups` method to use this logic.
+#'   - Is there some metric of `similarity across lineups` I can provide that gives people a way of measuring slate variance?
 
 
 
