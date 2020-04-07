@@ -22,6 +22,7 @@ setMethod('show', 'lineupClass', function(object) {
   }
 })
 
+
 # Summary for lineupClass
 summary.lineupClass <- function(object) {
   nonnull_lineups <- object@lineups[!sapply(object@lineups, is.null)]
@@ -37,6 +38,12 @@ summary.lineupClass <- function(object) {
     print(get_team_summary(nonnull_lineups))
   }
 
+}
+
+
+# Simple way to extract the lineup list to do whatever you want with it.
+as.list.lineupClass <- function(object) {
+  return(object@lineups)
 }
 
 
