@@ -82,7 +82,7 @@ setMethod('build_lineups',
             # Build a player data set
             # We can then filter from this below, where we need the relevant rows the optimizer solved for
             solution_vectors <- list()
-            lineups <- vector(mode = 'list', length = num_lineups)
+            lineups <- new_lineup_object(object, num_lineups = num_lineups)
 
             # Block Players
             M@model <- add_block_constraint(M@model,
@@ -148,7 +148,7 @@ setMethod('build_lineups',
               crlineup <- get_player_data(object)[which(solution_vectors[[i]]==1),]
               crlineup <- reorder_lineup(crlineup, object@config)
 
-              lineups[[i]] <- crlineup
+              lineups@lineups[[i]] <- crlineup
 
             }
 
