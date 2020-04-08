@@ -3,19 +3,19 @@
 # When complete, move on to tests, docs, vignettes, etc.
 
 #' TO DO
-#' - Test SHOWDOWN mode
-#'    - NEXT -- model builder, optimizer sub-classes, and config sub-classes
-#'    - ANNOYING PART -- budget _currently_ uses an ifelse but it's fragile-ish.
-#'        (Would be better if the construction process was at the method level -- AFAIK, only budget and pts differ in construction, everything
-#'        else is config-controlled already)
+#' - Expand SHOWDOWN mode
+#'    - NEXT -- optimizer sub-classes and config sub-classes
 #'    - Add: Method for changing the eligible CPT fields (check the way updating flex positions works)
+#'
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
-#' - Build LINEUP class to manage lineup objects [determine if necessary... useful for passing back to model]
+#'
+#' - Build LINEUP class to manage lineup objects
 #'   - add export utilities for the lineup objects, which are really based on optimizer methods...
 #'     - Beautifully, we SHOULD be able to use the exact setup of our roster key (thus, just cast the ordered roster object)
 #'   - Is there some metric of `similarity across lineups` I can provide that gives people a way of measuring slate variance?
+#'   - Add a TOTAL row to the `show` output of the lineup class
 
 
 
@@ -39,8 +39,11 @@
 #' - For cases like 'single game' or 'tier', it would be nice to have the ability to block an entire position wholesale
 #'   - example -- maybe you want a draft with no goalies
 #'   - Or maybe we need a way to limit specific positions for that particular class (not useful for Classic, but useful for Single)
+#' - The way we adapt budget to singlegame/showdown mode _currently_ uses an `ifelse` but it's fragile-ish.
+#'        (Would be better if the construction process was at the method level -- AFAIK, only budget and pts differ in construction, everything
+#'        else is config-controlled already)
 
-#' TEAM STACK IMPROVEMENTS
+#' TEAM STACK IMPROVEMENTS (longer term)
 #' - Add 'teams' as optional in case people want to omit certain teams from stack eligibility
 #' - Add an `add_multistack` function with an API that allows team-specific stacks, and requires they ALL be met.
 #'   e.g, list(COL=c('C','W'), SJS = c('D','D')) would give you both stacks. Using just one position is also a way to
