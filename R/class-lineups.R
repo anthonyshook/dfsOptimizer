@@ -16,7 +16,14 @@ setMethod('show', 'lineupClass', function(object) {
   # Just print lineups to screen
   completed_lineups <- object@lineups[!sapply(object@lineups, is.null)]
   if (length(completed_lineups) > 0) {
-    print(completed_lineups)
+    augmented_lineups <- lapply(completed_lineups, function(cl) {
+      data.table::rbindlist(
+        list(cl,
+             data.frame('','','','TOTAL', sum(cl$salary), sum(cl$fpts), '')
+             )
+        )
+    })
+    print(augmented_lineups)
   } else {
     print("No complete lineups found!")
   }

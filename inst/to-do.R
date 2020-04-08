@@ -13,7 +13,6 @@
 #'
 #' - Build LINEUP class to manage lineup objects
 #'   - Is there some metric of `similarity across lineups` I can provide that gives people a way of measuring slate variance?
-#'   - Add a TOTAL row to the `show` output of the lineup class
 
 
 
