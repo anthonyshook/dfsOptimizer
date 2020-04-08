@@ -98,3 +98,23 @@ get_team_summary <- function(lineups) {
   all_lineups <- data.table::rbindlist(lineups)
   return(table(all_lineups$team))
 }
+
+
+#' Calculate a 'similarity measure'
+#'
+#' @param lineups a list of lineups
+#'
+#' @keywords internal
+calc_jaccard_distance <- function(lineups) {
+  # Mean Jaccard distance
+  pair_jaccard <- numeric(0)
+  for (i in 1:(length(lineups) - 1)) {
+    for (j in (i + 1):length(lineups)) {
+      list1 <- lineups[[i]]$id
+      list2 <- lineups[[j]]$id
+      pair_jaccard <- c(pair_jaccard,
+                       length(intersect(list1, list2)) / length(union(list1, list2)))
+    }
+  }
+  return(1 - mean(pair_jaccard))
+}
