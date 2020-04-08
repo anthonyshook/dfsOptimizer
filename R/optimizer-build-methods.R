@@ -146,8 +146,7 @@ setMethod('build_lineups',
               # TO DO -- get only relevant rows (not the index, but the table containing players' data)
               # Returns the *original* FPTS, not those influenced by variance
               crlineup <- get_player_data(object)[which(solution_vectors[[i]]==1),]
-              crlineup <- reorder_lineup(crlineup, object@config)
-
+              crlineup <- format_lineup(object, crlineup, fit_model = fit_model)
               lineups@lineups[[i]] <- crlineup
 
             }
