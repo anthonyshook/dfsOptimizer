@@ -176,7 +176,7 @@ setClass('draftkingsBaseballClassicConfig',
          ))
 
 
-## Single Game
+## Hockey, Single Game
 setClass('draftkingsHockeyShowdownConfig',
          contains = 'optimSingleGameConfig',
          prototype = list(
@@ -186,9 +186,9 @@ setClass('draftkingsHockeyShowdownConfig',
            max_players_per_team = 5L,
            max_overlap = 5,
            roster_key = list(
-             'CAPTAIN' = list(positions = c('C','W','D','G'), num = 1),
+             'CPT' = list(positions = c('C','W','D','G'), num = 1),
              'FLEX' = list(positions = c('C','W','D','G'), num = 5)),
-           flex_position = NA_character_,
+           flex_position = 'FLEX',
            captain_mode = TRUE
          ))
 
