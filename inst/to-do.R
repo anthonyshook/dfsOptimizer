@@ -10,10 +10,6 @@
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
-#'
-#' - Build LINEUP class to manage lineup objects
-#'   - Is there some metric of `similarity across lineups` I can provide that gives people a way of measuring slate variance?
-
 
 
 ##### FUTURE MILESTONES #####
