@@ -12,8 +12,6 @@
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
 #'
 #' - Build LINEUP class to manage lineup objects
-#'   - add export utilities for the lineup objects, which are really based on optimizer methods...
-#'     - Beautifully, we SHOULD be able to use the exact setup of our roster key (thus, just cast the ordered roster object)
 #'   - Is there some metric of `similarity across lineups` I can provide that gives people a way of measuring slate variance?
 #'   - Add a TOTAL row to the `show` output of the lineup class
 
