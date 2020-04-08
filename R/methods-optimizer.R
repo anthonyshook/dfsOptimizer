@@ -613,6 +613,35 @@ setMethod('new_lineup_object',
           })
 
 
+setGeneric('format_lineup', function(object, lineup, ...) standardGeneric('format_lineup'))
+setMethod('format_lineup', 'ClassicOptim',
+          function(object, lineup, ...) {
+            # Reorder lineup
+            return(reorder_lineup(lineup, object@config))
+          })
+
+
+setMethod('format_lineup', 'SingleGameOptim',
+          function(object, lineup, ...) {
+            # Reorder lineup
+            lineup[, roster_position := flex_position(object@config)]
+            if (object@config@captain_mode) {
+              # Player indeces
+              all_player_indx <- which(ompr::get_solution(list(...)$fit_model, players[i])$value==1)
+              multiplier_indx <- which(ompr::get_solution(list(...)$fit_model, captain[i])$value==1)
+              reorder_indx    <- unique(c(which(multiplier_indx == all_player_indx), order(all_player_indx)))
+              multiplier_name <- setdiff(names(roster_key(object@config)), flex_position(object@config))
+              lineup <- lineup[reorder_indx, ]
+              lineup[1, roster_position := multiplier_name]
+              lineup[1, c('salary','fpts') :=
+                       list(salary * 1.5,
+                            fpts * 1.5)]
+            }
+
+            return(lineup)
+          })
+
+
 ##### Methods for Building Models #####
 setGeneric('build_base_model', function(object, maximize=TRUE) standardGeneric('build_base_model'))
 setMethod('build_base_model', 'ClassicOptim',
