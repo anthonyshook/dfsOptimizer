@@ -3,19 +3,17 @@
 # When complete, move on to tests, docs, vignettes, etc.
 
 #' TO DO
-#' - Test SHOWDOWN mode (the objective will have to change, for CAPTAIN mode. (value[1] * 1.5 + value[2:6] * 1), && budget[1]*1.5 + budget[2:6] * 1)
+#' - Test SHOWDOWN mode
 #'    - NEXT -- model builder, optimizer sub-classes, and config sub-classes
 #'    - ANNOYING PART -- budget _currently_ uses an ifelse but it's fragile-ish.
 #'        (Would be better if the construction process was at the method level -- AFAIK, only budget and pts differ in construction, everything
 #'        else is config-controlled already)
-#'    - Also [TO-DO: Lineup ordering logic (show Captain and the multiplier salary and pts)]
-#'      * make reorder lineup a method on optimizer; get config from there for CLASSIC, get config and model for SINGLE (we need it for captain mode) *
+#'    - Add: Method for changing the eligible CPT fields (check the way updating flex positions works)
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
 #' - Build LINEUP class to manage lineup objects [determine if necessary... useful for passing back to model]
 #'   - add export utilities for the lineup objects, which are really based on optimizer methods...
-#'     - When the lineups are being generated, perhaps we pass in the appropriate function or (more likely) pre-format based on appropriate site/sport export
 #'     - Beautifully, we SHOULD be able to use the exact setup of our roster key (thus, just cast the ordered roster object)
 #'   - Is there some metric of `similarity across lineups` I can provide that gives people a way of measuring slate variance?
 
