@@ -86,7 +86,9 @@ setMethod('summary','optimConfig', function(object){
 #     Subclassing     #
 #######################
 # Site, sport and Contest Type specific
-setClass('optimSingleGameConfig', contains = 'optimConfig', slots = list(captain_mode = 'logical'))
+setClass('optimSingleGameConfig', contains = 'optimConfig',
+         slots = list(multiplier_mode = 'logical',
+                      multiplier_name = 'character'))
 
 ##### DRAFTKINGS #####
 # Hockey, Classic
@@ -189,7 +191,8 @@ setClass('draftkingsHockeyShowdownConfig',
              'CPT' = list(positions = c('C','W','D','G'), num = 1),
              'FLEX' = list(positions = c('C','W','D','G'), num = 5)),
            flex_position = 'FLEX',
-           captain_mode = TRUE
+           multiplier_name = 'CPT',
+           multiplier_mode = TRUE
          ))
 
 

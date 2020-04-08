@@ -49,11 +49,11 @@ add_classic_objective  <- function(model, maximize = TRUE, pts) {
 #' @param size number of players
 #' @param team_vector vector of teams
 #' @param pts vector of length 'size' containing points to use in objective function
-#' @param cpt_mode Logical. Determines whether captain mode is used.
+#' @param mlt_mode Logical. Determines whether captain mode is used.
 #' @param maximize Whether to maximize the objective (if FALSE, the objective is minimized)
 #'
 #' @keywords internal
-build_singlegame_model <- function(size, team_vector, pts, cpt_mode = TRUE, maximize = TRUE) {
+build_singlegame_model <- function(size, team_vector, pts, mlt_mode = TRUE, maximize = TRUE) {
   # Lengths (unique teams and positions)
   num_teams <- length(unique(team_vector))
 
@@ -70,7 +70,7 @@ build_singlegame_model <- function(size, team_vector, pts, cpt_mode = TRUE, maxi
     ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:num_teams) %>%
     ompr::add_constraint(teams[j] <= teams_binary[j] * 100, j = 1:num_teams)
 
-  if (cpt_mode) {
+  if (mlt_mode) {
     # Add caption variable, constrain it to 1, and ensure it's a subset of players
     base_model <- base_model %>%
       # Variables
@@ -82,15 +82,15 @@ build_singlegame_model <- function(size, team_vector, pts, cpt_mode = TRUE, maxi
   }
 
   # Add Objective
-  base_model <- add_singlegame_objective(base_model, maximize = maximize, cpt_mode = cpt_mode, pts = pts)
+  base_model <- add_singlegame_objective(base_model, maximize = maximize, mlt_mode = mlt_mode, pts = pts)
 
   return(base_model)
 }
 
-add_singlegame_objective  <- function(model, maximize = TRUE, cpt_mode = TRUE, pts) {
+add_singlegame_objective  <- function(model, maximize = TRUE, mlt_mode = TRUE, pts) {
   N <- get_model_length(model, 'players')
   objdir <- ifelse(maximize, 'max', 'min')
-  if (cpt_mode) {
+  if (mlt_mode) {
     model <- ompr::set_objective(model,
                                  sum_expr((colwise(pts[i]) * players[i]) +
                                             (colwise(pts[i]) * .5 * capflag[i]), i = 1:N),
@@ -115,12 +115,12 @@ add_roster_size_constraint <- function(model, players, roster_limit) {
 
 
 # Budget Constraint
-add_budget_constraint <- function(model, players, budget, min_budget, cpt_mode = FALSE) {
+add_budget_constraint <- function(model, players, budget, min_budget, mlt_mode = FALSE) {
   N <- length(players)
   player_salaries <- sapply(players, salary)
 
   ## If CPT MODE, we need to also add in the extra .5 salary
-  if (cpt_mode) {
+  if (mlt_mode) {
     # Max budget Constraint
     model <- ompr::add_constraint(.model = model,
                                   .constraint_expr = sum_expr((colwise(player_salaries[i]) * players[i]) +
