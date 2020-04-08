@@ -625,14 +625,14 @@ setMethod('format_lineup', 'SingleGameOptim',
           function(object, lineup, ...) {
             # Reorder lineup
             lineup[, roster_position := flex_position(object@config)]
-            if (object@config@captain_mode) {
+            if (object@config@multiplier_mode) {
               # Player indeces
               all_player_indx <- which(ompr::get_solution(list(...)$fit_model, players[i])$value==1)
               multiplier_indx <- which(ompr::get_solution(list(...)$fit_model, captain[i])$value==1)
               reorder_indx    <- unique(c(which(multiplier_indx == all_player_indx), order(all_player_indx)))
-              multiplier_name <- setdiff(names(roster_key(object@config)), flex_position(object@config))
+
               lineup <- lineup[reorder_indx, ]
-              lineup[1, roster_position := multiplier_name]
+              lineup[1, roster_position := object@config@multiplier_name]
               lineup[1, c('salary','fpts') :=
                        list(salary * 1.5,
                             fpts * 1.5)]
@@ -640,6 +640,27 @@ setMethod('format_lineup', 'SingleGameOptim',
 
             return(lineup)
           })
+
+
+#' Toggle Multiplier Mode
+#'
+#' @param object An object of class Optimizer
+#'
+#' @details Toggles the Multiplier mode (where a player's salary and fpts are multiplied by a given value, usually 1.5)
+#'     for single-game / showdown contest types.  For Classic contest_types, this function has no effect.
+#'
+#' @export
+setGeneric('toggle_multiplier_mode', function(object) standardGeneric('toggle_multiplier_mode'))
+setMethod('toggle_multiplier_mode', 'SingleGameOptim', function(object) {
+  object@config@multiplier_mode <- !object@config@multiplier_mode
+  print(paste0('MULTIPLIER MODE IS ', ifelse(object@config@multiplier_mode, 'ON', 'OFF')))
+  return(object)
+})
+
+
+setMethod('toggle_multiplier_mode', 'ClassicOptim', function(object) {
+  return(object)
+})
 
 
 ##### Methods for Building Models #####
@@ -674,7 +695,7 @@ setMethod('build_base_model', 'SingleGameOptim',
               size = length(object@players),
               team_vector = sapply(object@players, team),
               pts  = extract_player_fpts(object),
-              cpt_mode = object@config@captain_mode,
+              mlt_mode = object@config@multiplier_mode,
               maximize = maximize
             )
 
@@ -717,7 +738,7 @@ setMethod('update_objective', 'SingleGameOptim',
             }
 
             # Update the model
-            object@model <- add_singlegame_objective(object@model, pts = sub_vals$fpts, cpt_mode = object@config@captain_mode)
+            object@model <- add_singlegame_objective(object@model, pts = sub_vals$fpts, mlt_mode = object@config@multiplier_mode)
 
             return(object)
           })
