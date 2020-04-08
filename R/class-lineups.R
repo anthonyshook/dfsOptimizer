@@ -43,6 +43,8 @@ summary.lineupClass <- function(object) {
     print(smry)
     cat("\nPlayers Per Team:")
     print(get_team_summary(nonnull_lineups))
+    cat(paste('\nLineup Variance (mean Jaccard Distance):', round(calc_jaccard_distance(nonnull_lineups)*100, 2), '%'))
+    cat('\n ')
   }
 
 }
