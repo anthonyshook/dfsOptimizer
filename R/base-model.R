@@ -48,14 +48,19 @@ add_classic_objective  <- function(model, maximize = TRUE, pts) {
 #'
 #' @param size number of players
 #' @param team_vector vector of teams
+#' @param position_vector vector of positions
 #' @param pts vector of length 'size' containing points to use in objective function
-#' @param mlt_mode Logical. Determines whether captain mode is used.
+#' @param config Configuration object from the optimizer
 #' @param maximize Whether to maximize the objective (if FALSE, the objective is minimized)
 #'
 #' @keywords internal
-build_singlegame_model <- function(size, team_vector, pts, mlt_mode = TRUE, maximize = TRUE) {
+build_singlegame_model <- function(size, team_vector, position_vector, pts, config, maximize = TRUE) {
   # Lengths (unique teams and positions)
   num_teams <- length(unique(team_vector))
+
+  # General info
+  mlt_mode <- multiplier_mode(config)
+  mlt_name <- multiplier_name(config)
 
   # Model with all appropriate variables
   base_model <- ompr::MILPModel() %>%
@@ -71,7 +76,7 @@ build_singlegame_model <- function(size, team_vector, pts, mlt_mode = TRUE, maxi
     ompr::add_constraint(teams[j] <= teams_binary[j] * 100, j = 1:num_teams)
 
   if (mlt_mode) {
-    # Add caption variable, constrain it to 1, and ensure it's a subset of players
+    # Add caption variable, constrain it to 1, ensure it's a subset of players, and define eligible positions
     base_model <- base_model %>%
       # Variables
       ompr::add_variable(captain[i], i = 1:size, type = 'binary') %>%
@@ -79,6 +84,16 @@ build_singlegame_model <- function(size, team_vector, pts, mlt_mode = TRUE, maxi
       # Constraints
       ompr::add_constraint(captain[i] + players[i] >= capflag[i] * 2, i = 1:size) %>%
       ompr::add_constraint(sum_expr(capflag[i], i = 1:size) == 1)
+
+    # Set Limits
+    keepers <- make_position_indicator(position_vector,
+                                       config@roster_key[[multiplier_name(config)]]$positions,
+                                       which_or_ind = 'which')
+    to_remove <- setdiff(1:size, keepers)
+
+    base_model <- base_model %>%
+      ompr::set_bounds(captain[i], ub = 0, lb = 0, i = to_remove)
+
   }
 
   # Add Objective
