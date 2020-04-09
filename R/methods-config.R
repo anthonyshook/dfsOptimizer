@@ -30,6 +30,12 @@ setMethod("max_exposure", "optimConfig", function(x) x@max_exposure)
 setGeneric("variance", function(x) standardGeneric("variance"))
 setMethod("variance", "optimConfig", function(x) x@variance)
 
+setGeneric('multiplier_mode', function(x) standardGeneric('multiplier_mode'))
+setMethod('multiplier_mode', 'optimSingleGameConfig', function(x) x@multiplier_mode)
+
+setGeneric('multiplier_name', function(x) standardGeneric('multiplier_name'))
+setMethod('multiplier_name', 'optimSingleGameConfig', function(x) x@multiplier_name)
+
 ### Setter Methods
 ## All setters have the 'set_' prefix, and those generics are referenced in methods-optimizer
 setGeneric('set_max_budget<-', function(x, value) standardGeneric('set_max_budget<-'))
