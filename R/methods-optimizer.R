@@ -372,8 +372,6 @@ setMethod(f = 'apply_variance',
           })
 
 
-
-
 #### Methods
 ## Extraction
 #' Extracting Fantasy Points from Player objects
@@ -729,8 +727,9 @@ setMethod('build_base_model', 'SingleGameOptim',
             object@model <- build_singlegame_model(
               size = length(object@players),
               team_vector = sapply(object@players, team),
+              position_vector = sapply(object@players, position),
               pts  = extract_player_fpts(object),
-              mlt_mode = object@config@multiplier_mode,
+              config = object@config,
               maximize = maximize
             )
 
