@@ -80,13 +80,6 @@ setMethod('set_max_overlap<-', 'optimConfig', function(x, value) {
   return(x)
 })
 
-setGeneric('set_flex_position<-', function(x, value) standardGeneric('set_flex_position<-'))
-setMethod('set_flex_position<-', 'optimConfig', function(x, value) {
-  x@flex_position <- value
-  stopifnot(validObject(x))
-  return(x)
-})
-
 setGeneric('set_max_exposure<-', function(x, value) standardGeneric('set_max_exposure<-'))
 setMethod('set_max_exposure<-', 'optimConfig', function(x, value) {
   x@max_exposure <- value
