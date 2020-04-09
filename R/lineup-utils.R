@@ -108,6 +108,11 @@ get_team_summary <- function(lineups) {
 calc_jaccard_distance <- function(lineups) {
   # Mean Jaccard distance
   pair_jaccard <- numeric(0)
+
+  if (length(lineups) <= 1) {
+    return(NA)
+  }
+
   for (i in 1:(length(lineups) - 1)) {
     for (j in (i + 1):length(lineups)) {
       list1 <- lineups[[i]]$id
