@@ -311,6 +311,41 @@ setMethod(f = 'set_flex_positions',
           })
 
 
+setGeneric('set_multiplier_position', function(object, positions) standardGeneric('set_multiplier_position'))
+#' @title Set Possible positions for Multiplier slot
+#'
+#' @param object An optimizer object
+#' @param positions Value to set the roster size (subject to validity checks).
+#'
+#' @description Method for setting positions for Single Game multiplier positions (e.g., CPT in Draftkings Captain-mode).
+#'    Can be used to limit the multiplier position to a user-specified set of possible positions (see examples).
+#'
+#' @return Updated Optimizer object
+#'
+#' @examples
+#' \dontrun{
+#' opt <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'SHOWDOWN')
+#' opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
+#'
+#' # Default Multiplier-position options are c('C','W','D','G')
+#' # Remove D and G
+#' opt <- set_multiplier_position(object = opt, positions = c('C','W'))
+#' }
+#'
+#' @rdname set_multiplier_position
+#'
+#' @export
+setMethod(f = 'set_multiplier_position',
+          signature = 'SingleGameOptim',
+          definition = function(object, positions) {
+            ind <- which(names(roster_key(object@config)) == multiplier_name(object@config))
+            for (i in ind) {
+              object@config@roster_key[[i]]$positions <- positions
+            }
+            return(object)
+          })
+
+
 #'@keywords internal
 setGeneric('apply_global_variance', function(object, varpct) standardGeneric('apply_global_variance'))
 setMethod(f = 'apply_global_variance', signature = 'optimizer',
