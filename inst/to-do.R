@@ -5,7 +5,6 @@
 #' TO DO
 #' - Expand SHOWDOWN mode
 #'    - NEXT -- optimizer sub-classes and config sub-classes
-#'    - Add: Method for changing the eligible CPT fields (check the way updating flex positions works)
 #'
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
@@ -35,6 +34,10 @@
 #' - The way we adapt budget to singlegame/showdown mode _currently_ uses an `ifelse` but it's fragile-ish.
 #'        (Would be better if the construction process was at the method level -- AFAIK, only budget and pts differ in construction, everything
 #'        else is config-controlled already)
+#'    - Method for limiting number of positions for SingleGame (e.g., we don't want 4 goalies...)
+#'      - We should be able to use flex_positions to REMOVE them entirely [Except that it *doesn't* do that...]
+#' - Uncovered modes like DK Arcade or Tiers (which has no salary req)
+
 
 #' TEAM STACK IMPROVEMENTS (longer term)
 #' - Add 'teams' as optional in case people want to omit certain teams from stack eligibility
