@@ -165,7 +165,7 @@ setClass('draftkingsBaseballClassicConfig',
            budget = 50000,
            roster_size = 10L,
            min_team_req = 3L,
-           max_players_per_team = 5L,
+           max_players_per_team = 9L,
            max_overlap = 9,
            roster_key = list('P' = list(positions = 'P', num = 2),
                              'C' = list(positions = 'C', num = 1),
@@ -175,6 +175,39 @@ setClass('draftkingsBaseballClassicConfig',
                              'SS' = list(positions = 'SS', num = 1),
                              'OF' = list(positions = 'OF', num = 3)),
            flex_position = NA_character_
+         ))
+
+# WNBA, Classic
+setClass('draftkingsWnbaClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 6L,
+           min_team_req = 3L,
+           max_players_per_team = 5L,
+           max_overlap = 5,
+           roster_key = list('G' = list(positions = 'G', num = 2),
+                             'F' = list(positions = 'F', num = 3),
+                             'UTIL' = list(positions = c('G','F'), num = 1)),
+           flex_position = 'UTIL'
+         ))
+
+
+# Soccer, Classic
+setClass('draftkingsSoccerClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 8L,
+           min_team_req = 3L,
+           max_players_per_team = 7L,
+           max_overlap = 7,
+           roster_key = list('GK' = list(positions = 'GK', num = 1),
+                             'D' = list(positions = 'D', num = 2),
+                             'M' = list(positions = 'M', num = 2),
+                             'F' = list(positions = 'F', num = 2),
+                             'UTIL' = list(positions = c('D','M','F'), num = 1)),
+           flex_position = 'UTIL'
          ))
 
 
@@ -193,6 +226,78 @@ setClass('draftkingsHockeyShowdownConfig',
            flex_position = 'FLEX',
            multiplier_name = 'CPT',
            multiplier_mode = TRUE
+         ))
+
+
+## NFL, Single Game
+setClass('draftkingsFootballShowdownConfig',
+         contains = 'optimSingleGameConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 6L,
+           min_team_req = 2L,
+           max_players_per_team = 5L,
+           max_overlap = 5,
+           roster_key = list(
+             'CPT' = list(positions = c('QB','WR','RB','TE','K','DST'), num = 1),
+             'FLEX' = list(positions = c('QB','WR','RB','TE','K','DST'), num = 5)),
+           flex_position = 'FLEX',
+           multiplier_name = 'CPT',
+           multipler_mode = TRUE
+         ))
+
+
+# Baseball, Single Game
+setClass('draftkingsBaseballShowdownConfig',
+         contains = 'optimSingleGameConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 6L,
+           min_team_req = 2L,
+           max_players_per_team = 5L,
+           max_overlap = 5,
+           roster_key = list(
+             'Captain' = list(positions = c('P','C','1B','2B','3B','SS','OF'), num = 1),
+             'UTIL' = list(positions = c('P','C','1B','2B','3B','SS','OF'), num = 5)),
+           flex_position = 'UTIL',
+           multiplier_name = 'Captain',
+           multipler_mode = TRUE
+         ))
+
+
+# Basketball (NBA), Single Game
+setClass('draftkingsBasketballShowdownConfig',
+         contains = 'optimSingleGameConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 6L,
+           min_team_req = 2L,
+           max_players_per_team = 5L,
+           max_overlap = 5,
+           roster_key = list(
+             'Captain' = list(positions = c('PG','SG','SF','PF','C'), num = 1),
+             'UTIL' = list(positions = c('PG','SG','SF','PF','C'), num = 5)),
+           flex_position = 'UTIL',
+           multiplier_name = 'Captain',
+           multipler_mode = TRUE
+         ))
+
+
+# Soccer, Single Game
+setClass('draftkingsSoccerShowdownConfig',
+         contains = 'optimSingleGameConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 6L,
+           min_team_req = 2L,
+           max_players_per_team = 5L,
+           max_overlap = 5,
+           roster_key = list(
+             'Captain' = list(positions = c('GK','D','M','F'), num = 1),
+             'FLEX' = list(positions = c('GK','D','M','F'), num = 5)),
+           flex_position = 'UTIL',
+           multiplier_name = 'Captain',
+           multipler_mode = TRUE
          ))
 
 
