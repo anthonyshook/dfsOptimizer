@@ -1,0 +1,25 @@
+---
+title: "README"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Daily Fantasy Lineup Optimization in R
+
+The `dfsOptimizer` package is intended to provide a straightforward way to generate optimal daily fantasy lineups for various sports, sites, and contests.
+
+## Included Sites
+
+|        Sport         |     Draftkings     |      FanDuel       |       Yahoo        | Draftkings Single Game |
+|:--------------------:|:------------------:|:------------------:|:------------------:|:----------------------:|
+|   **HOCKEY (NHL)**   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   :heavy_check_mark:   |
+|  **FOOTBALL (NFL)**  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   :heavy_check_mark:   |
+|  **BASEBALL (MLB)**  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   :heavy_check_mark:   |
+| **BASKETBALL (NBA)** | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   :heavy_check_mark:   |
+|      **SOCCER**      | :heavy_check_mark: |         -          |         -          |           -            |
+|       **GOLF**       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |           -            |
+|      **NASCAR**      | :heavy_check_mark: |         -          |         -          |           -            |
+|       **WNBA**       | :heavy_check_mark: |         -          |         -          |           -            |

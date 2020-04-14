@@ -37,6 +37,9 @@
 #'    - Method for limiting number of positions for SingleGame (e.g., we don't want 4 goalies...)
 #'      - We should be able to use flex_positions to REMOVE them entirely [Except that it *doesn't* do that...]
 #' - Uncovered modes like DK Arcade or Tiers (which has no salary req)
+#' - Position-level salary ranges? (C #1 = 8000-9000, C #2 = 4000-5000)
+#'   - This is not something remotely possible at the moment. It only would be if we were slating players directly into
+#'     positions within a lineup, which we are NOT -- we're just looking for the binary index.
 
 
 #' TEAM STACK IMPROVEMENTS (longer term)
