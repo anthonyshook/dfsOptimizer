@@ -16,10 +16,10 @@ The `dfsOptimizer` package is intended to provide a straightforward way to gener
 |        Sport         |     Draftkings     |      FanDuel       |       Yahoo        | Draftkings Single Game |
 |:--------------------:|:------------------:|:------------------:|:------------------:|:----------------------:|
 |   **HOCKEY (NHL)**   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   :heavy_check_mark:   |
+|  **FOOTBALL (NFL)**  | :heavy_check_mark: | :heavy_check_mark: |         -          |   :heavy_check_mark:   |
 |  **BASEBALL (MLB)**  | :heavy_check_mark: |         -          |         -          |   :heavy_check_mark:   |
 | **BASKETBALL (NBA)** | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   :heavy_check_mark:   |
 |       **GOLF**       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |           -            |
 |      **NASCAR**      | :heavy_check_mark: | :heavy_check_mark: |         -          |           -            |
 |       **WNBA**       | :heavy_check_mark: |         -          |         -          |           -            |
 |      **SOCCER**      | :heavy_check_mark: |         -          |         -          |           -            |
-|  **FOOTBALL (NFL)**  |         -          | :heavy_check_mark: |         -          |   :heavy_check_mark:   |

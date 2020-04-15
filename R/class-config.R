@@ -109,6 +109,25 @@ setClass('draftkingsHockeyClassicConfig',
          ))
 
 
+# Football (NFL), Classic
+setClass('draftkingsFootballClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 50000,
+           roster_size = 9L,
+           min_team_req = 3L,
+           max_players_per_team = 7L,
+           max_overlap = 8,
+           roster_key = list('QB' = list(positions = 'QB', num = 1),
+                             'RB' = list(positions = 'RB', num = 2),
+                             'WR' = list(positions = 'WR', num = 3),
+                             'TE' = list(positions = 'TE', num = 1),
+                             'FLEX' = list(positions = c('RB','WR','TE'), num = 1),
+                             'DST' = list(positions = 'DST', num = 1)),
+           flex_position = 'FLEX'
+         ))
+
+
 # Golf, Classic
 setClass('draftkingsGolfClassicConfig',
          contains = 'optimConfig',
