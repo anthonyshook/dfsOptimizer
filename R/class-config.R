@@ -362,13 +362,32 @@ setClass('fanduelHockeyClassicConfig',
            budget = 55000,
            roster_size = 9L,
            min_team_req = 3L,
-           max_players_per_team = 9L,
+           max_players_per_team = 8L,
            max_overlap = 8,
            roster_key = list('C' = list(positions = 'C', num = 2),
                              'W' = list(positions = 'W', num = 4),
                              'D' = list(positions = 'D', num = 2),
                              'G' = list(positions = 'G', num = 1)),
            flex_position = NA_character_
+         ))
+
+
+# Football, Classic
+setClass('fanduelFootballClassicConfig',
+         contains = 'optimConfig',
+         prototype = list(
+           budget = 60000,
+           roster_size = 9L,
+           min_team_req = 3L,
+           max_players_per_team = 8L,
+           max_overlap = 8,
+           roster_key = list('QB' = list(positions = 'QB', num = 1),
+                             'RB' = list(positions = 'RB', num = 2),
+                             'WR' = list(positions = 'WR', num = 3),
+                             'TE' = list(positions = 'TE', num = 1),
+                             'DE' = list(positions = 'DE', num = 1),
+                             'FLEX' = list(positions = c('RB','WR','TE'), num = 1)),
+           flex_position = 'FLEX'
          ))
 
 
