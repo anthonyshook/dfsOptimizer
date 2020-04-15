@@ -4,7 +4,10 @@
 
 #' TO DO
 #' - Expand SHOWDOWN mode
-#'    - NEXT -- optimizer sub-classes and config sub-classes
+#'    - Still needs
+#'      - Yahoo Football and Baseball
+#'      - Fanduel Classic Baseball
+#'      - All Fandual Single Game content
 #'
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
