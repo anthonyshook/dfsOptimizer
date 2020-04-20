@@ -32,6 +32,7 @@ Collate:
     'class-player.R'
     'class-optimizer.R'
     'constraints.R'
+    'data.R'
     'get-players-from-df.R'
     'get-players-from-csv.R'
     'imports.R'
