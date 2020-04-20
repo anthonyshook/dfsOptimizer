@@ -7,8 +7,9 @@
 build_singlegame_model(
   size,
   team_vector,
+  position_vector,
   pts,
-  mlt_mode = TRUE,
+  config,
   maximize = TRUE
 )
 }
@@ -17,9 +18,11 @@ build_singlegame_model(
 
 \item{team_vector}{vector of teams}
 
+\item{position_vector}{vector of positions}
+
 \item{pts}{vector of length 'size' containing points to use in objective function}
 
-\item{mlt_mode}{Logical. Determines whether captain mode is used.}
+\item{config}{Configuration object from the optimizer}
 
 \item{maximize}{Whether to maximize the objective (if FALSE, the objective is minimized)}
 }

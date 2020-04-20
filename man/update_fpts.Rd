@@ -18,5 +18,5 @@ Updated optimizer object
 Method for updating fantasy points in an object
 }
 \details{
-The data.frame passed in fpts_data should contain two columns - \code{id} and \code{fpts}.
+The data.frame passed in fpts_data must contain two columns - \code{id} and \code{fpts}.
 }

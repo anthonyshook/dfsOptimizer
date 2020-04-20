@@ -19,7 +19,7 @@ Add players to optimizer from a data.frame
 }
 \examples{
 \dontrun{
-opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+opt <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 dat <- data.frame(first_name = c('Sidney','Alex'),
                  last_name = c('Crosby','Ovechkin'),
                  fpts = c(18,20),
