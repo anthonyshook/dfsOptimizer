@@ -53,5 +53,11 @@ get_players_from_data_frame <- function(df) {
     return(do.call(new, c(Class = 'player_object', as.list(df[i,]))))
   })
 
+  # Name them
+  for (i in 1:length(player_list)){
+    names(player_list)[i] <- id(player_list[[i]])
+  }
+
+
   return(player_list)
 }
