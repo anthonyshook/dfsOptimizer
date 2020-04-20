@@ -77,7 +77,7 @@ setGeneric('add_players_from_df', function(object, df) standardGeneric('add_play
 #'
 #' @examples
 #' \dontrun{
-#' opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+#' opt <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 #' dat <- data.frame(first_name = c('Sidney','Alex'),
 #'                  last_name = c('Crosby','Ovechkin'),
 #'                  fpts = c(18,20),
@@ -516,7 +516,7 @@ setGeneric("update_fpts", function(object, fpts_data) standardGeneric('update_fp
 #' @param object An object of class Optimizer
 #' @param fpts_data a data.frame containing players and points. See details.
 #'
-#' @details The data.frame passed in fpts_data should contain two columns - \code{id} and \code{fpts}.
+#' @details The data.frame passed in fpts_data must contain two columns - \code{id} and \code{fpts}.
 #'
 #' @return Updated optimizer object
 #'
