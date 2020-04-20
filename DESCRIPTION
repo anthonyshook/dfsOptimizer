@@ -43,3 +43,7 @@ Collate:
     'optimizer-build-methods.R'
     'player-utils.R'
     'utils.R'
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
