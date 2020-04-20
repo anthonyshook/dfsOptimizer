@@ -101,3 +101,11 @@ which(ompr::get_solution(s, tstgroups[i])$value > 0)
 
 
 
+
+# Build optimizer
+library(dfsOptimizer)
+library(ROI.plugin.glpk)
+testmod.hockey <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
+testmod.hockey <- add_players_from_df(testmod.hockey, nhl_players)
+lineups <- build_lineups(testmod.hockey, num_lineups = 5)
+summary(lineups)

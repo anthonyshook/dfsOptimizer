@@ -4,7 +4,8 @@
 \name{nhl_players}
 \alias{nhl_players}
 \title{A set of NHL Player Data to use for testing}
-\format{A data table with 308 rows and 8 variables:
+\format{
+A data table with 308 rows and 8 variables:
 \describe{
   \item{id}{ID of player}
   \item{first_name}{Player's first name}
@@ -14,7 +15,8 @@
   \item{salary}{How much the player costs}
   \item{fpts}{Projected fantasy points}
   \item{game_info}{Info about the player's game, such as home/away teams and time}
-}}
+}
+}
 \usage{
 nhl_players
 }

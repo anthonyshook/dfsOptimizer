@@ -30,7 +30,8 @@ setMethod('show', 'lineupClass', function(object) {
 })
 
 
-# Summary for lineupClass
+#' Summary for lineupClass
+#' @export
 summary.lineupClass <- function(object) {
   nonnull_lineups <- object@lineups[!sapply(object@lineups, is.null)]
   cat(paste0('Number of Expected Lineups: ', length(object@lineups),'\n'))
