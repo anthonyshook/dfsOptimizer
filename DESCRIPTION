@@ -16,7 +16,6 @@ Imports:
   magrittr,
   ROI,
   ROI.plugin.glpk,
-  ROI.plugin.symphony,
   ompr,
   ompr.roi,
   lubridate,
