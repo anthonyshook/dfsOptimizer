@@ -1,10 +1,10 @@
 ---
-title: "basicusage"
+title: "Basic Usage"
 output: 
   html_document: 
     toc: true
     toc_float: true
-    theme: lumen
+    theme: yeti
     highlight: textmate
 vignette: >
   %\VignetteIndexEntry{basicusage}
@@ -14,36 +14,56 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = FALSE,
   comment = "#>"
 )
 ```
-```{r setup}
+# Setup
+Library the package and a solver (glpk)
+```{r setup, warning = FALSE}
 library(dfsOptimizer)
 library(ROI.plugin.glpk)
-data("nhl_players")
 ```
 
-# Basic Usage
-Example of Instantiating Optimizer, adding players from internal dataset `nhl_players`,
-generating 5 lineups, and viewing those lineups with summary statistics.
+
+## Building Optimizer and getting lineups
+Example of instantiating an Optimizer object, adding players from an internal dataset (`nhl_players`),
+generating 5 lineups.
 
 ```{r}
+# Instantiate
 mod <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
+# Add players
 mod <- add_players_from_df(mod, nhl_players)
-
 # Generate lineups
 lineups <- build_lineups(mod, num_lineups = 5, verbose = FALSE)
+```
 
-# View lineups
+## View the lineups
+You can view the lineups simply by calling the object saved by `build_lineups`.
+
+```{r}
 lineups
+```
 
+If you want to save the lineups to a list, you can simply run `as.list(lineups)`
+```{r}
+lineups_list <- as.list(lineups)
+class(lineups_list)
+```
+
+## Lineup Summary
+Lineup summary provides information about how often individual players were selected for lineups (count and percentage),
+which teams were selected most often, and a measure of lineup variance (higher Jaccard Distance means more variance across lineups)
+```{r}
 # Summary stats
 summary(lineups)
 
 ```
 
-## with a subsection
-testx
+## Export the lineups
+The format of the file output by export_lineups is determined by the Site, Sport, and Contest Type.
+```{r eval=FALSE}
+export_lineups(lineups, file = 'lineup_export.csv')
+```
 
-# This is a secnod section
