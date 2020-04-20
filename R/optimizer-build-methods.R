@@ -73,7 +73,7 @@ setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk', m
 #' @export
 setMethod('build_lineups',
           signature = 'optimizer',
-          definition = function(object, num_lineups = 1, solver= 'glpk', maximize = TRUE, verbose = TRUE) {
+          definition = function(object, num_lineups = 1, solver = 'glpk', maximize = TRUE, verbose = TRUE) {
 
             # Construct Model
             # Necessary to do this now so we do just-in-time construction
