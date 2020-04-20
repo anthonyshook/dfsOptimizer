@@ -51,7 +51,8 @@ summary.lineupClass <- function(object) {
 }
 
 
-# Simple way to extract the lineup list to do whatever you want with it.
+#' Simple way to extract the lineup list to do whatever you want with it.
+#' @export
 as.list.lineupClass <- function(object) {
   return(object@lineups)
 }
