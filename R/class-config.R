@@ -262,7 +262,7 @@ setClass('draftkingsFootballShowdownConfig',
              'FLEX' = list(positions = c('QB','WR','RB','TE','K','DST'), num = 5)),
            flex_position = 'FLEX',
            multiplier_name = 'CPT',
-           multipler_mode = TRUE
+           multiplier_mode = TRUE
          ))
 
 
@@ -280,7 +280,7 @@ setClass('draftkingsBaseballShowdownConfig',
              'UTIL' = list(positions = c('P','C','1B','2B','3B','SS','OF'), num = 5)),
            flex_position = 'UTIL',
            multiplier_name = 'Captain',
-           multipler_mode = TRUE
+           multiplier_mode = TRUE
          ))
 
 
@@ -298,7 +298,7 @@ setClass('draftkingsBasketballShowdownConfig',
              'UTIL' = list(positions = c('PG','SG','SF','PF','C'), num = 5)),
            flex_position = 'UTIL',
            multiplier_name = 'Captain',
-           multipler_mode = TRUE
+           multiplier_mode = TRUE
          ))
 
 
@@ -316,7 +316,7 @@ setClass('draftkingsSoccerShowdownConfig',
              'FLEX' = list(positions = c('GK','D','M','F'), num = 5)),
            flex_position = 'UTIL',
            multiplier_name = 'Captain',
-           multipler_mode = TRUE
+           multiplier_mode = TRUE
          ))
 
 
