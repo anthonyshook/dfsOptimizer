@@ -13,6 +13,14 @@ setGeneric("fullname", function(x) standardGeneric("fullname"))
 setMethod("fullname", "player_object", function(x) x@fullname)
 
 #' @ export
+setGeneric("first_name", function(x) standardGeneric("first_name"))
+setMethod("first_name", "player_object", function(x) x@first_name)
+
+#' @ export
+setGeneric("last_name", function(x) standardGeneric("last_name"))
+setMethod("last_name", "player_object", function(x) x@last_name)
+
+#' @ export
 setGeneric("team", function(x) standardGeneric("team"))
 setMethod("team", "player_object", function(x) x@team)
 
