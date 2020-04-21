@@ -1,6 +1,11 @@
 ---
-title: "rules"
-output: rmarkdown::html_vignette
+title: "Customizating your Optimizer"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+    theme: yeti
+    highlight: textmate
 vignette: >
   %\VignetteIndexEntry{rules}
   %\VignetteEngine{knitr::rmarkdown}
@@ -9,11 +14,117 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = FALSE,
+  eval = FALSE,
   comment = "#>"
 )
 ```
 
-```{r setup}
+```{r echo = FALSE}
 library(dfsOptimizer)
 ```
+
+The package comes with basic functions to specify constraints within your 
+optimizer model, in order to better tune your lineups.
+
+# Block Players
+If you'd like to omit specific players, you can do so by ID.
+```{r}
+
+```
+
+# Lock Players
+If you want to ensure that specific players are included in all lineups.
+```{r}
+
+```
+
+# Same Team Stacking
+There are multiple ways to stack teams together.
+
+## Example 1
+
+## Example 2
+
+# Restrict Opposing Positions
+Useful in cases where you want to ensure opposing positions from two teams aren't included 
+in the lineup, like preventing one team's QB and the other team's DST.
+
+Here's an example that prevents the lineups from including one team's goalie
+and _any forward or defenseman_ on the opposing team.
+```{r}
+
+```
+
+# Force Opposing Positions
+When you want to ensure that two positions from opposite teams are included. For 
+example, if you want to ensure that the lineups included at least one pair of 
+Team A's QB and Team B's WR.
+
+```{r}
+
+```
+
+# Player Exposures
+
+## Maximium Exposure
+```{r}
+
+```
+
+## Minimum Exposure
+```{r}
+
+```
+
+## Global Exposures 
+
+Sometimes you want to set global exposures, so that no single player is selected
+for a lineup more than X% of the time.  You can use the global maximum exposure for that.
+
+**NOTE:** Individual player exposures supersede the global exposures. So, if you set
+Sidney Crosby's Max-Exposure to .8, and the global max to .5, Sidney Crosby 
+may end up in 80% of your lineups, while no other player will be greater than 50%.
+
+```{r}
+
+```
+
+# Specific Positions for FLEX/UTIL positions
+
+This has no effect on lineups where no FLEX/UTIL positions are included.
+
+```{r}
+
+```
+
+# Maximium Repeating Players
+
+Set the maximum number of players allowed to repeat across lineups.
+
+```{r}
+
+```
+
+# Set a minimum budget
+
+```{r}
+
+```
+
+# Set Multiplier Position
+This applies to Draftking's Captain Mode and Fanduel's MVP mode, where one player
+is designated a multiplier position, where their salary and pts are doubled.
+
+Sometimes, you may want to limit the set of players who are eligible for this
+position (e.g., you definitely want either a QB or a WR, not DST or TE)
+
+```{r}
+
+```
+
+# Variance
+
+## Global Variance
+
+## Player Level Variance
