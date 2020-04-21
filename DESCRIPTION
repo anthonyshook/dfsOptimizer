@@ -9,13 +9,13 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
-  R (>= 3.4)
+  R (>= 3.4),
+  ROI.plugin.glpk
 Imports:
   R6,
   data.table,
   magrittr,
   ROI,
-  ROI.plugin.glpk,
   ompr,
   ompr.roi,
   lubridate,

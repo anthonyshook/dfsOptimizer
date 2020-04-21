@@ -22,7 +22,6 @@ knitr::opts_chunk$set(
 Library the package and a solver (glpk)
 ```{r setup, warning = FALSE}
 library(dfsOptimizer)
-library(ROI.plugin.glpk)
 ```
 
 
