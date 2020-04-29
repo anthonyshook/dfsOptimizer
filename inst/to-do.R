@@ -8,12 +8,12 @@
 #'      - Yahoo Football and Baseball
 #'      - Fanduel Classic Baseball
 #'      - All Fandual Single Game content
-#'      
+#'
 #'  CONSIDER
 #'    - Adding team-level constraints
-#'    - 1, ability to say `set_players_from_team(list('COL'=2, DAL='1'))`
+#'    - 1, ability to say `set_players_from_team(list('COL'=2, DAL='1'))` [needs method to be added]
 #'    - 2, ability to say `set_minimum_teams()`
-#'       - This one can just change the value in the config, I believe
+#'       - This one can just change the value in the config, I believe, which is easy enough
 #'
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
