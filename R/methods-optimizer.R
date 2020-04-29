@@ -225,7 +225,82 @@ setMethod(f = 'force_opposing_positions',
           })
 
 
-##### Setting Functions
+setGeneric('set_players_per_team', function(object, players_per_team, exact = FALSE) standardGeneric('set_players_per_team'))
+#' Set Number of Players per Team
+#'
+#' @param object An optimizer object
+#' @param players_per_team A named list, where the names are teams, and the values are
+#' the number of players to include for each team
+#' @param exact Logical. Whether the number in \code{players_per_team} is the maximum
+#' number of players to include, or the exact number of players to include.  If scalar,
+#' the value of EXACT applies to every team in \code{players_per_team}. This also accepts
+#' a vector with length of \code{players_per_team} that can be used to set some teams to
+#' EXACT values, and others to MAX values (See examples below).
+#'
+#' @description Method used to set team specific exposures.  Note, you can set one
+#' EXACT and one MAX set of team restrictions per model.
+#'
+#' @return Updated optimizer object
+#'
+#' #' @examples
+#' \dontrun{
+#'
+#' # `opt` is an optimizer model object
+#'
+#' # Force the lineup to include a maximum of two players
+#' # from BUF, and prevent any CLE players from being
+#' # included in the lineup
+#' opt <- set_players_per_team(object = opt, players_per_team = list(BUF = 2, CLE = 0))
+#'
+#' # Set lineup to include exactly three SF players
+#' opt <- set_players_per_team(object = opt, players_per_team = list(SF = 3), exact = TRUE)
+#'
+#' # Include up to 3 players from NYG, and exactly two players from TEN
+#' opt <- set_players_per_team(object = opt, players_per_team = list(NYG = 3, TEN = 2), exact = c(FALSE, TRUE))
+#'
+#' }
+#'
+#' @rdname set_players_per_team
+#'
+#' @export
+setMethod('set_players_per_team',
+          signature = 'optimizer',
+          definition = function(object, players_per_team, exact = FALSE) {
+
+            # Calculations for Checks
+            if (length(exact) == 1) {
+              sum_where_exact <- sum(as.numeric(players_per_team)[rep(exact, length(players_per_team))])
+              len_where_exact <- length(players_per_team[rep(exact, length(players_per_team))])
+            } else {
+              sum_where_exact <- sum(as.numeric(players_per_team)[exact])
+              len_where_exact <- length(players_per_team[exact])
+            }
+
+            # Make sure we aren't violating the roster size rule
+            if (sum_where_exact > roster_size(object@config)) {
+              stop("Sum of players per team is greater than the allowed roster size")
+            }
+
+            # Check that we have enough teams represented
+            # If sum(team_filter == roster_size && length(team_filter) < min_team_req) then stop(...)
+            if (sum_where_exact == roster_size(object@config) &&
+                len_where_exact < min_team_req(object@config)) {
+              stop('Players per team configuration violates minimum team requirement')
+            }
+
+            # Build the constraint
+            CON <- .constraintClass(constraint_name = "Set Players Per Team",
+                                    fnc = constr_players_per_team,
+                                    args = list(players_per_team = players_per_team, exact = exact))
+
+            # Add it to the model
+            object <- include_constraint(object, CON)
+
+            return(object)
+
+          })
+
+##### Setting Functions #####
 setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
 #' @title Set the Global Max Exposure
 #'
