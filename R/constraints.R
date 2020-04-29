@@ -270,26 +270,26 @@ constr_force_opposing <- function(model, players, pos1, pos2) {
 #'
 #' @param model Model object
 #' @param players List of player objects
-#' @param team_filter Positions to limit by team
+#' @param players_per_team Positions to limit by team
 #' @param exact Logical. Whether the team filter values should be honored exactly. Defaults to FALSE.
 #'
 #' @details Accepts either a named list of teams with numbers.
 #'
 #' @keywords internal
-constr_players_per_team <- function(model, players, team_filter, exact = FALSE) {
+constr_players_per_team <- function(model, players, players_per_team, exact = FALSE) {
 
-  # Ensure team_filter is a named list
-  if (!is.list(team_filter) ||
-      is.null(names(team_filter))) {
-    stop('team_filter must be a named list! (e.g., list(TeamA = 1, TeamB = 2)))')
+  # Ensure players_per_team is a named list
+  if (!is.list(players_per_team) ||
+      is.null(names(players_per_team))) {
+    stop('players_per_team must be a named list! (e.g., list(TeamA = 1, TeamB = 2)))')
   }
 
   # If Exact is a scalar, convert to named list
   if (length(exact) == 1) {
-    exact <- rep(exact, length(team_filter))
+    exact <- rep(exact, length(players_per_team))
   } else {
-    if (length(exact) != length(team_filter)) {
-      stop('When passing a vector to `exact`, it must be of equal length to team_filter')
+    if (length(exact) != length(players_per_team)) {
+      stop('When passing a vector to `exact`, it must be of equal length to players_per_team')
     }
   }
 
@@ -300,25 +300,25 @@ constr_players_per_team <- function(model, players, team_filter, exact = FALSE) 
 
   # Ensure all the teams are real
   # Not necessary if exact = FALSE, but better to be strict
-  matched_names <- names(team_filter) %in% all_teams
+  matched_names <- names(players_per_team) %in% all_teams
   if (!all(matched_names)) {
-    stop(paste("Some Teams provided in team_filter were not found in the data:",
-               paste(names(team_filter)[!matched_names], collapse = ', ')))
+    stop(paste("Some Teams provided in players_per_team were not found in the data:",
+               paste(names(players_per_team)[!matched_names], collapse = ', ')))
   }
 
   # Now that we have them, we can add a set of team-level constraints to our model
   pos_fnc <- function(i, t) as.integer(pteams[i] == t)
-  for (i in 1:length(team_filter)) {
-    t  <- names(team_filter)[i]
+  for (i in 1:length(players_per_team)) {
+    t  <- names(players_per_team)[i]
 
     if (exact[i]) {
       model <- model %>%
         ompr::add_constraint(sum_expr(players[i] * colwise(pos_fnc(i, t)),
-                                      i = 1:num_players) == team_filter[[t]])
+                                      i = 1:num_players) == players_per_team[[t]])
     } else {
       model <- model %>%
         ompr::add_constraint(sum_expr(players[i] * colwise(pos_fnc(i, t)),
-                                      i = 1:num_players) <= team_filter[[t]])
+                                      i = 1:num_players) <= players_per_team[[t]])
     }
   }
 
