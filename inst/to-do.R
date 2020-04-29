@@ -11,7 +11,7 @@
 #'
 #'  CONSIDER
 #'    - Adding team-level constraints
-#'    - 1, ability to say `set_players_from_team(list('COL'=2, DAL='1'))` [needs method to be added]
+#'    - 1, ability to say `set_players_from_team(list(COL=2, DAL=1))` [needs method to be added]
 #'    - 2, ability to say `set_minimum_teams()`
 #'       - This one can just change the value in the config, I believe, which is easy enough
 #'
