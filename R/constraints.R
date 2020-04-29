@@ -215,7 +215,7 @@ constr_force_opposing <- function(model, players, pos1, pos2) {
   # Add team and opponent variables
   model <- model %>%
     ompr::add_variable(force_team[i, j], i = 1:numtms, j = 1:numpos, type = 'binary', lb = 0) %>%
-#    ompr::add_variable(force_opp[i], i = 1:numtms, type = 'binary', lb = 0) %>%
+    #    ompr::add_variable(force_opp[i], i = 1:numtms, type = 'binary', lb = 0) %>%
     ompr::add_variable(force_flag[i], i = 1:numtms, type = 'integer')
 
   # Add Functions
@@ -263,4 +263,64 @@ constr_force_opposing <- function(model, players, pos1, pos2) {
 
 
   return(model)
+}
+
+
+#' Players per Team Constraint
+#'
+#' @param model Model object
+#' @param players List of player objects
+#' @param team_filter Positions to limit by team
+#' @param exact Logical. Whether the team filter values should be honored exactly. Defaults to FALSE.
+#'
+#' @details Accepts either a named list of teams with numbers.
+#'
+#' @keywords internal
+constr_players_per_team <- function(model, players, team_filter, exact = FALSE) {
+
+  # # Make sure we aren't violating the roster size rule
+  # # MOVE THIS TO THE OPTIMIZER METHOD
+  # if (sum(as.numeric(team_filter)) > roster_size(model@config) &&
+  #     exact == TRUE) {
+  #   stop("Sum of players per team is greater than the allowed roster size")
+  # }
+
+  # Consider a check that we have enough teams represented
+  # If sum(team_filter == roster_size && length(team_filter) < min_team_req) then stop(...)
+
+  # Ensure team_filter is a named list
+  if (!is.list(team_filter) ||
+      is.null(names(team_filter))) {
+    stop('team_filter must be a named list! (e.g., list(TeamA = 1, TeamB = 2)))')
+  }
+
+  # Get teams and team names, and num_players
+  pteams <- sapply(players, team)
+  all_teams <- unique(pteams)
+  num_players <- length(players)
+
+  # Ensure all the teams are real
+  # Not necessary if exact = FALSE, but better to be strict
+  matched_names <- names(team_filter) %in% all_teams
+  if (!all(matched_names)) {
+    stop(paste("Some Teams provided in team_filter were not found in the data:",
+               paste(names(team_filter)[!matched_names], collapse = ', ')))
+  }
+
+  # Now that we have them, we can add a set of team-level constraints to our model
+  pos_fnc <- function(i, t) as.integer(pteams[i] == t)
+  for (t in names(team_filter)) {
+    if (exact) {
+      model <- model %>%
+        ompr::add_constraint(sum_expr(players[i] * colwise(pos_fnc(i, t)),
+                                      i = 1:num_players) == team_filter[[t]])
+    } else {
+      model <- model %>%
+        ompr::add_constraint(sum_expr(players[i] * colwise(pos_fnc(i, t)),
+                                      i = 1:num_players) <= team_filter[[t]])
+    }
+  }
+
+  return(model)
+
 }
