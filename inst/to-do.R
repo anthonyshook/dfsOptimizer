@@ -8,12 +8,7 @@
 #'      - Yahoo Football and Baseball
 #'      - Fanduel Classic Baseball
 #'      - All Fandual Single Game content
-#'
-#'  CONSIDER
-#'    - Adding team-level constraints
-#'    - 2, ability to say `set_minimum_teams()`
-#'       - This one can just change the value in the config, I believe, which is easy enough
-#'
+#' - FILL IN THE VIGNETTES
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
