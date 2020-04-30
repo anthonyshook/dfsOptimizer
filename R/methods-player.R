@@ -74,7 +74,6 @@ setMethod('get_player_data', 'player_object',
 
 
 # Update methods
-#' @ export
 setGeneric('lock_player', function(object) standardGeneric('lock_player'))
 setMethod('lock_player', 'player_object',
           function(object) {
@@ -83,8 +82,6 @@ setMethod('lock_player', 'player_object',
             return(object)
           })
 
-
-#' @ export
 setGeneric('block_player', function(object) standardGeneric('block_player'))
 setMethod('block_player', 'player_object',
           function(object) {

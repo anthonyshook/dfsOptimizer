@@ -352,6 +352,32 @@ setMethod(f = 'set_max_overlap',
           })
 
 
+setGeneric('set_min_teams', function(object, min_teams) standardGeneric('set_min_teams'))
+#' @title Set minimum team requirement
+#'
+#' @param object An optimizer object
+#' @param min_teams The minimum number of teams to include
+#'
+#' @details WARNING: You can very easily make your lineup ineligible for a site by doing things
+#' like \code{set_min_teams(object, min_teams = 1)}
+#'
+#' @examples
+#' \dontrun{
+#' # Set minimum number of teams to 6
+#' opt <- set_min_teams(opt, min_teams = 1)
+#' }
+#'
+#' @rdname set_min_teams
+#'
+#' @export
+setMethod('set_min_teams',
+          signature = 'optimizer',
+          definition = function(object, min_teams) {
+            set_min_team_req(object@config) <- as.integer(min_teams)
+            return(object)
+          })
+
+
 setGeneric('set_flex_positions', function(object, positions) standardGeneric('set_flex_positions'))
 #' @title Set the FLEX/UTIL position list
 #'
