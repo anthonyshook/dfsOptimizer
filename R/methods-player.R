@@ -37,6 +37,10 @@ setMethod("salary", "player_object", function(x) x@salary)
 #' @ export
 setMethod("max_exposure", "player_object", function(x) x@max_exposure)
 
+#' @export
+setGeneric('min_exposure', function(x) standardGeneric('min_exposure'))
+setMethod('min_exposure', 'player_object', function(x) x@min_exposure)
+
 #' @ export
 setGeneric("blocked", function(x) standardGeneric("blocked"))
 setMethod("blocked", "player_object", function(x) as.numeric(x@blocked))
