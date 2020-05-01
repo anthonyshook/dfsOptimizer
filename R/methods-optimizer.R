@@ -322,6 +322,64 @@ setMethod(f = 'set_max_exposure',
           })
 
 
+setGeneric('set_player_max_exp',
+           function(object, id, exp) standardGeneric('set_player_max_exp'))
+#' @title Set a player's max exposure by ID
+#' 
+#' @param object An optimizer object
+#' @param id The ID of a player
+#' @param exp A value of exposure
+#' 
+#' @return Updated Optimizer object
+#' 
+#' @examples
+#' \dontrun{
+#' # Set Carey Price to have a maximum exposure of 75%
+#' ID <- get_player_id(opt, 'Carey Price')
+#' opt <- opt %>% set_player_max_exp(id = ID, exp = .75)
+#' }
+#' 
+#' @rdname set_player_max_exp
+#' 
+#' @export
+setMethod(f = 'set_player_max_exp',
+          signature = 'optimizer',
+          definition = function(object, id, exp) {
+            # Set and return
+            object@players[[id]] <- set_max_exposure(object@players[[id]], exp)
+            return(object)
+          })
+
+
+setGeneric('set_player_min_exp',
+           function(object, id, exp) standardGeneric('set_player_min_exp'))
+#' @title Set a player's Minimum exposure by ID
+#' 
+#' @param object An optimizer object
+#' @param id The ID of a player
+#' @param exp A value of exposure
+#' 
+#' @return Updated Optimizer object
+#' 
+#' @examples
+#' \dontrun{
+#' # Set Patrick Mahomes to have a minimum exposure of 75%
+#' ID <- get_player_id(opt, 'Patrick Mahomes')
+#' opt <- opt %>% set_player_min_exp(id = ID, exp = .75)
+#' }
+#' 
+#' @rdname set_player_min_exp
+#' 
+#' @export
+setMethod(f = 'set_player_min_exp',
+          signature = 'optimizer',
+          definition = function(object, id, exp) {
+            # Set and return
+            object@players[[id]] <- set_min_exposure(object@players[[id]], exp)
+            return(object)
+          })
+
+
 setGeneric('set_max_overlap', function(object, overlap) standardGeneric('set_max_overlap'))
 #' @title Set the maximum overlap
 #'
