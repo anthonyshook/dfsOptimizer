@@ -84,7 +84,6 @@ opt <- opt %>%
   add_team_stack(positions = c('QB', 'WR'), opt_positions = c('TE','WR','RB'))
 ```
 
-
 # Restrict Opposing Positions
 Useful in cases where you want to ensure opposing positions from two teams aren't included 
 in the lineup, like preventing one team's QB and the other team's DST.
@@ -92,7 +91,8 @@ in the lineup, like preventing one team's QB and the other team's DST.
 Here's an example that prevents the lineups from including one team's goalie
 and _any forward or defenseman_ on the opposing team.
 ```{r}
-
+opt <- opt %>% 
+  restrict_opposing_positions(pos1 = c('C','W','D'), pos2 = 'G')
 ```
 
 # Force Opposing Positions
@@ -101,19 +101,26 @@ example, if you want to ensure that the lineups included at least one pair of
 Team A's QB and Team B's WR.
 
 ```{r}
-
+opt <- opt %>%
+  force_opposing_positions(pos1 = 'QB', pos2 = 'WR')
 ```
 
 # Player Exposures
 
 ## Maximium Exposure
 ```{r}
-
+# Set Carey Price's maximum exposure to .75
+carey_price_id <- get_player_id(opt, name = 'Carey Price')
+opt <- opt %>% 
+  set_player_max_exp(carey_price_id, .75)
 ```
 
 ## Minimum Exposure
 ```{r}
-
+# Set Nate Mackinnon's minimum exposure to .6
+mackinnon_id <- get_player_id(opt, name = 'Nate MacKinnon')
+opt <- opt %>% 
+  set_player_min_exp(mackinnon_id, .6)
 ```
 
 ## Global Exposures 
@@ -125,8 +132,14 @@ for a lineup more than X% of the time.  You can use the global maximum exposure 
 Sidney Crosby's Max-Exposure to .8, and the global max to .5, Sidney Crosby 
 may end up in 80% of your lineups, while no other player will be greater than 50%.
 
-```{r}
+The following sets the global max exposure to 50% -- so no single player will
+be selected in more than 50% of lineups. (The actual percentage of lineups
+can fluctuate slightly dependent on whether the total number of lineups 
+you produce is evenly divisible by the percentage exposure)
 
+```{r}
+opt <- opt %>%
+  set_max_exposure(.5)
 ```
 
 # Specific Positions for FLEX/UTIL positions
