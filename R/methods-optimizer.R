@@ -392,7 +392,7 @@ setGeneric('set_max_overlap', function(object, overlap) standardGeneric('set_max
 #'
 #' @examples
 #' \dontrun{
-#' opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+#' opt <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 #' opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 #'
 #' # update the max overlap
