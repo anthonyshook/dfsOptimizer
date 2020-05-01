@@ -27,24 +27,63 @@ library(dfsOptimizer)
 The package comes with basic functions to specify constraints within your 
 optimizer model, in order to better tune your lineups.
 
-# Block Players
-If you'd like to omit specific players, you can do so by ID.
+# Blocking and Locking Players
+First step here is to get player IDs. Using an optimizer object, you can
+get individual player IDs by name like so:
 ```{r}
-
+# Opt is an optimizer object
+single_player_id <- get_player_id(opt, name = 'Sidney Crosby')
 ```
 
-# Lock Players
+Or, you can use `get_player_data`, which will return a data.frame of player
+data, where you can filter by name to get IDs
+```{r}
+player_data <- get_player_data(opt)
+multiple_player_ids <- player_data[fullname %in% c('Carey Price', 'Sidney Crosby')]$id
+```
+
+## Block Players
+If you'd like to omit specific players, you can block by ID.
+```{r}
+# Single Player
+opt <- block_players_by_id(opt, player_ids = single_player_id)
+
+# Multiple players use the same syntax
+opt <- block_players_by_id(opt, player_ids = multiple_player_ids)
+```
+
+## Lock Players
 If you want to ensure that specific players are included in all lineups.
 ```{r}
-
+# As with blocking, player_ids can be a scalar or vector of IDs
+opt <- lock_players_by_id(opt, player_ids = pids)
 ```
 
 # Same Team Stacking
-There are multiple ways to stack teams together.
+Useful in cases where you want to stack players from the same team together. For
+instance, you may want to stack a QB and a WR together.
 
-## Example 1
+```{r}
+# Stacking QB and WR from the same team together
+opt <- opt %>%
+  add_team_stack(positions = c('QB', 'WR'))
+```
+You can specify the number of stacks - so if you want TWO separate QB/WR stacks,
+you can use:
+```{r}
+# Stacking QB and WR from the same team together
+opt <- opt %>%
+  add_team_stack(positions = c('QB', 'WR'), nstacks = 2)
+```
 
-## Example 2
+At times, you may wish to have an additional optional position; say, you want
+to stack a QB/WR pair and *one additional player of either* TE, RB, or WR:
+```{r}
+# Stacking QB and WR from the same team together
+opt <- opt %>%
+  add_team_stack(positions = c('QB', 'WR'), opt_positions = c('TE','WR','RB'))
+```
+
 
 # Restrict Opposing Positions
 Useful in cases where you want to ensure opposing positions from two teams aren't included 
@@ -128,3 +167,13 @@ position (e.g., you definitely want either a QB or a WR, not DST or TE)
 ## Global Variance
 
 ## Player Level Variance
+
+# Team Restrictions
+
+## Set minimum number of teams to include
+
+## Specify Players Per Team
+
+### Max from teams
+
+### Exact from teams
