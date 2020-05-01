@@ -180,7 +180,9 @@ Sometimes, you may want to limit the set of players who are eligible for this
 position (e.g., you definitely want either a QB or a WR, not DST or TE)
 
 ```{r}
-
+# Specific the multiplier position to be either a QB or a WR
+opt <- opt %>%
+  set_multiplier_position(positions = c('QB', 'WR'))
 ```
 
 # Variance

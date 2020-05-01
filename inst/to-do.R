@@ -10,6 +10,7 @@
 #'      - All Fandual Single Game content
 #' - FILL IN THE VIGNETTES
 #'   - set_min_budget needs an optimizer-method (we can ignore set-max-budget)
+#'   - May need a way to set global variance????
 #' - Methods for Setting config fields?  (STILL NEED TO CONSIDER THE API - slightly less important now)
 #'   - using optimizer methods ensures pipe-ability (e.g., function(opt, args) can be `opt %>% function(args)`)
 #'   - I'm feeling like using BOTH APIs is potentially very useful (for those who like to pipe and those who do not)
