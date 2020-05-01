@@ -104,7 +104,7 @@ setMethod('set_min_exposure', 'player_object',
 
 
 # setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
-#' @ export
+#' @export
 setMethod('set_max_exposure', 'player_object',
           function(object, exposure){
             if (exposure > 1 || exposure < 0) {
