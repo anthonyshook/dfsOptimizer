@@ -144,24 +144,32 @@ opt <- opt %>%
 
 # Specific Positions for FLEX/UTIL positions
 
-This has no effect on lineups where no FLEX/UTIL positions are included.
+This has no effect on slates where no FLEX/UTIL positions are included.
 
 ```{r}
+# Set the FLEX or UTIL position in the lineup to include only WR
+opt <- opt %>%
+  set_flex_positions(positions = c('WR'))
 
+# Or set it to by WR or RB
+opt <- opt %>%
+  set_flex_positions(positions = c('WR', 'RB'))
 ```
 
 # Maximium Repeating Players
 
-Set the maximum number of players allowed to repeat across lineups.
+Set the maximum number of players allowed to repeat across lineups. This is 
+useful for increasing cross-lineup variability.
 
 ```{r}
-
+opt <- opt %>%
+  set_max_overlap(overlap = 5)
 ```
 
 # Set a minimum budget
 
 ```{r}
-
+# CURRENTLY AT CONFIG LEVEL
 ```
 
 # Set Multiplier Position
