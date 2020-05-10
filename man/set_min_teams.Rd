@@ -21,7 +21,7 @@ like \code{set_min_teams(object, min_teams = 1)}
 \examples{
 \dontrun{
 # Set minimum number of teams to 6
-opt <- set_min_teams(opt, min_teams = 1)
+opt <- set_min_teams(opt, min_teams = 6)
 }
 
 }

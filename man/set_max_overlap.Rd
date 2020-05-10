@@ -19,7 +19,7 @@ Method to set the max overlap of an optimizer model.
 }
 \examples{
 \dontrun{
-opt <- create_optimizer(site = 'DRAFTKINGs', sport = 'HOCKEY', contest_type = 'CLASSIC')
+opt <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
 opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 
 # update the max overlap

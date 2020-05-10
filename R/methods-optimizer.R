@@ -325,22 +325,22 @@ setMethod(f = 'set_max_exposure',
 setGeneric('set_player_max_exp',
            function(object, id, exp) standardGeneric('set_player_max_exp'))
 #' @title Set a player's max exposure by ID
-#' 
+#'
 #' @param object An optimizer object
 #' @param id The ID of a player
 #' @param exp A value of exposure
-#' 
+#'
 #' @return Updated Optimizer object
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' # Set Carey Price to have a maximum exposure of 75%
 #' ID <- get_player_id(opt, 'Carey Price')
 #' opt <- opt %>% set_player_max_exp(id = ID, exp = .75)
 #' }
-#' 
+#'
 #' @rdname set_player_max_exp
-#' 
+#'
 #' @export
 setMethod(f = 'set_player_max_exp',
           signature = 'optimizer',
@@ -354,22 +354,22 @@ setMethod(f = 'set_player_max_exp',
 setGeneric('set_player_min_exp',
            function(object, id, exp) standardGeneric('set_player_min_exp'))
 #' @title Set a player's Minimum exposure by ID
-#' 
+#'
 #' @param object An optimizer object
 #' @param id The ID of a player
 #' @param exp A value of exposure
-#' 
+#'
 #' @return Updated Optimizer object
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' # Set Patrick Mahomes to have a minimum exposure of 75%
 #' ID <- get_player_id(opt, 'Patrick Mahomes')
 #' opt <- opt %>% set_player_min_exp(id = ID, exp = .75)
 #' }
-#' 
+#'
 #' @rdname set_player_min_exp
-#' 
+#'
 #' @export
 setMethod(f = 'set_player_min_exp',
           signature = 'optimizer',
@@ -422,7 +422,7 @@ setGeneric('set_min_teams', function(object, min_teams) standardGeneric('set_min
 #' @examples
 #' \dontrun{
 #' # Set minimum number of teams to 6
-#' opt <- set_min_teams(opt, min_teams = 1)
+#' opt <- set_min_teams(opt, min_teams = 6)
 #' }
 #'
 #' @rdname set_min_teams
