@@ -301,6 +301,34 @@ setMethod('set_players_per_team',
           })
 
 ##### Setting Functions #####
+setGeneric('set_min_budget', function(object, min_budget) standardGeneric('set_min_budget'))
+#' @title Set the minimum budget for the model
+#'
+#' @param object An optimizer object
+#' @param min_budget The minimum budget value
+#'
+#' @description Used to set a lower-bound budget for all lineups
+#'
+#' @return Updated optimizer object
+#'
+#' @examples
+#' \dontrun{
+#' # Set the minimum budget to 40000
+#' opt <- opt %>%
+#'   set_min_budget(40000)
+#' }
+#'
+#' @rdname set_min_budget
+#'
+#' @export
+setMethod(f = 'set_min_budget',
+          signature = 'optimizer',
+          definition = function(object, min_budget) {
+            set_min_budget(object@config) <- min_budget
+            return(object)
+          })
+
+
 setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
 #' @title Set the Global Max Exposure
 #'
@@ -432,6 +460,63 @@ setMethod('set_min_teams',
           signature = 'optimizer',
           definition = function(object, min_teams) {
             set_min_team_req(object@config) <- as.integer(min_teams)
+            return(object)
+          })
+
+
+setGeneric('set_global_variance', function(object, variance) standardGeneric('set_global_variance'))
+#' @title Set the Global Variance
+#'
+#' @param object An optimizer object
+#' @param variance Value to set the variance
+#'
+#' @description Method to set the global variance of an optimizer model.
+#'
+#' @return Updated Optimizer object
+#'
+#' @examples
+#' \dontrun{
+#' # Set Optimizer global variance to 10%
+#' opt <- opt %>%
+#'    set_global_variance(variance = .10)
+#' }
+#'
+#' @rdname set_global_variance
+#'
+#' @export
+setMethod(f = 'set_global_variance',
+          signature = 'optimizer',
+          definition = function(object, variance) {
+            set_variance(object@config) <- variance
+            return(object)
+          })
+
+
+setGeneric('set_player_variance',
+           function(object, id, variance) standardGeneric('set_player_variance'))
+#' @title Set a player's max exposure by ID
+#'
+#' @param object An optimizer object
+#' @param id The ID of a player
+#' @param variance A value of variance
+#'
+#' @return Updated Optimizer object
+#'
+#' @examples
+#' \dontrun{
+#' # Set Carey Price's fpts to vary by plus-or-minus 25%
+#' ID <- get_player_id(opt, 'Carey Price')
+#' opt <- opt %>% set_player_variance(id = ID, variance = .25)
+#' }
+#'
+#' @rdname set_player_variance
+#'
+#' @export
+setMethod(f = 'set_player_variance',
+          signature = 'optimizer',
+          definition = function(object, id, variance) {
+            # Set and return
+            object@players[[id]] <- set_variance(object@players[[id]], variance)
             return(object)
           })
 
