@@ -167,7 +167,7 @@ opt <- opt %>%
   set_max_overlap(overlap = 5)
 ```
 
-# Set a minimum budget
+# Set a Minimum Budget
 
 ```{r}
 # Set the minimum budget to 40000
