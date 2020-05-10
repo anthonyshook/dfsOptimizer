@@ -193,10 +193,38 @@ opt <- opt %>%
 
 # Team Restrictions
 
+Several methods exist for setting team-specific values.
+
 ## Set minimum number of teams to include
+To increase variance in your lineups, you may wish to specify the number of teams to use. Note that this value has a default that's based on the sport, site, and contest type, so changing it may create lineups that don't meet slate requirements.
+
+```{r}
+# Set minimum number of teams to 6
+opt <- set_min_teams(opt, min_teams = 6)
+```
 
 ## Specify Players Per Team
+You can also specific how different teams should be represented in the lineups.
 
 ### Max from teams
+Provide instructions for a maximum number of teams.
+```{r}
+# Force the lineup to include a maximum of two players
+# from BUF, and prevent any CLE players from being included in the lineup
+opt <- set_players_per_team(object = opt, players_per_team = list(BUF = 2, CLE = 0))
+```
 
 ### Exact from teams
+You can set the lineup to use an exact number of players by setting `exact = TRUE`
+```{r}
+# Set lineup to include exactly three SF players, and exactly two DAL players
+opt <- set_players_per_team(object = opt, players_per_team = list(SF = 3, DAL = 2), exact = TRUE)
+```
+
+### Combinations
+By passing a logical vector to exact, you can specify whether to use max or exact values for 
+each team in `players_per_team` independently.
+```{r}
+# Include up to 3 players from NYG, and exactly two players from TEN
+opt <- set_players_per_team(object = opt, players_per_team = list(NYG = 3, TEN = 2), exact = c(FALSE, TRUE))
+```
