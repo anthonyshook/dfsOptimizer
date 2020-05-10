@@ -47,11 +47,11 @@ setValidity('optimConfig', method = function(object) {
   msg <- c(if (object@max_players_per_team > object@roster_size) "Cannot have more players per team than total roster size",
            if (object@min_team_req < 1) "Minimum team requirement must be at least 1",
            if (object@max_exposure > 1 |
-               object@max_exposure < 0) "max exposure must be between 0 and 1",
+               object@max_exposure < 0) "Maximum exposure must be between 0 and 1",
            if (!is.na(object@variance) &&
                (object@variance > 1 |
-               object@variance < 0)) "variance must be between 0 and 1",
-           if (object@budget < object@min_budget) "Min budget cannot be less than max budget",
+               object@variance < 0)) "Variance must be between 0 and 1",
+           if (object@budget < object@min_budget) "The minimum budget cannot be less than the maximum budget",
            if (object@max_overlap >= object@roster_size) "Max Overlap must be AT LEAST 1 less than roster_size",
            if (object@max_overlap < 0) "Max Overlap cannot be negative"
   )
