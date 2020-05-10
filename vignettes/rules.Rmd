@@ -162,6 +162,7 @@ Set the maximum number of players allowed to repeat across lineups. This is
 useful for increasing cross-lineup variability.
 
 ```{r}
+# Set it so that the maximum number of players shared across lineups is 5
 opt <- opt %>%
   set_max_overlap(overlap = 5)
 ```
@@ -169,7 +170,9 @@ opt <- opt %>%
 # Set a minimum budget
 
 ```{r}
-# CURRENTLY AT CONFIG LEVEL
+# Set the minimum budget to 40000
+opt <- opt %>%
+  set_min_budget(40000)
 ```
 
 # Set Multiplier Position
@@ -186,10 +189,29 @@ opt <- opt %>%
 ```
 
 # Variance
+In `dfsOptimizer` variance can added as a percentage change from the projected points. In other words, if you add a global variance of 10%, 
+a player with a projected 60 points may enter the model with anywhere between 54 and 66 points, while a player with projected 20 points will 
+have a range of 18 to 22.
+
+This variance can be set globally, but can also be set at the player level.
+
+Note well that like exposure levels, player-level variance supersedes global variance.  So you can set a global variance, then specify variance 
+for select players individually.
 
 ## Global Variance
+```{r}
+# Set Optimizer global variance to 10%
+opt <- opt %>%
+  set_global_variance(variance = .10)
+```
 
 ## Player Level Variance
+```{r}
+# Set Carey Price's fpts to vary by plus-or-minus 25%
+ID <- get_player_id(opt, 'Carey Price')
+opt <- opt %>% 
+  set_player_variance(id = ID, variance = .25)
+```
 
 # Team Restrictions
 
@@ -211,14 +233,17 @@ Provide instructions for a maximum number of teams.
 ```{r}
 # Force the lineup to include a maximum of two players
 # from BUF, and prevent any CLE players from being included in the lineup
-opt <- set_players_per_team(object = opt, players_per_team = list(BUF = 2, CLE = 0))
+opt <- set_players_per_team(object = opt, 
+                            players_per_team = list(BUF = 2, CLE = 0))
 ```
 
 ### Exact from teams
 You can set the lineup to use an exact number of players by setting `exact = TRUE`
 ```{r}
 # Set lineup to include exactly three SF players, and exactly two DAL players
-opt <- set_players_per_team(object = opt, players_per_team = list(SF = 3, DAL = 2), exact = TRUE)
+opt <- set_players_per_team(object = opt,
+                            players_per_team = list(SF = 3, DAL = 2),
+                            exact = TRUE)
 ```
 
 ### Combinations
@@ -226,5 +251,8 @@ By passing a logical vector to exact, you can specify whether to use max or exac
 each team in `players_per_team` independently.
 ```{r}
 # Include up to 3 players from NYG, and exactly two players from TEN
-opt <- set_players_per_team(object = opt, players_per_team = list(NYG = 3, TEN = 2), exact = c(FALSE, TRUE))
+opt <- set_players_per_team(object = opt, 
+                            players_per_team = list(NYG = 3, TEN = 2), 
+                            exact = c(FALSE, TRUE))
 ```
+
