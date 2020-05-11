@@ -1,5 +1,3 @@
-#' @include class-optimizer.R
-
 
 setGeneric('add_additional_constraints', function(object) standardGeneric('add_additional_constraints'))
 #' Add additional constraints
