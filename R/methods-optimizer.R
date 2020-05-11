@@ -298,6 +298,7 @@ setMethod('set_players_per_team',
 
           })
 
+
 ##### Setting Functions #####
 setGeneric('set_min_budget', function(object, min_budget) standardGeneric('set_min_budget'))
 #' @title Set the minimum budget for the model
