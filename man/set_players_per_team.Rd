@@ -20,10 +20,13 @@ EXACT values, and others to MAX values (See examples below).}
 }
 \value{
 Updated optimizer object
-
-#' @examples
+}
+\description{
+Method used to set team specific exposures.  Note, you can set one
+EXACT and one MAX set of team restrictions per model.
+}
+\examples{
 \dontrun{
-
 # `opt` is an optimizer model object
 
 # Force the lineup to include a maximum of two players
@@ -38,8 +41,5 @@ opt <- set_players_per_team(object = opt, players_per_team = list(SF = 3), exact
 opt <- set_players_per_team(object = opt, players_per_team = list(NYG = 3, TEN = 2), exact = c(FALSE, TRUE))
 
 }
-}
-\description{
-Method used to set team specific exposures.  Note, you can set one
-EXACT and one MAX set of team restrictions per model.
+
 }

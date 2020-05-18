@@ -240,9 +240,8 @@ setGeneric('set_players_per_team', function(object, players_per_team, exact = FA
 #'
 #' @return Updated optimizer object
 #'
-#' #' @examples
+#' @examples
 #' \dontrun{
-#'
 #' # `opt` is an optimizer model object
 #'
 #' # Force the lineup to include a maximum of two players
