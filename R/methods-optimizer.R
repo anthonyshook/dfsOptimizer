@@ -242,7 +242,7 @@ setGeneric('set_players_per_team', function(object, players_per_team, exact = FA
 #'
 #' @examples
 #' \dontrun{
-#' # `opt` is an optimizer model object
+#' # 'opt' is an optimizer model object
 #'
 #' # Force the lineup to include a maximum of two players
 #' # from BUF, and prevent any CLE players from being

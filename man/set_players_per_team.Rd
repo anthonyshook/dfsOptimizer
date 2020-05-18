@@ -27,7 +27,7 @@ EXACT and one MAX set of team restrictions per model.
 }
 \examples{
 \dontrun{
-# `opt` is an optimizer model object
+# 'opt' is an optimizer model object
 
 # Force the lineup to include a maximum of two players
 # from BUF, and prevent any CLE players from being
