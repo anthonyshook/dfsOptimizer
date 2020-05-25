@@ -9,8 +9,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
-  R (>= 3.4),
-  ROI.plugin.glpk
+  R (>= 3.4)
 Imports:
   R6,
   data.table,
@@ -20,7 +19,8 @@ Imports:
   ompr.roi,
   lubridate,
   stringr,
-  methods
+  methods,
+  ROI.plugin.glpk
 RoxygenNote: 7.1.0
 Collate: 
     'base-model.R'
