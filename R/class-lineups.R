@@ -31,8 +31,13 @@ setMethod('show', 'lineupClass', function(object) {
 
 
 #' Summary for lineupClass
+#'
+#' @param object lineupClass object
+#' @param ... Unused. Included for S3 consistency
+#'
+#' @method summary lineupClass
 #' @export
-summary.lineupClass <- function(object) {
+summary.lineupClass <- function(object, ...) {
   nonnull_lineups <- object@lineups[!sapply(object@lineups, is.null)]
   cat(paste0('Number of Expected Lineups: ', length(object@lineups),'\n'))
   cat(paste0('Number of Lineups Found: ', length(nonnull_lineups), '\n\n'))
@@ -51,11 +56,36 @@ summary.lineupClass <- function(object) {
 }
 
 
-#' Simple way to extract the lineup list to do whatever you want with it.
+#' extract lineup list
+#'
+#' @param x lineupClass object
+#' @param ... Unused. Included for S3 consistency
+#'
+#' @method as.list lineupClass
 #' @export
-as.list.lineupClass <- function(object) {
-  return(object@lineups)
+as.list.lineupClass <- function(x, ...) {
+  return(x@lineups)
 }
+
+
+#' Lineup Sub Index
+#'
+#' @param x lineupClass object
+#' @param i The index
+#'
+#' @method [ lineupClass
+#' @export
+"[.lineupClass" <- function(x,i) { return(x@lineups[i]) }
+
+
+#' Lineup Sub-Sub Index
+#'
+#' @param x lineupClass object
+#' @param i The index
+#'
+#' @method [[ lineupClass
+#' @export
+"[[.lineupClass" <- function(x,i) { return(x@lineups[[i]]) }
 
 
 # Subclasses
