@@ -247,19 +247,23 @@ setGeneric('set_players_per_team', function(object, players_per_team, exact = FA
 #' # Force the lineup to include a maximum of two players
 #' # from BUF, and prevent any CLE players from being
 #' # included in the lineup
-#' opt <- set_players_per_team(object = opt, players_per_team = list(BUF = 2, CLE = 0))
+#' opt <- set_players_per_team(object = opt,
+#'        players_per_team = list(BUF = 2, CLE = 0))
 #'
 #' # Set lineup to include exactly three SF players
 #' opt <- set_players_per_team(object = opt, players_per_team = list(SF = 3), exact = TRUE)
 #'
 #' # Include up to 3 players from NYG, and exactly two players from TEN
-#' opt <- set_players_per_team(object = opt, players_per_team = list(NYG = 3, TEN = 2), exact = c(FALSE, TRUE))
-#'
+#' opt <- set_players_per_team(object = opt,
+#'          players_per_team = list(NYG = 3, TEN = 2),
+#'          exact = c(FALSE, TRUE))
 #' }
+#'
 #'
 #' @rdname set_players_per_team
 #'
 #' @export
+#'
 setMethod('set_players_per_team',
           signature = 'optimizer',
           definition = function(object, players_per_team, exact = FALSE) {
