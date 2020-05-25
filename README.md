@@ -21,10 +21,13 @@ devtools::install_github("anthonyshook/dfsOptimizer")
 
 ### To-Do
 
-  - Add More Examples / Vignettes
-  - Unit
-Testing
+  - Unit Testing
   - CICD
+  - More sports and sites
+  - Add CUSTOM class and API so users can add their own sports
+  - Fix issue with Solver not being properly imported
+  - Misc.
+fixes
 
 ## Included Sites/Sports
 

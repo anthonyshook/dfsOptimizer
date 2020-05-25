@@ -1,5 +1,5 @@
-# dfsOptimizer 0.3.0.9999
+# dfsOptimizer
 
+### 1.0.0 - May 2020
+* Initial Release
 
-### Initial Release - April 2020
-* dfsOptimizer 1.0
