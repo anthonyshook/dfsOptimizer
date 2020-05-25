@@ -638,6 +638,7 @@ setMethod('extract_player_fpts',
           })
 
 
+setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
 #' Get Player data from optimizer object
 #'
 #' @param object An optimizer object
@@ -650,7 +651,6 @@ setMethod('extract_player_fpts',
 #' @rdname get_player_data
 #'
 #' @export
-setGeneric('get_player_data', function(object) standardGeneric('get_player_data'))
 setMethod('get_player_data', 'optimizer',
           function(object){
 
@@ -921,6 +921,7 @@ setMethod('format_lineup', 'SingleGameOptim',
           })
 
 
+
 #' Toggle Multiplier Mode
 #'
 #' @param object An object of class Optimizer
@@ -928,8 +929,12 @@ setMethod('format_lineup', 'SingleGameOptim',
 #' @details Toggles the Multiplier mode (where a player's salary and fpts are multiplied by a given value, usually 1.5)
 #'     for single-game / showdown contest types.  For Classic contest_types, this function has no effect.
 #'
+#' @rdname toggle_multiplier_mode
+#'
 #' @export
 setGeneric('toggle_multiplier_mode', function(object) standardGeneric('toggle_multiplier_mode'))
+
+#' @inherit toggle_multiplier_mode
 setMethod('toggle_multiplier_mode', 'SingleGameOptim', function(object) {
   object@config@multiplier_mode <- !object@config@multiplier_mode
   print(paste0('MULTIPLIER MODE IS ', ifelse(object@config@multiplier_mode, 'ON', 'OFF')))
@@ -937,6 +942,7 @@ setMethod('toggle_multiplier_mode', 'SingleGameOptim', function(object) {
 })
 
 
+#' @inherit toggle_multiplier_mode
 setMethod('toggle_multiplier_mode', 'ClassicOptim', function(object) {
   return(object)
 })

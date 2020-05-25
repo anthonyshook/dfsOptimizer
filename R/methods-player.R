@@ -32,12 +32,12 @@ setMethod("position", "player_object", function(x) x@position)
 setGeneric("salary", function(x) standardGeneric("salary"))
 setMethod("salary", "player_object", function(x) x@salary)
 
-#setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
 # Generic already set in class-config
+#setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
 #' @ export
 setMethod("max_exposure", "player_object", function(x) x@max_exposure)
 
-#' @export
+#' @ export
 setGeneric('min_exposure', function(x) standardGeneric('min_exposure'))
 setMethod('min_exposure', 'player_object', function(x) x@min_exposure)
 
@@ -64,7 +64,10 @@ setMethod('get_opposing_team', 'player_object',
 setMethod('variance', 'player_object', function(x) x@variance)
 
 
-# Formatter method
+#' player_object formatter method
+#'
+#' @param object Object of class \code{player_object}
+#'
 setMethod('get_player_data', 'player_object',
           function(object) {
 
@@ -108,7 +111,7 @@ setMethod('set_min_exposure', 'player_object',
 
 
 # setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
-#' @export
+#' @ export
 setMethod('set_max_exposure', 'player_object',
           function(object, exposure){
             if (exposure > 1 || exposure < 0) {

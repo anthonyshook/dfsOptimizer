@@ -12,7 +12,10 @@
 #' @export
 setGeneric('get_players_from_csv', function(object, path) standardGeneric('get_players_from_csv'))
 
-# Internal
+#' Internal Method for Subclasses
+#' @param object Optimizer subclass Draftkings
+#' @param path Path to CSV
+#'
 setMethod('get_players_from_csv', 'DraftkingsOptim',
           function(object, path) {
             dat <- data.table::fread(path, stringsAsFactors = FALSE)
@@ -49,7 +52,11 @@ setMethod('get_players_from_csv', 'DraftkingsOptim',
             return(players)
           })
 
-# Internal
+
+#' Internal Method for Subclasses
+#' @param object Optimizer subclass YahooOptim
+#' @param path Path to CSV
+#'
 setMethod('get_players_from_csv', 'YahooOptim',
           function(object, path) {
             dat <- data.table::fread(path, stringsAsFactors = FALSE)
@@ -83,7 +90,11 @@ setMethod('get_players_from_csv', 'YahooOptim',
             return(players)
           })
 
-# Internal
+
+#' Internal Method for Subclasses
+#' @param object Optimizer subclass FanduelOptim
+#' @param path Path to CSV
+#'
 setMethod('get_players_from_csv', 'FanduelOptim',
           function(object, path) {
             dat <- data.table::fread(path, stringsAsFactors = FALSE)
