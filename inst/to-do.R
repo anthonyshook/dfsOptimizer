@@ -12,13 +12,9 @@
 
 ##### FUTURE MILESTONES #####
 #' SEMI LONG-TERM TO DO
-#' - Updated /cleaned docs
-#' - Validity checks to objects
-#' - Add other sites / contest types
 #' - write tests
 #' - Add friendly error reporting for things like "You used a CSV I have never seen", etc.
 #' - Refactor the whole damn stacking code, potentially.  We may want to check out CVXR and see if that is better from a speed of construction perspective.
-#'   - If there is a WAY to use the pre-defined player-stacks, that would be the ideal
 
 #' Big thing that would be great
 #' - Make a CUSTOM class that lets people basically do whatever they want by creating a config
