@@ -45,10 +45,17 @@ You can view the lineups simply by calling the object saved by `build_lineups`.
 lineups
 ```
 
-If you want to save the lineups to a list, you can simply run `as.list(lineups)`
+You can access the individual lineups with standard '[' indexing
 ```{r}
-lineups_list <- as.list(lineups)
-class(lineups_list)
+lineups[1]
+lineups[[2]]
+```
+
+Finally, you may to extract the lineups to a list, 
+To do so, you can simply run `as.list(lineups)`
+```{r}
+# Here we're getting the total fpts from every lineup using sapply
+colSums(sapply(as.list(lineups), '[[', 'fpts'))
 ```
 
 ## Lineup Summary

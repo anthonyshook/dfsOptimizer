@@ -2,10 +2,15 @@
 % Please edit documentation in R/class-lineups.R
 \name{as.list.lineupClass}
 \alias{as.list.lineupClass}
-\title{Simple way to extract the lineup list to do whatever you want with it.}
+\title{extract lineup list}
 \usage{
-\method{as.list}{lineupClass}(object)
+\method{as.list}{lineupClass}(x, ...)
+}
+\arguments{
+\item{x}{lineupClass object}
+
+\item{...}{Unused. Included for S3 consistency}
 }
 \description{
-Simple way to extract the lineup list to do whatever you want with it.
+extract lineup list
 }

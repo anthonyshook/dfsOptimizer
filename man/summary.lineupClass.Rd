@@ -4,7 +4,12 @@
 \alias{summary.lineupClass}
 \title{Summary for lineupClass}
 \usage{
-summary.lineupClass(object)
+\method{summary}{lineupClass}(object, ...)
+}
+\arguments{
+\item{object}{lineupClass object}
+
+\item{...}{Unused. Included for S3 consistency}
 }
 \description{
 Summary for lineupClass
