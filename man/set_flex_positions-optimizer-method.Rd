@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{set_flex_positions,optimizer-method}
 \alias{set_flex_positions,optimizer-method}
+\alias{set_flex_positions}
 \title{Set the FLEX/UTIL position list}
 \usage{
 \S4method{set_flex_positions}{optimizer}(object, positions)

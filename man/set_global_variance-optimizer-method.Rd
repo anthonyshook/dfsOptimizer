@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{set_global_variance,optimizer-method}
 \alias{set_global_variance,optimizer-method}
+\alias{set_global_variance}
 \title{Set the Global Variance}
 \usage{
 \S4method{set_global_variance}{optimizer}(object, variance)

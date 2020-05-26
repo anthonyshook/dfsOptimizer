@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{set_player_min_exp,optimizer-method}
 \alias{set_player_min_exp,optimizer-method}
+\alias{set_player_min_exp}
 \title{Set a player's Minimum exposure by ID}
 \usage{
 \S4method{set_player_min_exp}{optimizer}(object, id, exp)

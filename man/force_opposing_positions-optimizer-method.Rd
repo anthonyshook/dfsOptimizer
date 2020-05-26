@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{force_opposing_positions,optimizer-method}
 \alias{force_opposing_positions,optimizer-method}
+\alias{force_opposing_positions}
 \title{Force Opposing Positions}
 \usage{
 \S4method{force_opposing_positions}{optimizer}(object, pos1, pos2)

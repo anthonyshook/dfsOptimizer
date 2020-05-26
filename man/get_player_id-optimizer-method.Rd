@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{get_player_id,optimizer-method}
 \alias{get_player_id,optimizer-method}
+\alias{get_player_id}
 \title{Get a Player Id}
 \usage{
 \S4method{get_player_id}{optimizer}(object, name, team, position)

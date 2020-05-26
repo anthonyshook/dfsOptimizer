@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{update_fpts,optimizer-method}
 \alias{update_fpts,optimizer-method}
+\alias{update_fpts}
 \title{Method for updating fantasy points in an object}
 \usage{
 \S4method{update_fpts}{optimizer}(object, fpts_data)

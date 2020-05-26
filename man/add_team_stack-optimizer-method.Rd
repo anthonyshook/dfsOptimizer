@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{add_team_stack,optimizer-method}
 \alias{add_team_stack,optimizer-method}
+\alias{add_team_stack}
 \title{Add a Team Stack}
 \usage{
 \S4method{add_team_stack}{optimizer}(object, positions, opt_positions = NULL, nstacks = 1)

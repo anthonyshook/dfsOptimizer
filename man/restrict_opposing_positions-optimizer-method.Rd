@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{restrict_opposing_positions,optimizer-method}
 \alias{restrict_opposing_positions,optimizer-method}
+\alias{restrict_opposing_positions}
 \title{Restrict Opposing Positions}
 \usage{
 \S4method{restrict_opposing_positions}{optimizer}(object, pos1, pos2)

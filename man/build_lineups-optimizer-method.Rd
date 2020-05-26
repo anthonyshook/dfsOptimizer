@@ -2,6 +2,7 @@
 % Please edit documentation in R/optimizer-build-methods.R
 \name{build_lineups,optimizer-method}
 \alias{build_lineups,optimizer-method}
+\alias{build_lineups}
 \title{Function to Generate lineups}
 \usage{
 \S4method{build_lineups}{optimizer}(

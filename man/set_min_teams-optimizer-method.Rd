@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{set_min_teams,optimizer-method}
 \alias{set_min_teams,optimizer-method}
+\alias{set_min_teams}
 \title{Set minimum team requirement}
 \usage{
 \S4method{set_min_teams}{optimizer}(object, min_teams)

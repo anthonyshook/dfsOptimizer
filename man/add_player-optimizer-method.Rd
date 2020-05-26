@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{add_player,optimizer-method}
 \alias{add_player,optimizer-method}
+\alias{add_player}
 \title{Method for adding a player to Optimizer object}
 \usage{
 \S4method{add_player}{optimizer}(object, player)

@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{set_min_budget,optimizer-method}
 \alias{set_min_budget,optimizer-method}
+\alias{set_min_budget}
 \title{Set the minimum budget for the model}
 \usage{
 \S4method{set_min_budget}{optimizer}(object, min_budget)

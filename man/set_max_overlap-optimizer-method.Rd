@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{set_max_overlap,optimizer-method}
 \alias{set_max_overlap,optimizer-method}
+\alias{set_max_overlap}
 \title{Set the maximum overlap}
 \usage{
 \S4method{set_max_overlap}{optimizer}(object, overlap)

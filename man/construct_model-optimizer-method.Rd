@@ -2,6 +2,7 @@
 % Please edit documentation in R/optimizer-build-methods.R
 \name{construct_model,optimizer-method}
 \alias{construct_model,optimizer-method}
+\alias{construct_model}
 \title{Method for constructing the optimization model}
 \usage{
 \S4method{construct_model}{optimizer}(object, maximize = TRUE)

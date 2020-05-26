@@ -12,3 +12,4 @@ extract_player_fpts(object)
 \description{
 Extracting Fantasy Points from Player objects
 }
+\keyword{internal}

@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{set_players_per_team,optimizer-method}
 \alias{set_players_per_team,optimizer-method}
+\alias{set_players_per_team}
 \title{Set Number of Players per Team}
 \usage{
 \S4method{set_players_per_team}{optimizer}(object, players_per_team, exact = FALSE)

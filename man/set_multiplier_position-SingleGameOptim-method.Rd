@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{set_multiplier_position,SingleGameOptim-method}
 \alias{set_multiplier_position,SingleGameOptim-method}
+\alias{set_multiplier_position}
 \title{Set Possible positions for Multiplier slot}
 \usage{
 \S4method{set_multiplier_position}{SingleGameOptim}(object, positions)

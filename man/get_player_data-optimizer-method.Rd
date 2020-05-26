@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{get_player_data,optimizer-method}
 \alias{get_player_data,optimizer-method}
+\alias{get_player_data}
 \title{Get Player data from optimizer object}
 \usage{
 \S4method{get_player_data}{optimizer}(object)

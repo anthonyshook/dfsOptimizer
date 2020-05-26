@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{add_additional_constraints,optimizer-method}
 \alias{add_additional_constraints,optimizer-method}
+\alias{add_additional_constraints}
 \title{Add additional constraints}
 \usage{
 \S4method{add_additional_constraints}{optimizer}(object)

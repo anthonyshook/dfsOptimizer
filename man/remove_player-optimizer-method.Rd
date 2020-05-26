@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{remove_player,optimizer-method}
 \alias{remove_player,optimizer-method}
+\alias{remove_player}
 \title{Method for removing a player from Optimizer object}
 \usage{
 \S4method{remove_player}{optimizer}(object, id)

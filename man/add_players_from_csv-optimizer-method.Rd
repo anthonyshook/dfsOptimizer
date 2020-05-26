@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-optimizer.R
 \name{add_players_from_csv,optimizer-method}
 \alias{add_players_from_csv,optimizer-method}
+\alias{add_players_from_csv}
 \title{Add players to optimizer from CSV}
 \usage{
 \S4method{add_players_from_csv}{optimizer}(object, filepath, custom = FALSE)
