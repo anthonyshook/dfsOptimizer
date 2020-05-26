@@ -1,7 +1,10 @@
+
 setGeneric('get_player_exposures', function(object) standardGeneric('get_player_exposures'))
 #' @title Get Player Exposures
 #'
 #' @param object Object of class lineups
+#'
+#' @aliases get_player_exposures
 #'
 #' @export
 setMethod('get_player_exposures', 'lineupClass',
@@ -14,6 +17,8 @@ setGeneric('format_for_upload', function(object) standardGeneric('format_for_upl
 #' Function for getting lineups into uploadable format
 #'
 #' @param object An object of class Lineups
+#'
+#' @aliases format_for_upload
 #'
 #' @export
 setMethod('format_for_upload', 'lineupClass',
@@ -32,6 +37,8 @@ setGeneric('export_lineups', function(object, file = "lineup_export.csv") standa
 #'
 #' @param object An object of class Lineups
 #' @param file A character string indicating the file to write to
+#'
+#' @aliases export_lineups
 #'
 #' @export
 setMethod('export_lineups', 'lineupClass',

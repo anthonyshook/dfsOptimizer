@@ -1,38 +1,50 @@
 
 ##### Accessor Methods #####
 setGeneric("budget", function(x) standardGeneric("budget"))
+#' @keywords internal
 setMethod("budget", "optimConfig", function(x) x@budget)
 
 setGeneric("min_budget", function(x) standardGeneric("min_budget"))
+#' @keywords internal
 setMethod("min_budget", "optimConfig", function(x) x@min_budget)
 
 setGeneric("roster_size", function(x) standardGeneric("roster_size"))
+#' @keywords internal
 setMethod("roster_size", "optimConfig", function(x) x@roster_size)
 
 setGeneric("min_team_req", function(x) standardGeneric("min_team_req"))
+#' @keywords internal
 setMethod("min_team_req", "optimConfig", function(x) x@min_team_req)
 
 setGeneric("max_players_per_team", function(x) standardGeneric("max_players_per_team"))
+#' @keywords internal
 setMethod("max_players_per_team", "optimConfig", function(x) x@max_players_per_team)
 
 setGeneric("max_overlap", function(x) standardGeneric("max_overlap"))
+#' @keywords internal
 setMethod("max_overlap", "optimConfig", function(x) x@max_overlap)
 
+#' @keywords internal
 setGeneric("roster_key", function(x) standardGeneric("roster_key"))
 setMethod("roster_key", "optimConfig", function(x) x@roster_key)
 
+#' @keywords internal
 setGeneric("flex_position", function(x) standardGeneric("flex_position"))
 setMethod("flex_position", "optimConfig", function(x) x@flex_position)
 
+#' @keywords internal
 setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
 setMethod("max_exposure", "optimConfig", function(x) x@max_exposure)
 
+#' @keywords internal
 setGeneric("variance", function(x) standardGeneric("variance"))
 setMethod("variance", "optimConfig", function(x) x@variance)
 
+#' @keywords internal
 setGeneric('multiplier_mode', function(x) standardGeneric('multiplier_mode'))
 setMethod('multiplier_mode', 'optimSingleGameConfig', function(x) x@multiplier_mode)
 
+#' @keywords internal
 setGeneric('multiplier_name', function(x) standardGeneric('multiplier_name'))
 setMethod('multiplier_name', 'optimSingleGameConfig', function(x) x@multiplier_name)
 
