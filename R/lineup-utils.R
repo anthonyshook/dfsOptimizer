@@ -66,7 +66,7 @@ parse_roster_key <- function(rk) {
   })
 
   # Sum the mins and maxes up by position
-  sum_table <- data.table::rbindlist(by_row)[, .(min = sum(min), max = sum(max)), by = pos]
+  sum_table <- data.table::rbindlist(by_row)[, list(min = sum(min), max = sum(max)), by = pos]
 
   return(sum_table)
 }
@@ -78,10 +78,11 @@ parse_roster_key <- function(rk) {
 #'
 #' @keywords internal
 get_player_summary <- function(lineups) {
+  Percent <- NULL
   num_comp_lineups <- sum(!sapply(lineups, is.null))
   all_lineups <- data.table::rbindlist(lineups)
   freq <- all_lineups[,
-                      .(Lineups = .N, Percent = .N/num_comp_lineups * 100),
+                      list(Lineups = .N, Percent = .N/num_comp_lineups * 100),
                       by = 'fullname'][order(-Percent)]
   freq <- data.table::setnames(freq, 'fullname','Player')
   return(freq)

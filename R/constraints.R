@@ -107,9 +107,9 @@ constr_team_stack <- function(model, players, positions, opt_positions = NULL, n
                       data.table::data.table(table(opt_positions)),
                       by.x = 'positions', by.y = 'opt_positions', all = TRUE)
     init_pci[is.na(init_pci)] <- 0
-    pos_cnt_index <- init_pci[, .(posb = positions, lb = N.x, ub = N.x + N.y)][, list(posb, lb, ub)]
+    pos_cnt_index <- init_pci[, list(posb = positions, lb = N.x, ub = N.x + N.y)][, list(posb, lb, ub)]
   } else {
-    pos_cnt_index <- position_bounds[, .(posb = positions, lb = N, ub = N)]
+    pos_cnt_index <- position_bounds[, list(posb = positions, lb = N, ub = N)]
   }
 
   # Some general info about the model
