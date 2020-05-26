@@ -5,6 +5,8 @@
 #'
 #' @keywords internal
 link_players_on_same_team <- function(players, positions) {
+  # Workaround for non-standard eval
+  tms <- NULL
 
   # Get data
   dat <- data.table::data.table(
