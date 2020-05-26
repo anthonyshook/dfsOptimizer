@@ -34,6 +34,7 @@ Collate:
     'data.R'
     'get-players-from-df.R'
     'get-players-from-csv.R'
+    'globals.R'
     'imports.R'
     'line-constraint-scratch.R'
     'methods-config.R'
