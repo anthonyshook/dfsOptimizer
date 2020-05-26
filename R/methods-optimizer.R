@@ -7,7 +7,7 @@ setGeneric('add_additional_constraints', function(object) standardGeneric('add_a
 #'
 #' @return The Optimizer object with an updated model.
 #'
-#' @rdname add_additional_constraints
+#' @aliases add_additional_constraints
 #'
 #' @export
 setMethod('add_additional_constraints', signature = 'optimizer',
@@ -22,6 +22,10 @@ setMethod('add_additional_constraints', signature = 'optimizer',
           })
 
 
+#' Including Constraints
+#' @param x Optimizer object
+#' @param constraint_object an object of constraint class
+#' @keywords internal
 setGeneric('include_constraint', function(x, constraint_object) standardGeneric('include_constraint'))
 setMethod('include_constraint', 'optimizer',
           function(x, constraint_object) {
@@ -49,7 +53,7 @@ setGeneric('add_players_from_csv', function(object, filepath, custom = FALSE) st
 #' opt <- add_players_from_csv(object = opt, filepath = '/Path/to/file.csv')
 #' }
 #'
-#' @rdname add_players_from_csv
+#' @aliases add_players_from_csv
 #'
 #' @export
 setMethod(f = 'add_players_from_csv',
@@ -89,7 +93,7 @@ setGeneric('add_players_from_df', function(object, df) standardGeneric('add_play
 #' opt <- add_players_from_df(object = opt, df = dat)
 #' }
 #'
-#' @rdname add_players_from_df
+#' @aliases add_players_from_df
 #'
 #' @export
 setMethod(f = 'add_players_from_df',
@@ -124,7 +128,7 @@ setGeneric('add_team_stack', function(object, positions, opt_positions=NULL, nst
 #' opt <- add_team_stack(object = opt, positions = c('C','W'), opt_positions = c('C','W'))
 #' }
 #'
-#' @rdname add_team_stack
+#' @aliases add_team_stack
 #'
 #' @export
 setMethod(f = 'add_team_stack',
@@ -164,7 +168,7 @@ setGeneric('restrict_opposing_positions', function(object, pos1, pos2) standardG
 #' opt <- restrict_opposing_positions(object = opt, pos1 = c('C','W','D'), pos2 = 'G')
 #' }
 #'
-#' @rdname restrict_opposing_positions
+#' @aliases restrict_opposing_positions
 #'
 #'@export
 setMethod(f = 'restrict_opposing_positions',
@@ -205,7 +209,7 @@ setGeneric('force_opposing_positions', function(object, pos1, pos2) standardGene
 #' opt <- force_opposing_positions(object = opt, pos1 = 'QB', pos2 = 'WR')
 #' }
 #'
-#' @rdname force_opposing_positions
+#' @aliases force_opposing_positions
 #'
 #'@export
 setMethod(f = 'force_opposing_positions',
@@ -262,7 +266,7 @@ setGeneric('set_players_per_team', function(object, players_per_team, exact = FA
 #' }
 #'
 #'
-#' @rdname set_players_per_team
+#' @aliases set_players_per_team
 #'
 #' @export
 #'
@@ -322,7 +326,7 @@ setGeneric('set_min_budget', function(object, min_budget) standardGeneric('set_m
 #'   set_min_budget(40000)
 #' }
 #'
-#' @rdname set_min_budget
+#' @aliases set_min_budget
 #'
 #' @export
 setMethod(f = 'set_min_budget',
@@ -343,7 +347,7 @@ setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_m
 #'
 #' @return Updated Optimizer object
 #'
-#' @rdname set_max_exposure
+#' @aliases set_max_exposure
 #'
 #' @export
 setMethod(f = 'set_max_exposure',
@@ -371,7 +375,7 @@ setGeneric('set_player_max_exp',
 #' opt <- opt %>% set_player_max_exp(id = ID, exp = .75)
 #' }
 #'
-#' @rdname set_player_max_exp
+#' @aliases set_player_max_exp
 #'
 #' @export
 setMethod(f = 'set_player_max_exp',
@@ -400,7 +404,7 @@ setGeneric('set_player_min_exp',
 #' opt <- opt %>% set_player_min_exp(id = ID, exp = .75)
 #' }
 #'
-#' @rdname set_player_min_exp
+#' @aliases set_player_min_exp
 #'
 #' @export
 setMethod(f = 'set_player_min_exp',
@@ -431,7 +435,7 @@ setGeneric('set_max_overlap', function(object, overlap) standardGeneric('set_max
 #' opt <- set_max_overlap(object = opt, overlap = 6)
 #' }
 #'
-#' @rdname set_max_overlap
+#' @aliases set_max_overlap
 #'
 #' @export
 setMethod(f = 'set_max_overlap',
@@ -457,7 +461,7 @@ setGeneric('set_min_teams', function(object, min_teams) standardGeneric('set_min
 #' opt <- set_min_teams(opt, min_teams = 6)
 #' }
 #'
-#' @rdname set_min_teams
+#' @aliases set_min_teams
 #'
 #' @export
 setMethod('set_min_teams',
@@ -485,7 +489,7 @@ setGeneric('set_global_variance', function(object, variance) standardGeneric('se
 #'    set_global_variance(variance = .10)
 #' }
 #'
-#' @rdname set_global_variance
+#' @aliases set_global_variance
 #'
 #' @export
 setMethod(f = 'set_global_variance',
@@ -513,7 +517,7 @@ setGeneric('set_player_variance',
 #' opt <- opt %>% set_player_variance(id = ID, variance = .25)
 #' }
 #'
-#' @rdname set_player_variance
+#' @aliases set_player_variance
 #'
 #' @export
 setMethod(f = 'set_player_variance',
@@ -545,7 +549,7 @@ setGeneric('set_flex_positions', function(object, positions) standardGeneric('se
 #' opt <- set_flex_positions(object = opt, positions = c('C','W'))
 #' }
 #'
-#' @rdname set_flex_positions
+#' @aliases set_flex_positions
 #'
 #' @export
 setMethod(f = 'set_flex_positions',
@@ -580,7 +584,7 @@ setGeneric('set_multiplier_position', function(object, positions) standardGeneri
 #' opt <- set_multiplier_position(object = opt, positions = c('C','W'))
 #' }
 #'
-#' @rdname set_multiplier_position
+#' @aliases set_multiplier_position
 #'
 #' @export
 setMethod(f = 'set_multiplier_position',
@@ -626,6 +630,7 @@ setMethod(f = 'apply_variance',
 #'
 #' @param object an optimizer object
 #'
+#' @keywords internal
 setGeneric("extract_player_fpts", function(object) standardGeneric("extract_player_fpts"))
 setMethod('extract_player_fpts',
           signature = 'optimizer',
@@ -650,7 +655,7 @@ setGeneric('get_player_data', function(object) standardGeneric('get_player_data'
 #'
 #' @return Data.table containing information about the players.
 #'
-#' @rdname get_player_data
+#' @aliases get_player_data
 #'
 #' @export
 setMethod('get_player_data', 'optimizer',
@@ -672,7 +677,7 @@ setGeneric('get_player_id', function(object, name, team, position) standardGener
 #'
 #' @details \code{team} and \code{position} can be included to differentiate between two players with the same name, but who play for different teams and/or at different positions.
 #'
-#' @rdname get_player_id
+#' @aliases get_player_id
 #'
 #' @export
 setMethod(f = 'get_player_id',
@@ -713,7 +718,7 @@ setGeneric("add_player", function(object, player) standardGeneric("add_player"))
 #'
 #' @return Updated optimizer object
 #'
-#' @rdname add_player
+#' @aliases add_player
 #'
 #' @export
 setMethod('add_player',
@@ -739,7 +744,7 @@ setGeneric("remove_player", function(object, id) standardGeneric("remove_player"
 #'
 #' @return Updated optimizer object
 #'
-#' @rdname remove_player
+#' @aliases remove_player
 #'
 #' @export
 setMethod('remove_player',
@@ -768,7 +773,7 @@ setGeneric("update_fpts", function(object, fpts_data) standardGeneric('update_fp
 #'
 #' @return Updated optimizer object
 #'
-#' @rdname update_fpts
+#' @aliases update_fpts
 #'
 #' @export
 setMethod('update_fpts',
@@ -806,7 +811,7 @@ setGeneric("set_fpts_by_id", function(object, id, fpts) standardGeneric('set_fpt
 #'
 #' @return Updated optimizer object
 #'
-#' @rdname set_fpts_by_id
+#' @aliases set_fpts_by_id
 #'
 #' @export
 setMethod('set_fpts_by_id',
@@ -832,7 +837,7 @@ setGeneric('block_players_by_id', function(object, player_ids) standardGeneric('
 #'
 #' @return Updated optimizer object
 #'
-#' @rdname block_players_by_id
+#' @aliases block_players_by_id
 #'
 #' @export
 setMethod('block_players_by_id', 'optimizer',
@@ -856,7 +861,7 @@ setGeneric('lock_players_by_id', function(object, player_ids) standardGeneric('l
 #'
 #' @return Updated optimizer object
 #'
-#' @rdname lock_players_by_id
+#' @aliases lock_players_by_id
 #'
 #' @export
 setMethod('lock_players_by_id', 'optimizer',
@@ -931,7 +936,7 @@ setMethod('format_lineup', 'SingleGameOptim',
 #' @details Toggles the Multiplier mode (where a player's salary and fpts are multiplied by a given value, usually 1.5)
 #'     for single-game / showdown contest types.  For Classic contest_types, this function has no effect.
 #'
-#' @rdname toggle_multiplier_mode
+#' @aliases toggle_multiplier_mode
 #'
 #' @export
 setGeneric('toggle_multiplier_mode', function(object) standardGeneric('toggle_multiplier_mode'))

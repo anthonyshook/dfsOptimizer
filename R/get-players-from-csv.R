@@ -12,7 +12,7 @@ setGeneric('get_players_from_csv', function(object, path) standardGeneric('get_p
 #'
 #' @include get-players-from-df.R
 #'
-#' @rdname get_players_from_csv
+#' @aliases get_players_from_csv
 #'
 #' @export
 setMethod('get_players_from_csv', 'DraftkingsOptim',

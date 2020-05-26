@@ -13,9 +13,7 @@ setGeneric("id", function(x) standardGeneric("id"))
 setMethod("id", "player_object", function(x) x@id)
 
 setGeneric("fullname", function(x) standardGeneric("fullname"))
-#' Accessing Data from Player Objects
-#' @param x player_object
-#' @export
+#' @keywords internal
 setMethod("fullname", "player_object", function(x) x@fullname)
 
 setGeneric("first_name", function(x) standardGeneric("first_name"))
@@ -175,6 +173,7 @@ setMethod('set_as_active', 'player_object',
 #             return(object)
 #           })
 
+#' Setting Fpts
 #' @export
 setGeneric('set_fpts<-', function(object, value) standardGeneric('set_fpts<-'))
 setMethod('set_fpts<-', 'player_object',

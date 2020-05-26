@@ -5,6 +5,8 @@ setGeneric('construct_model', function(object, maximize = TRUE) standardGeneric(
 #' @param object an S4 object of class Optimizer
 #' @param maximize Whether to maximize or minimize the objective function
 #'
+#' @aliases construct_model
+#'
 #' @export
 setMethod('construct_model',
           signature = 'optimizer',
@@ -70,6 +72,8 @@ setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk', m
 #' @param solver The solver method (defaults to 'glpk').
 #' @param maximize Whether the model is intended to maximize (the default) or minimize the objective function
 #' @param verbose Whether to show a progress bar when building models. Defaults to TRUE.
+#'
+#' @aliases build_lineups
 #'
 #' @export
 setMethod('build_lineups',
