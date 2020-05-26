@@ -17,11 +17,13 @@ setMethod('show', 'lineupClass', function(object) {
   completed_lineups <- object@lineups[!sapply(object@lineups, is.null)]
   if (length(completed_lineups) > 0) {
     augmented_lineups <- lapply(completed_lineups, function(cl) {
-      data.table::rbindlist(
+      o <- data.table::rbindlist(
         list(cl,
-             data.frame('','','','TOTAL', sum(cl$salary), sum(cl$fpts), '')
-             )
-        )
+             data.table::data.table(position = 'TOTAL',
+                                    salary = sum(cl$salary),
+                                    fpts = sum(cl$fpts))
+        ), fill = TRUE)
+      o[is.na(o)] = ''
     })
     print(augmented_lineups)
   } else {
