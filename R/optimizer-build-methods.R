@@ -3,6 +3,7 @@ setGeneric('construct_model', function(object, maximize = TRUE) standardGeneric(
 #' Method for constructing the optimization model
 #'
 #' @param object an S4 object of class Optimizer
+#' @param maximize Whether to maximize or minimize the objective function
 #'
 #' @export
 setMethod('construct_model',
