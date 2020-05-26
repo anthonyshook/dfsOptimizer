@@ -24,6 +24,7 @@ setMethod('show', 'lineupClass', function(object) {
                                     fpts = sum(cl$fpts))
         ), fill = TRUE)
       o[is.na(o)] = ''
+      return(o)
     })
     print(augmented_lineups)
   } else {
