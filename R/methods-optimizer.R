@@ -353,7 +353,7 @@ setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_m
 setMethod(f = 'set_max_exposure',
           signature = 'optimizer',
           definition = function(object, exposure) {
-            max_exposure(object@config) <- exposure
+            set_max_exposure(object@config) <- exposure
             return(object)
           })
 
@@ -382,7 +382,7 @@ setMethod(f = 'set_player_max_exp',
           signature = 'optimizer',
           definition = function(object, id, exp) {
             # Set and return
-            object@players[[id]] <- set_max_exposure(object@players[[id]], exp)
+            object@players[[id]] <- set_player_max_exposure(object@players[[id]], exp)
             return(object)
           })
 
