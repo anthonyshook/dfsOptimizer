@@ -1,56 +1,82 @@
 
-# Accessor functions
-#' @ export
 setGeneric("fpts", function(x) standardGeneric("fpts"))
+# Accessor functions
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("fpts", "player_object", function(x) x@fpts)
 
-#' @ export
 setGeneric("id", function(x) standardGeneric("id"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("id", "player_object", function(x) x@id)
 
-#' @ export
 setGeneric("fullname", function(x) standardGeneric("fullname"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("fullname", "player_object", function(x) x@fullname)
 
-#' @ export
 setGeneric("first_name", function(x) standardGeneric("first_name"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("first_name", "player_object", function(x) x@first_name)
 
-#' @ export
 setGeneric("last_name", function(x) standardGeneric("last_name"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("last_name", "player_object", function(x) x@last_name)
 
-#' @ export
 setGeneric("team", function(x) standardGeneric("team"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("team", "player_object", function(x) x@team)
 
-#' @ export
 setGeneric("position", function(x) standardGeneric("position"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("position", "player_object", function(x) x@position)
 
-#' @ export
 setGeneric("salary", function(x) standardGeneric("salary"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("salary", "player_object", function(x) x@salary)
 
 # Generic already set in class-config
 #setGeneric("max_exposure", function(x) standardGeneric("max_exposure"))
-#' @ export
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("max_exposure", "player_object", function(x) x@max_exposure)
 
-#' @ export
 setGeneric('min_exposure', function(x) standardGeneric('min_exposure'))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod('min_exposure', 'player_object', function(x) x@min_exposure)
 
-#' @ export
 setGeneric("blocked", function(x) standardGeneric("blocked"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("blocked", "player_object", function(x) as.numeric(x@blocked))
 
-#' @ export
 setGeneric("locked", function(x) standardGeneric("locked"))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod("locked", "player_object", function(x) as.numeric(x@locked))
 
-#' @ export
 setGeneric('get_opposing_team', function(x) standardGeneric('get_opposing_team'))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod('get_opposing_team', 'player_object',
           function(x){
             opponent <- setdiff(c(home_team(x@game_info), away_team(x@game_info)),
@@ -59,11 +85,13 @@ setMethod('get_opposing_team', 'player_object',
 
           })
 
-#' @ export
 #setGeneric('variance', function(x) standardGeneric('variance'))
+#' Accessing Data from Player Objects
+#' @param x player_object
+#' @export
 setMethod('variance', 'player_object', function(x) x@variance)
 
-
+# Generic Defined in optim methods
 #' player_object formatter method
 #'
 #' @param object Object of class \code{player_object}
@@ -97,8 +125,6 @@ setMethod('block_player', 'player_object',
             return(object)
           })
 
-
-#' @ export
 setGeneric('set_min_exposure', function(object, exposure) standardGeneric('set_min_exposure'))
 setMethod('set_min_exposure', 'player_object',
           function(object, exposure){
@@ -112,6 +138,8 @@ setMethod('set_min_exposure', 'player_object',
 
 # setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
 #' @ export
+#' @param object A Player_object
+#' @param variance Value of variance
 setMethod('set_max_exposure', 'player_object',
           function(object, exposure){
             if (exposure > 1 || exposure < 0) {
@@ -123,7 +151,7 @@ setMethod('set_max_exposure', 'player_object',
 
 
 #' @ export
-setGeneric('set_as_injured', function(object, exposure) standardGeneric('set_as_injured'))
+setGeneric('set_as_injured', function(object) standardGeneric('set_as_injured'))
 setMethod('set_as_injured', 'player_object',
           function(object){
             object@is_injured <- TRUE
@@ -132,7 +160,7 @@ setMethod('set_as_injured', 'player_object',
 
 
 #' @ export
-setGeneric('set_as_active', function(object, exposure) standardGeneric('set_as_active'))
+setGeneric('set_as_active', function(object) standardGeneric('set_as_active'))
 setMethod('set_as_active', 'player_object',
           function(object){
             object@is_injured <- FALSE
@@ -140,15 +168,25 @@ setMethod('set_as_active', 'player_object',
           })
 
 
-#' @ export
-setGeneric('set_fpts', function(object, pts) standardGeneric('set_fpts'))
-setMethod('set_fpts', 'player_object',
-          function(object, pts) {
-            object@fpts <- pts
+# setGeneric('set_fpts', function(object, pts) standardGeneric('set_fpts'))
+# setMethod('set_fpts', 'player_object',
+#           function(object, pts) {
+#             object@fpts <- pts
+#             return(object)
+#           })
+
+#' @export
+setGeneric('set_fpts<-', function(object, value) standardGeneric('set_fpts<-'))
+setMethod('set_fpts<-', 'player_object',
+          function(object, value) {
+            object@fpts <- value
             return(object)
           })
 
+
 #' @ export
+#' @param object A Player_object
+#' @param variance Value of variance
 setGeneric('set_variance', function(object, variance) standardGeneric('set_variance'))
 setMethod('set_variance', 'player_object', function(object, variance) {
   object@variance <- variance
@@ -156,6 +194,9 @@ setMethod('set_variance', 'player_object', function(object, variance) {
   })
 
 #setGeneric('apply_variance', function(object, varpct) standardGeneric('apply_variance'))
+#' apply variance value to player object
+#'
+#' @param object a player_object
 setMethod('apply_variance', 'player_object',
           function(object) {
             # If no variance, return the object
