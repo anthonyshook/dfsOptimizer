@@ -1,4 +1,3 @@
-
 setGeneric('add_additional_constraints', function(object) standardGeneric('add_additional_constraints'))
 #' Add additional constraints
 #'
@@ -7,6 +6,9 @@ setGeneric('add_additional_constraints', function(object) standardGeneric('add_a
 #' @details Adds constraints from object configuration.
 #'
 #' @return The Optimizer object with an updated model.
+#'
+#' @rdname add_additional_constraints
+#'
 #' @export
 setMethod('add_additional_constraints', signature = 'optimizer',
           definition = function(object) {
@@ -124,7 +126,7 @@ setGeneric('add_team_stack', function(object, positions, opt_positions=NULL, nst
 #'
 #' @rdname add_team_stack
 #'
-#'@export
+#' @export
 setMethod(f = 'add_team_stack',
           signature = 'optimizer',
           definition = function(object, positions, opt_positions = NULL, nstacks = 1) {
@@ -816,7 +818,7 @@ setMethod('set_fpts_by_id',
               stop('ID not found in slot `players`')
             }
 
-            object@players[[id]] <- set_fpts(object@players[[as.character(id)]], fpts)
+            set_fpts(object@players[[id]]) <- fpts
 
             return(object)
           })
