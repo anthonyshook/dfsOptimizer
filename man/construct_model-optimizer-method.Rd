@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{object}{an S4 object of class Optimizer}
+
+\item{maximize}{Whether to maximize or minimize the objective function}
 }
 \description{
 Method for constructing the optimization model

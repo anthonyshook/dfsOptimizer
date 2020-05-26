@@ -4,7 +4,7 @@
 \alias{set_as_injured}
 \title{export}
 \usage{
-set_as_injured(object, exposure)
+set_as_injured(object)
 }
 \description{
 export

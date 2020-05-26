@@ -6,6 +6,11 @@
 \usage{
 \S4method{set_max_exposure}{player_object}(object, exposure)
 }
+\arguments{
+\item{object}{A Player_object}
+
+\item{variance}{Value of variance}
+}
 \description{
 export
 }

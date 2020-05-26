@@ -6,6 +6,11 @@
 \usage{
 set_variance(object, variance)
 }
+\arguments{
+\item{object}{A Player_object}
+
+\item{variance}{Value of variance}
+}
 \description{
 export
 }

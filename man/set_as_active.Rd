@@ -4,7 +4,7 @@
 \alias{set_as_active}
 \title{export}
 \usage{
-set_as_active(object, exposure)
+set_as_active(object)
 }
 \description{
 export

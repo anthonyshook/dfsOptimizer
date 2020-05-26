@@ -2,10 +2,13 @@
 % Please edit documentation in R/methods-player.R
 \name{max_exposure,player_object-method}
 \alias{max_exposure,player_object-method}
-\title{export}
+\title{Accessing Data from Player Objects}
 \usage{
 \S4method{max_exposure}{player_object}(x)
 }
+\arguments{
+\item{x}{player_object}
+}
 \description{
-export
+Accessing Data from Player Objects
 }
