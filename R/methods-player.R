@@ -111,11 +111,12 @@ setMethod('set_min_exposure', 'player_object',
           })
 
 
-# setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
-#' @ export
+#' Player_object max exposure
 #' @param object A Player_object
-#' @param variance Value of variance
-setMethod('set_max_exposure', 'player_object',
+#' @param exposure Value of exposure
+#' @keywords internal
+setGeneric('set_player_max_exposure', function(object, exposure) standardGeneric('set_player_max_exposure'))
+setMethod('set_player_max_exposure', 'player_object',
           function(object, exposure){
             if (exposure > 1 || exposure < 0) {
               stop('Maximum Exposure must be between 0 and 1')
@@ -125,7 +126,8 @@ setMethod('set_max_exposure', 'player_object',
           })
 
 
-#' @ export
+#' Internal function for setting player as injured
+#' @keywords internal
 setGeneric('set_as_injured', function(object) standardGeneric('set_as_injured'))
 setMethod('set_as_injured', 'player_object',
           function(object){
@@ -134,7 +136,7 @@ setMethod('set_as_injured', 'player_object',
           })
 
 
-#' @ export
+#' @keywords internal
 setGeneric('set_as_active', function(object) standardGeneric('set_as_active'))
 setMethod('set_as_active', 'player_object',
           function(object){
@@ -143,10 +145,11 @@ setMethod('set_as_active', 'player_object',
           })
 
 
-setGeneric('set_fpts<-', function(object, value) standardGeneric('set_fpts<-'))
 #' Setting Fpts
-#' @aliases set_fpts
-#' @export
+#' @param object A player_object
+#' @param value Value of FPTs
+#' @keywords internal
+setGeneric('set_fpts<-', function(object, value) standardGeneric('set_fpts<-'))
 setMethod('set_fpts<-', 'player_object',
           function(object, value) {
             object@fpts <- value
@@ -157,7 +160,7 @@ setMethod('set_fpts<-', 'player_object',
 #' Setting Variance
 #' @param object A Player_object
 #' @param variance Value of variance
-#' @aliases set_variance
+#' @keywords internal
 setGeneric('set_variance', function(object, variance) standardGeneric('set_variance'))
 setMethod('set_variance', 'player_object', function(object, variance) {
   object@variance <- variance
