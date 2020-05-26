@@ -25,5 +25,4 @@ i <-
   pos <-
   posindex <-
   roster_position <-
-
   NULL
