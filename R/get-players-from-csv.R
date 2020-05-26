@@ -1,5 +1,8 @@
 # Methods on Optimizer sub-classes by Site
 
+
+setGeneric('get_players_from_csv', function(object, path) standardGeneric('get_players_from_csv'))
+
 #' Create Players from CSV
 #'
 #' @param object Optimizer object
@@ -9,13 +12,9 @@
 #'
 #' @include get-players-from-df.R
 #'
-#' @export
-setGeneric('get_players_from_csv', function(object, path) standardGeneric('get_players_from_csv'))
-
-#' Internal Method for Subclasses
-#' @param object Optimizer subclass Draftkings
-#' @param path Path to CSV
+#' @rdname get_players_from_csv
 #'
+#' @export
 setMethod('get_players_from_csv', 'DraftkingsOptim',
           function(object, path) {
             dat <- data.table::fread(path, stringsAsFactors = FALSE)
@@ -53,10 +52,18 @@ setMethod('get_players_from_csv', 'DraftkingsOptim',
           })
 
 
-#' Internal Method for Subclasses
-#' @param object Optimizer subclass YahooOptim
-#' @param path Path to CSV
+#' Create Players from CSV
 #'
+#' @param object Optimizer object
+#' @param path Path to CSV or text file
+#'
+#' @details Reads a CSV from a specified site, and generates objects of Player class (one per row)
+#'
+#' @include get-players-from-df.R
+#'
+#' @rdname get_players_from_csv
+#'
+#' @export
 setMethod('get_players_from_csv', 'YahooOptim',
           function(object, path) {
             dat <- data.table::fread(path, stringsAsFactors = FALSE)
@@ -91,10 +98,18 @@ setMethod('get_players_from_csv', 'YahooOptim',
           })
 
 
-#' Internal Method for Subclasses
-#' @param object Optimizer subclass FanduelOptim
-#' @param path Path to CSV
+#' Create Players from CSV
 #'
+#' @param object Optimizer object
+#' @param path Path to CSV or text file
+#'
+#' @details Reads a CSV from a specified site, and generates objects of Player class (one per row)
+#'
+#' @include get-players-from-df.R
+#'
+#' @rdname get_players_from_csv
+#'
+#' @export
 setMethod('get_players_from_csv', 'FanduelOptim',
           function(object, path) {
             dat <- data.table::fread(path, stringsAsFactors = FALSE)
