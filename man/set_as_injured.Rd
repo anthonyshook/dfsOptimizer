@@ -2,10 +2,11 @@
 % Please edit documentation in R/methods-player.R
 \name{set_as_injured}
 \alias{set_as_injured}
-\title{export}
+\title{Internal function for setting player as injured}
 \usage{
 set_as_injured(object)
 }
 \description{
-export
+Internal function for setting player as injured
 }
+\keyword{internal}

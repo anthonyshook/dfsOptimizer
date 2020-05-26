@@ -14,3 +14,4 @@ set_variance(object, variance)
 \description{
 Setting Variance
 }
+\keyword{internal}
