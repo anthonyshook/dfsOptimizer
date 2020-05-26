@@ -22,7 +22,7 @@ setMethod('construct_model',
             object@players <- lapply(object@players, function(P) {
               # If NA, use global, else, use primary
               if (is.na(max_exposure(P))) {
-                P <- set_max_exposure(P, max_exposure(config))
+                P <- set_player_max_exposure(P, max_exposure(config))
               }
               return(P)
             })
