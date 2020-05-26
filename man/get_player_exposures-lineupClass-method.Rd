@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-lineups.R
 \name{get_player_exposures,lineupClass-method}
 \alias{get_player_exposures,lineupClass-method}
+\alias{get_player_exposures}
 \title{Get Player Exposures}
 \usage{
 \S4method{get_player_exposures}{lineupClass}(object)

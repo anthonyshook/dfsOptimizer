@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-lineups.R
 \name{format_for_upload,lineupClass-method}
 \alias{format_for_upload,lineupClass-method}
+\alias{format_for_upload}
 \title{Function for getting lineups into uploadable format}
 \usage{
 \S4method{format_for_upload}{lineupClass}(object)

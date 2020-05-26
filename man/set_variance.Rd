@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods-player.R
 \name{set_variance}
 \alias{set_variance}
-\title{export}
+\title{Setting Variance}
 \usage{
 set_variance(object, variance)
 }
@@ -12,5 +12,5 @@ set_variance(object, variance)
 \item{variance}{Value of variance}
 }
 \description{
-export
+Setting Variance
 }

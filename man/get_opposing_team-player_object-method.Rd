@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-player.R
 \name{get_opposing_team,player_object-method}
 \alias{get_opposing_team,player_object-method}
+\alias{get_opposing_team}
 \title{Accessing Data from Player Objects}
 \usage{
 \S4method{get_opposing_team}{player_object}(x)

@@ -12,3 +12,4 @@
 \description{
 apply variance value to player object
 }
+\keyword{internal}

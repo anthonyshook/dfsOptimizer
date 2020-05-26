@@ -2,6 +2,7 @@
 % Please edit documentation in R/methods-lineups.R
 \name{export_lineups,lineupClass-method}
 \alias{export_lineups,lineupClass-method}
+\alias{export_lineups}
 \title{Export Lineups to CSV}
 \usage{
 \S4method{export_lineups}{lineupClass}(object, file = "lineup_export.csv")
