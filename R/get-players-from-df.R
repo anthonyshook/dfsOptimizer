@@ -4,7 +4,7 @@
 #'    If a column coincides with a slot in objects of class \code{player_object}, it will be included when the
 #'    data.frame is converted into unique player objects. The one exception is slot \code{game_info}, which is
 #'    ignored in the conversion.
-#' @details The following columns that are required, in order to avoid issues with the optimizer model:
+#' @details The following columns are required, in order to avoid issues with the optimizer model:
 #' \itemize{
 #'   \item{first_name}
 #'   \item{last_name}
@@ -34,7 +34,7 @@ get_players_from_data_frame <- function(df) {
   df <- rapply(df, as.character, classes="factor", how="replace")
 
   # If there is a game_info column, remove it
-  df$game_info <- NULL
+  if ('game_info' %in% colnames(df)) df$game_info <- NULL
 
   # If there is no id column, add it.
   if (!('id' %in% colnames(df))) {
