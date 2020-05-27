@@ -160,3 +160,83 @@ setMethod('build_lineups',
 
           })
 
+##### Methods for Building Models #####
+setGeneric('build_base_model', function(object, maximize=TRUE) standardGeneric('build_base_model'))
+setMethod('build_base_model', 'ClassicOptim',
+          function(object, maximize=TRUE) {
+            # Checking for players
+            if (length(object@players) == 0) {
+              stop('No players found, cannot construct a model!')
+            }
+
+            # Start constructing the model
+            object@model <- build_classic_model(
+              size = length(object@players),
+              team_vector = sapply(object@players, team),
+              pts  = extract_player_fpts(object),
+              maximize = maximize
+            )
+
+            return(object)
+          })
+
+setMethod('build_base_model', 'SingleGameOptim',
+          function(object, maximize=TRUE) {
+            # Checking for players
+            if (length(object@players) == 0) {
+              stop('No players found, cannot construct a model!')
+            }
+
+            # Start constructing the model
+            object@model <- build_singlegame_model(
+              size = length(object@players),
+              team_vector = sapply(object@players, team),
+              position_vector = sapply(object@players, position),
+              pts  = extract_player_fpts(object),
+              config = object@config,
+              maximize = maximize
+            )
+
+            return(object)
+
+          })
+
+
+# Updates objective based on necessary inputs
+# Since it's internal, it can remain generic
+setGeneric('update_objective', function(object, ...) standardGeneric('update_objective'))
+setMethod('update_objective', 'ClassicOptim',
+          function(object, ...){
+
+            # Check for req values
+            req_vals  <- c('fpts')
+            sub_vals  <- list(...)
+            val_check <- req_vals %in% names(sub_vals)
+
+            if (!all(val_check)) {
+              stop(paste0('Missing required argument(s): ', paste(req_vals[!val_check], collapse = ', ')))
+            }
+
+            # Update the model
+            object@model <- add_classic_objective(object@model, pts = sub_vals$fpts)
+
+            return(object)
+          })
+
+setMethod('update_objective', 'SingleGameOptim',
+          function(object, ...){
+
+            # Check for req values
+            req_vals  <- c('fpts')
+            sub_vals  <- list(...)
+            val_check <- req_vals %in% names(sub_vals)
+
+            if (!all(val_check)) {
+              stop(paste0('Missing required argument(s): ', paste(req_vals[!val_check], collapse = ', ')))
+            }
+
+            # Update the model
+            object@model <- add_singlegame_objective(object@model, pts = sub_vals$fpts, mlt_mode = object@config@multiplier_mode)
+
+            return(object)
+          })
