@@ -144,9 +144,6 @@ setMethod('get_players_from_csv', 'FanduelOptim',
             return(players)
           })
 
-# setMethod('parse_input_csv', 'Custom',function(object, dat) {
-#   get_players_from_data_frame(dat)
-# })
 
 #' Function to parse string for game info (Internal)
 #'
