@@ -48,7 +48,7 @@ If you'd like to omit specific players, you can block by ID.
 # Single Player
 opt <- block_players_by_id(opt, player_ids = single_player_id)
 
-# Multiple players use the same syntax
+# Blocking multiple players uses the same syntax
 opt <- block_players_by_id(opt, player_ids = multiple_player_ids)
 ```
 
