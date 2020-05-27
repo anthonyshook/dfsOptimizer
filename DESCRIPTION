@@ -39,6 +39,7 @@ Collate:
     'line-constraint-scratch.R'
     'methods-config.R'
     'methods-lineups.R'
+    'methods-optimizer-player-setting.R'
     'methods-optimizer.R'
     'methods-player.R'
     'optimizer-build-methods.R'
