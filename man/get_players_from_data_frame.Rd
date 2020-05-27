@@ -19,7 +19,7 @@ A list containing values of class \code{player_objects}, one per player (i.e., r
 Get Players from data.frame
 }
 \details{
-The following columns that are required, in order to avoid issues with the optimizer model:
+The following columns are required, in order to avoid issues with the optimizer model:
 \itemize{
   \item{first_name}
   \item{last_name}
