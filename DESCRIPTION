@@ -11,7 +11,7 @@ LazyData: true
 Depends:
   R (>= 3.6)
 Imports:
-  data.table,
+  data.table (>= 1.11.0),
   magrittr,
   ROI,
   ompr,
