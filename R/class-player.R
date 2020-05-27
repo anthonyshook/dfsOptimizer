@@ -43,6 +43,7 @@ setClass('player_object',
            is_injured = FALSE,
            variance = NA_real_,
            locked = FALSE,
+           blocked = FALSE,
            depth = 1L
          ))
 
