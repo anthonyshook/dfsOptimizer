@@ -100,7 +100,7 @@ or `?get_players_from_data_frame` for more detail and examples\!
 #### Updating the Projected Fantasy Points for your Model
 
 Once you have an existing optimizer model, you can update the FPTS using
-the function `update_fpts)`. This requires a data.frame that contains
+the function `update_fpts`. This requires a data.frame that contains
 columns `id` and `fpts` – the easiest way to get players’ ids is using
 `get_player_data` on an optimizer with players added.
 
