@@ -75,7 +75,8 @@ setMethod('get_player_data', 'player_object',
           function(object) {
 
             # Get all the object names and values
-            object_names <- c('id','fullname','team','position','salary','fpts')
+            object_names <- list_player_attributes()
+            object_names <- object_names[object_names != 'game_info']
             vals <- lapply(object_names, function(obn) slot(object, obn))
             names(vals) <- object_names
             return(data.frame(vals, stringsAsFactors = FALSE))
