@@ -42,7 +42,8 @@ setClass('player_object',
            max_exposure = NA_real_,
            is_injured = FALSE,
            variance = NA_real_,
-           locked = FALSE
+           locked = FALSE,
+           depth = 1L
          ))
 
 #' Constructor Function for Player class
