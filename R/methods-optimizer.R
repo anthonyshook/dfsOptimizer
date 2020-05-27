@@ -622,60 +622,6 @@ setMethod(f = 'get_player_id',
           })
 
 
-## Updating Player Information
-setGeneric("add_player", function(object, player) standardGeneric("add_player"))
-#' Method for adding a player to Optimizer object
-#'
-#' @param object an S4 optimizer object
-#' @param player an object of class Player
-#'
-#' @return Updated optimizer object
-#'
-#' @aliases add_player
-#'
-#' @export
-setMethod('add_player',
-          signature = 'optimizer',
-          definition = function(object, player) {
-
-            # Check that if player exists, they aren't added again
-            if (any(sapply(object@players, identical, player))) {
-              warning('Player already exists')
-            } else {
-              object@players <- c(object@players, player)
-            }
-
-            return(object)
-          })
-
-
-setGeneric("remove_player", function(object, id) standardGeneric("remove_player"))
-#' Method for removing a player from Optimizer object
-#'
-#' @param object an S4 optimizer object
-#' @param id ID of player to remove
-#'
-#' @return Updated optimizer object
-#'
-#' @aliases remove_player
-#'
-#' @export
-setMethod('remove_player',
-          signature = 'optimizer',
-          definition = function(object, id) {
-            index_to_remove <- which(sapply(object@players, id) == id)
-
-            if (length(index_to_remove) == 0) {
-              stop("Could not find player with ID equal to ", id)
-            } else if (length(index_to_remove) > 1) {
-              stop("Found more than one player with ID of ", id)
-            } else {
-              object@players[[index_to_remove]] <- NULL
-            }
-            return(object)
-          })
-
-
 ##### Lineup Methods #####
 setGeneric('new_lineup_object', function(object, num_lineups) standardGeneric('new_lineup_object'))
 setMethod('new_lineup_object',
