@@ -1,0 +1,95 @@
+---
+title: "Customizing Players - Advanced"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+    theme: yeti
+    highlight: textmate
+vignette: >
+  %\VignetteIndexEntry{[customizeplayers]}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>"
+)
+```
+```{r setup, warning = FALSE}
+library(dfsOptimizer)
+```
+
+# Basic Methods
+The package includes a lot of methods for customizing individual players in your model
+(see the "Customizing your Optimizer" vignette for examples)
+
+```{r, eval = FALSE}
+## Example of how to block players by ID
+# Single Player
+opt <- block_players_by_id(opt, player_ids = single_player_id)
+
+# Blocking multiple players uses the same syntax
+opt <- block_players_by_id(opt, player_ids = multiple_player_ids)
+```
+
+# Customizing Player Sets - Advanced
+Let's say you want to do something complicated, like
+* Remove every player who _either_ is in the bottom 50% of projected value (fpts/salary) OR plays for Montreal
+* Lock the two wingers with the highest points
+* Set the maximum exposure of all players to be proportional to their projected value, *within teams*
+
+You could use the various sets of functions included in this package,
+But for complex, multi-step customization, the flow I recommend is:
+1. Add players to an optimizer object
+2. Pull those players out using `get_player_data()`
+3. Use whatever R code you like on the data.table of players 
+4. Put the table back into the model with `add_players_from_df`
+
+Here's how we'd handle the above example:
+```{r}
+# Instantiate
+mod <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contest_type = 'CLASSIC')
+
+# Add players (using the data set nhl_players, which is included in the package)
+mod <- add_players_from_df(mod, nhl_players)
+mod
+```
+
+One can see we have 308 players in our set -- Let's pull the out into a data.table
+
+```{r}
+# Pull those right back out
+# This step is necessary if you added players to your model via CSV,
+# otherwise you could just manipulate the original data.frame before
+# adding it to the model
+players <- get_player_data(mod)
+head(players)
+```
+
+Now that we have the players, we can manipulate the table however we want -- I'm going to use data.table in this example,
+but you could just as easily use whatever methods or packages you want.
+
+Remember what we want to do:
+* Remove every player who _either_ is in the bottom 50% of projected value (fpts/salary) OR plays for Montreal
+* Lock the two wingers with the highest points
+* Set the maximum exposure of all players to be proportional to their projected value, *within teams*
+```{r}
+# Remove every player who _either_ is in the bottom 50% of projected value (fpts/salary) OR plays for Montreal
+players <-
+  players[fpts/salary >= median(fpts/salary)][team != 'MON']
+
+# Lock the two wingers with the highest points
+players[ id %in% players[position == 'W', ][order(-fpts)][1:2, id], locked := TRUE]
+
+# Set the maximum exposure of all players to be proportional to their projected value, *within teams*
+players[, max_exposure := rank(fpts/salary, ties.method = 'first') / .N, by = team]
+```
+
+From here, you just put the data right back in using `add_players_from_df`
+```{r}
+mod <- add_players_from_df(mod, players)
+mod
+```
