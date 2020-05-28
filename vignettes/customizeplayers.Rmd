@@ -93,3 +93,8 @@ From here, you just put the data right back in using `add_players_from_df`
 mod <- add_players_from_df(mod, players)
 mod
 ```
+
+You could, of course, use this method in conjunction with external data as well. For instance,
+if you wanted to remove anyone who played the night before, or who hasn't player more than N games,
+you could join in an external set with values like "Days since played" or "N Games Played" and use
+that to filter the data down before setting it back into the model!
