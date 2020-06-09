@@ -14,7 +14,6 @@
 #' SEMI LONG-TERM TO DO
 #' - write tests
 #' - Add friendly error reporting for things like "You used a CSV I have never seen", etc.
-#' - Refactor the whole damn stacking code, potentially.  We may want to check out CVXR and see if that is better from a speed of construction perspective.
 
 #' Big thing that would be great
 #' - Make a CUSTOM class that lets people basically do whatever they want by creating a config
@@ -22,20 +21,17 @@
 #'   -- We can already handle imports here by doing specific data.frame imports,
 #'      but sites that we cover that have import methods should be handled already, too
 #'   -- Basically it just requires instructions for what to do with the classes, and how
-#'      to deal with inheritence relative to specific configs / actions / etc.
+#'      to deal with inheritance relative to specific configs / actions / etc.
 
 
 #' NICE TO HAVE IMPROVEMENTS
-#' - fix the date parsing for non-draftkings
+#' - Fix Date extraction in get_player_data and inclusion in add_players_from_df
 #' - Add functionality to include predefined lineups (Mostly useful when randomness is included, or the model will likely produce exactly the same values).
 #' - Add grouped-stack constraints (Line matching for hockey, depth order for baseball...) [would be easier with sport/site/contest_type based subclasses?]
 #'   - Could see this as a V1.2...
 #' - The way we adapt budget to singlegame/showdown mode _currently_ uses an `ifelse` but it's fragile-ish.
 #'        (Would be better if the construction process was at the method level -- AFAIK, only budget and pts differ in construction, everything
 #'        else is config-controlled already)
-#' - Position-level salary ranges? (C #1 = 8000-9000, C #2 = 4000-5000)
-#'   - This is not something remotely possible at the moment. It only would be if we were slating players directly into
-#'     positions within a lineup, which we are NOT -- we're just looking for the binary index.
 
 
 #' TEAM STACK IMPROVEMENTS (longer term)

@@ -5,8 +5,8 @@ testmod.hockey <- create_optimizer(site = 'DRAFTKINGS', sport = 'HOCKEY', contes
 # Add Players to optimizer
 testmod.hockey <- add_players_from_csv(testmod.hockey, filepath = 'C:/Users/antho/Desktop/DFS Slate Files/hockey/DKSalaries_nhl.csv')
 
-# Block a player (Nate MacKinnon)
-testmod.hockey <- block_players_by_id(testmod.hockey, '14086443')
+# Block players (Nate MacKinnon, Ethan Bear)
+testmod.hockey <- block_players_by_id(testmod.hockey, c('14086443', '14086865'))
 
 # lock a player (Ethan Bear)
 #testmod.hockey <- lock_players_by_id(testmod.hockey, "14086865")
