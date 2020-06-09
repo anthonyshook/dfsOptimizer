@@ -17,7 +17,7 @@ create_optimizer(
 
 \item{sport}{The sport being optimized}
 
-\item{contest_type}{The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game). Default: CLASSIC}
+\item{contest_type}{The type of contest; determines base constraints (e.g., Classic, Showdown(DK)/Single(FD or Yahoo)). Default: CLASSIC}
 
 \item{players}{List of players to build lineups from (defaults to empty list)}
 

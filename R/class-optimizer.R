@@ -69,7 +69,7 @@ setClass(Class = 'DraftkingsShowdownOptim', contains = c('DraftkingsOptim', 'Sin
 #'
 #' @param site The site being used for optimization
 #' @param sport The sport being optimized
-#' @param contest_type The type of contest; determines base constraints (e.g., Classic, Showdown/Single-Game). Default: CLASSIC
+#' @param contest_type The type of contest; determines base constraints (e.g., Classic, Showdown(DK)/Single(FD or Yahoo)). Default: CLASSIC
 #' @param players List of players to build lineups from (defaults to empty list)
 #' @param filepath Alternate method for adding players at time of creation. Passing a filepath will result in an internal call to
 #'     \code{add_players_from_csv}. If \code{players} is provided, filepath will be ignored.
