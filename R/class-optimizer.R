@@ -60,7 +60,7 @@ setClass(Class = 'YahooClassicOptim', contains = c('YahooOptim', 'ClassicOptim')
 
 # Showdown / Captain Mode / Single Game??
 setClass(Class = 'DraftkingsShowdownOptim', contains = c('DraftkingsOptim', 'SingleGameOptim'))
-setClass(Class = 'FanDuelSingleOptim', contains = c('FanDuelOptim', 'SingleGameOptim'))
+setClass(Class = 'FanDuelSingleOptim', contains = c('FanduelOptim', 'SingleGameOptim'))
 setClass(Class = 'YahooSingleOptim', contains = c('YahooOptim', 'SingleGameOptim'))
 
 
