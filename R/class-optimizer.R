@@ -60,10 +60,9 @@ setClass(Class = 'YahooClassicOptim', contains = c('YahooOptim', 'ClassicOptim')
 
 # Showdown / Captain Mode / Single Game??
 setClass(Class = 'DraftkingsShowdownOptim', contains = c('DraftkingsOptim', 'SingleGameOptim'))
-# setClass(Class = 'FanDuelShowdownOptim', contains = c('FanDuelOptim'))
-# setClass(Class = 'YahooShowdownOptim', contains = c('YahooOptim'))
+setClass(Class = 'FanDuelSingleOptim', contains = c('FanDuelOptim', 'SingleGameOptim'))
+setClass(Class = 'YahooSingleOptim', contains = c('YahooOptim', 'SingleGameOptim'))
 
-# Tiers??
 
 ### Initialization Function
 #' Create an object of Optimizer
