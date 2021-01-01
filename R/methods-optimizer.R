@@ -337,6 +337,34 @@ setMethod(f = 'set_min_budget',
           })
 
 
+setGeneric('set_max_budget', function(object, max_budget) standardGeneric('set_max_budget'))
+#' @title Set the maximium budget for the model
+#'
+#' @param object An optimizer object
+#' @param max_budget The max budget value
+#'
+#' @description Used to set a upper-bound budget for all lineups
+#'
+#' @return Updated optimizer object
+#'
+#' @examples
+#' \dontrun{
+#' # Set the maximum budget to 45000
+#' opt <- opt %>%
+#'   set_max_budget(45000)
+#' }
+#'
+#' @aliases set_max_budget
+#'
+#' @export
+setMethod(f = 'set_max_budget',
+          signature = 'optimizer',
+          definition = function(object, max_budget) {
+            set_max_budget(object@config) <- max_budget
+            return(object)
+          })
+
+
 setGeneric('set_max_exposure', function(object, exposure) standardGeneric('set_max_exposure'))
 #' @title Set the Global Max Exposure
 #'
