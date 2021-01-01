@@ -175,6 +175,14 @@ opt <- opt %>%
   set_min_budget(40000)
 ```
 
+# Set a Maximum Budget
+
+```{r}
+# Set the maximum budget to 45000
+opt <- opt %>%
+  set_min_budget(45000)
+```
+
 # Set Multiplier Position
 This applies to Draftking's Captain Mode and Fanduel's MVP mode, where one player
 is designated a multiplier position, where their salary and pts are doubled.
