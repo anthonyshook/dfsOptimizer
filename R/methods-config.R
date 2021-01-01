@@ -16,6 +16,10 @@ setGeneric("min_team_req", function(x) standardGeneric("min_team_req"))
 #' @keywords internal
 setMethod("min_team_req", "optimConfig", function(x) x@min_team_req)
 
+setGeneric("max_team_req", function(x) standardGeneric("max_team_req"))
+#' @keywords internal
+setMethod("max_team_req", "optimConfig", function(x) x@max_team_req)
+
 setGeneric("max_players_per_team", function(x) standardGeneric("max_players_per_team"))
 #' @keywords internal
 setMethod("max_players_per_team", "optimConfig", function(x) x@max_players_per_team)
@@ -74,6 +78,13 @@ setMethod('set_roster_size<-', 'optimConfig', function(x, value) {
 setGeneric('set_min_team_req<-', function(x, value) standardGeneric('set_min_team_req<-'))
 setMethod('set_min_team_req<-', 'optimConfig', function(x, value) {
   x@min_team_req <- value
+  stopifnot(validObject(x))
+  return(x)
+})
+
+setGeneric('set_max_team_req<-', function(x, value) standardGeneric('set_max_team_req<-'))
+setMethod('set_max_team_req<-', 'optimConfig', function(x, value) {
+  x@max_team_req <- value
   stopifnot(validObject(x))
   return(x)
 })

@@ -233,6 +233,14 @@ To increase variance in your lineups, you may wish to specify the number of team
 opt <- set_min_teams(opt, min_teams = 6)
 ```
 
+## Set maximum number of teams to include
+Users may want to limit the number of teams selected in a given lineup in order to maximize team stacking possibilities.
+
+```{r}
+# Set maximum number of teams to 6
+opt <- set_max_teams(opt, max_teams = 6)
+```
+
 ## Specify Players Per Team
 You can also specific how different teams should be represented in the lineups.
 

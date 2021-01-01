@@ -45,6 +45,7 @@ setMethod('construct_model',
             object@model <- add_team_number_constraints(model = object@model,
                                                         players = object@players,
                                                         min_team_number = min_team_req(config),
+                                                        max_team_number = max_team_req(config),
                                                         max_players_per_team = max_players_per_team(config))
 
             # Add positional constraint

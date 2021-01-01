@@ -18,6 +18,8 @@ S4 Class optimConfig
 
 \item{\code{min_team_req}}{Number of teams required to be represented in the lineup}
 
+\item{\code{max_team_req}}{Maximum number of teams allowed to be represented in the lineup}
+
 \item{\code{max_players_per_team}}{Maximum number of players from any one team}
 
 \item{\code{max_overlap}}{Maximum number of players allowed to overlap across lineups (Must be < roster_size)}

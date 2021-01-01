@@ -157,7 +157,7 @@ add_budget_constraint <- function(model, players, budget, min_budget, mlt_mode =
 
 
 # Teams Constraints (max players per team, minimum number of teams)
-add_team_number_constraints <- function(model, players, min_team_number, max_players_per_team) {
+add_team_number_constraints <- function(model, players, min_team_number, max_team_number, max_players_per_team) {
   N <- length(players)
   G <- length(unique(sapply(players, team)))
 
@@ -165,6 +165,8 @@ add_team_number_constraints <- function(model, players, min_team_number, max_pla
   new_model <- model %>%
     # Minimum Team Number
     ompr::add_constraint(sum_expr(teams_binary[j], j=1:G) >= min_team_number) %>%
+    # Maximum Team Number
+    ompr::add_constraint(sum_expr(teams_binary[j], j=1:G) <= max_team_number) %>%
     # Maximum Per Team
     ompr::add_constraint(teams[j] <= max_players_per_team, j = 1:G)
 

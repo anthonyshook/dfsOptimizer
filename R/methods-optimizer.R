@@ -442,6 +442,32 @@ setMethod('set_min_teams',
           })
 
 
+setGeneric('set_max_teams', function(object, max_teams) standardGeneric('set_max_teams'))
+#' @title Set minimum team requirement
+#'
+#' @param object An optimizer object
+#' @param max_teams The maximum number of teams to include
+#'
+#' @details WARNING: You can very easily make your lineup ineligible for a site by doing things
+#' like \code{set_max_teams(object, max_teams = 1)}
+#'
+#' @examples
+#' \dontrun{
+#' # Set minimum number of teams to 6
+#' opt <- set_max_teams(opt, max_teams = 6)
+#' }
+#'
+#' @aliases set_max_teams
+#'
+#' @export
+setMethod('set_max_teams',
+          signature = 'optimizer',
+          definition = function(object, max_teams) {
+            set_max_team_req(object@config) <- as.integer(max_teams)
+            return(object)
+          })
+
+
 setGeneric('set_global_variance', function(object, variance) standardGeneric('set_global_variance'))
 #' @title Set the Global Variance
 #'
