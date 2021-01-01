@@ -78,6 +78,13 @@ setMethod('set_min_team_req<-', 'optimConfig', function(x, value) {
   return(x)
 })
 
+setGeneric('set_max_team_req<-', function(x, value) standardGeneric('set_max_team_req<-'))
+setMethod('set_max_team_req<-', 'optimConfig', function(x, value) {
+  x@max_team_req <- value
+  stopifnot(validObject(x))
+  return(x)
+})
+
 setGeneric('set_max_players_per_team<-', function(x, value) standardGeneric('set_max_players_per_team<-'))
 setMethod('set_max_players_per_team<-', 'optimConfig', function(x, value) {
   x@max_players_per_team <- value
