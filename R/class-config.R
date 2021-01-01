@@ -4,6 +4,7 @@
 #' @slot min_budget the minimum budget (Default: 0)
 #' @slot roster_size Roster limitation (How many players allowed)
 #' @slot min_team_req Number of teams required to be represented in the lineup
+#' @slot max_team_req Maximum number of teams allowed to be represented in the lineup
 #' @slot max_players_per_team Maximum number of players from any one team
 #' @slot max_overlap Maximum number of players allowed to overlap across lineups (Must be < roster_size)
 #' @slot roster_key List containing roster positions and the number of each position required
@@ -17,6 +18,7 @@ setClass('optimConfig',
            min_budget = 'numeric',
            roster_size = 'integer',
            min_team_req = 'integer',
+           max_team_req = 'integer',
            max_players_per_team = 'integer',
            max_overlap = 'numeric',
            roster_key = 'list',
@@ -26,6 +28,7 @@ setClass('optimConfig',
          ),
          prototype = list(
            min_budget = 0,
+           max_team_req = 999L,
            flex_position = NA_character_,
            max_exposure = 1,
            variance = NA_real_
@@ -46,6 +49,7 @@ setValidity('optimConfig', method = function(object) {
 
   msg <- c(if (object@max_players_per_team > object@roster_size) "Cannot have more players per team than total roster size",
            if (object@min_team_req < 1) "Minimum team requirement must be at least 1",
+           if (object@max_team_req < object@min_team_req) "The maximum number of teams cannot be less than the minimum number of teams",
            if (object@max_exposure > 1 |
                object@max_exposure < 0) "Maximum exposure must be between 0 and 1",
            if (!is.na(object@variance) &&
