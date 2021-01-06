@@ -12,19 +12,32 @@ build_classic_model <- function(size, team_vector, pts, maximize = TRUE) {
 
   # Lengths (unique teams and positions)
   num_teams <- length(unique(team_vector))
-  #
-  # Model with all appropriate variables
+
+  # Add the necessary variables
   base_model <- ompr::MILPModel() %>%
+    # Player Variables
     ompr::add_variable(players[i], i = 1:size, type = "binary") %>%
     # Team related variables
-    ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>%
     ompr::add_variable(teams[i], i = 1:num_teams, type = 'integer') %>%
-    ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary') %>%
-    # Teams alignment
-    ompr::add_constraint(player_teams[i,j] == players[i] * mask_func(j, team_vector), i = 1:size, j = 1:num_teams) %>%
-    ompr::add_constraint(teams[j] == sum_expr(player_teams[i,j], i = 1:size), j = 1:num_teams) %>%
+    ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary')
+
+  # Loop to add constraint that counts players-per-team
+  for (tms in 1:num_teams) {
+    cteam <- unique(team_vector)[tms]
+    cteam_mask <- as.numeric(team_vector == cteam)
+
+    # Add to the model
+    base_model <- base_model %>%
+      ompr::add_constraint(teams[tms] == sum_expr(players[i] * colwise(cteam_mask), i = 1:size))
+
+  }
+
+  # Add team further alignment constraints
+  base_model <- base_model %>%
+    # Adds binary team variable, value constrained
     ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:num_teams) %>%
     ompr::add_constraint(teams[j] <= teams_binary[j] * 100, j = 1:num_teams)
+
 
   # Add Objective
   base_model <- add_classic_objective(base_model, maximize = maximize, pts = pts)
@@ -64,14 +77,26 @@ build_singlegame_model <- function(size, team_vector, position_vector, pts, conf
 
   # Model with all appropriate variables
   base_model <- ompr::MILPModel() %>%
+    # Player Variables
     ompr::add_variable(players[i], i = 1:size, type = "binary") %>%
     # Team related variables
-    ompr::add_variable(player_teams[i,j], i = 1:size, j = 1:num_teams, type = 'integer') %>%
     ompr::add_variable(teams[i], i = 1:num_teams, type = 'integer') %>%
-    ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary') %>%
-    # Teams alignment
-    ompr::add_constraint(player_teams[i,j] == players[i] * mask_func(j, team_vector), i = 1:size, j = 1:num_teams) %>%
-    ompr::add_constraint(teams[j] == sum_expr(player_teams[i,j], i = 1:size), j = 1:num_teams) %>%
+    ompr::add_variable(teams_binary[i], i = 1:num_teams, type = 'binary')
+
+  # Loop to add constraint that counts players-per-team
+  for (tms in 1:num_teams) {
+    cteam <- unique(team_vector)[tms]
+    cteam_mask <- as.numeric(team_vector == cteam)
+
+    # Add to the model
+    base_model <- base_model %>%
+      ompr::add_constraint(teams[tms] == sum_expr(players[i] * colwise(cteam_mask), i = 1:size))
+
+  }
+
+  # Add team further alignment constraints
+  base_model <- base_model %>%
+    # Adds binary team variable, value constrained
     ompr::add_constraint(teams_binary[j] <= teams[j], j = 1:num_teams) %>%
     ompr::add_constraint(teams[j] <= teams_binary[j] * 100, j = 1:num_teams)
 
@@ -102,6 +127,8 @@ build_singlegame_model <- function(size, team_vector, position_vector, pts, conf
   return(base_model)
 }
 
+
+# Function for single-game objective
 add_singlegame_objective  <- function(model, maximize = TRUE, mlt_mode = TRUE, pts) {
   N <- get_model_length(model, 'players')
   objdir <- ifelse(maximize, 'max', 'min')
