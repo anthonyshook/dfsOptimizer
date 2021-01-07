@@ -231,7 +231,6 @@ add_position_constraint <- function(model, players, roster_key) {
 
   model <- model %>%
     # Position related variables
-    ompr::add_variable(player_positions[i,j], i = 1:num_players, j = 1:num_positions, type = 'integer') %>%
     ompr::add_variable(positions[i], i = 1:num_positions, type = 'integer')
 
   for (J in 1:num_positions) {
@@ -241,8 +240,7 @@ add_position_constraint <- function(model, players, roster_key) {
 
     model <- model %>%
       # Position Alignment
-      ompr::add_constraint(player_positions[i, J] == players[i] * mask_vec, i = 1:num_players, j = J) %>%
-      ompr::add_constraint(positions[J] == sum_expr(player_positions[i,J], i = 1:num_players), j = J) #%>%
+      ompr::add_constraint(positions[J] == sum_expr(players[i] * colwise(mask_vec), i = 1:num_players))
 
     # Just do a min/max check for each position
     model <- model %>%
