@@ -73,3 +73,35 @@ The format of the file output by export_lineups is determined by the Site, Sport
 export_lineups(lineups, file = 'lineup_export.csv')
 ```
 
+## Including Previously Generated Lineups
+There may be cases where you want to include previously generated lineups. For example, let's say you want certain players' variance to be dependent -- 
+like if a hockey center's projection decreases randomly, his wingers' projections should decrease a similar amount. By including previously generated
+lineups, you can alter the projections before each iteration of the model, but still be sure you're not generating the same lineup twice.
+
+```{r eval=FALSE}
+# Make an empty object called Lineups
+lineups <- list()
+
+# Pull the initial player data, to build off of
+player_data <- get_player_data(mod)
+
+# Iterate for as many lineups as you'd like, let's say 20
+for (nl in 1:20) {
+  # Apply your formula for dependent-randomness
+  # Get a single percentage adjustment (say, 10%)
+  random_adjustment <- runif(1, -.1, .1)
+  
+  # We'll apply it to COL Cs and Ws from our nhl_players set, as an illustration
+  # Note the data.table notation here -- we're saying for ALL Cs and Ws on Colorado,
+  # Let's apply the _same_ random adjustment.  You could easily loop this across teams,
+  # and lines if you had line-information
+  player_data[team == 'COL' && position %in% c('C','W'), 
+              fpts := fpts * (1 + random_adjustment)]
+  
+  # Now add that updated data back into the optimizer
+  mod <- add_players_from_df(mod, player_data)
+
+  # And Build the next lineup.Note the inclusion of the `existing_lineups` parameter
+  lineups <- build_lineups(mod, num_lineups = 1, existing_lineups = lineups, verbose = FALSE)
+}
+```
