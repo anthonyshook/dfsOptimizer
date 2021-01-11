@@ -8,7 +8,7 @@
 \S4method{build_lineups}{optimizer}(
   object,
   num_lineups = 1,
-  lineups = list(),
+  existing_lineups = list(),
   solver = "glpk",
   maximize = TRUE,
   verbose = TRUE
@@ -19,7 +19,7 @@
 
 \item{num_lineups}{Number of lineups to generate}
 
-\item{lineups}{Optional. You can include previously defined lineups by passing the lineupClass output of a previous \code{build_lineups} call.
+\item{existing_lineups}{Optional. You can include previously defined lineups by passing the lineupClass output of a previous \code{build_lineups} call.
 This allows you to build some lineups, change the parameters of your model or the data itself, and build additional lineups while ensuring
 all lineups are unique across models.}
 
