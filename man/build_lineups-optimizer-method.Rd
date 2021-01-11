@@ -3,11 +3,12 @@
 \name{build_lineups,optimizer-method}
 \alias{build_lineups,optimizer-method}
 \alias{build_lineups}
-\title{Function to Generate lineups}
+\title{Method to Generate lineups}
 \usage{
 \S4method{build_lineups}{optimizer}(
   object,
   num_lineups = 1,
+  lineups = list(),
   solver = "glpk",
   maximize = TRUE,
   verbose = TRUE
@@ -18,6 +19,10 @@
 
 \item{num_lineups}{Number of lineups to generate}
 
+\item{lineups}{Optional. You can include previously defined lineups by passing the lineupClass output of a previous \code{build_lineups} call.
+This allows you to build some lineups, change the parameters of your model or the data itself, and build additional lineups while ensuring
+all lineups are unique across models.}
+
 \item{solver}{The solver method (defaults to 'glpk').}
 
 \item{maximize}{Whether the model is intended to maximize (the default) or minimize the objective function}
@@ -25,5 +30,5 @@
 \item{verbose}{Whether to show a progress bar when building models. Defaults to TRUE.}
 }
 \description{
-Function to Generate lineups
+Method to Generate lineups
 }
