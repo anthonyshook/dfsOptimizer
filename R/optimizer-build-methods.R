@@ -65,11 +65,19 @@ setMethod('construct_model',
           })
 
 
-setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk', maximize = TRUE, verbose = TRUE) standardGeneric('build_lineups'))
-#' Function to Generate lineups
+setGeneric('build_lineups', function(object,
+                                     num_lineups = 1,
+                                     existing_lineups = list(),
+                                     solver = 'glpk',
+                                     maximize = TRUE,
+                                     verbose = TRUE) standardGeneric('build_lineups'))
+#' Method to Generate lineups
 #'
 #' @param object an S4 object of class Optimizer
 #' @param num_lineups Number of lineups to generate
+#' @param existing_lineups Optional. You can include previously defined lineups by passing the lineupClass output of a previous \code{build_lineups} call.
+#' This allows you to build some lineups, change the parameters of your model or the data itself, and build additional lineups while ensuring
+#' all lineups are unique across models.
 #' @param solver The solver method (defaults to 'glpk').
 #' @param maximize Whether the model is intended to maximize (the default) or minimize the objective function
 #' @param verbose Whether to show a progress bar when building models. Defaults to TRUE.
@@ -79,7 +87,12 @@ setGeneric('build_lineups', function(object, num_lineups = 1, solver = 'glpk', m
 #' @export
 setMethod('build_lineups',
           signature = 'optimizer',
-          definition = function(object, num_lineups = 1, solver = 'glpk', maximize = TRUE, verbose = TRUE) {
+          definition = function(object,
+                                num_lineups = 1,
+                                existing_lineups = list(),
+                                solver = 'glpk',
+                                maximize = TRUE,
+                                verbose = TRUE) {
 
             # Construct Model
             # Necessary to do this now so we do just-in-time construction
@@ -87,8 +100,25 @@ setMethod('build_lineups',
 
             # Build a player data set
             # We can then filter from this below, where we need the relevant rows the optimizer solved for
-            solution_vectors <- list()
-            lineups <- new_lineup_object(object, num_lineups = num_lineups)
+            if (class(existing_lineups)[1] %in% c('lineupClassic', 'lineupSingle') &&
+                length(existing_lineups@lineups) > 0) {
+              # Extract solution vectors
+              solution_vectors <- convert_lineup_to_vector(existing_lineups, object)
+
+              # Set the offset
+              offset <- existing_lineups@num_lineups
+
+              # Update the number of expected total lineups
+              lineups <- new_lineup_object(object, num_lineups = num_lineups + offset)
+              for (j in 1:length(existing_lineups@lineups)) {
+                lineups@lineups[[j]] <- existing_lineups@lineups[[j]]
+              }
+
+            } else {
+              solution_vectors <- list()
+              lineups <- new_lineup_object(object, num_lineups = num_lineups)
+              offset <- 0
+            }
 
             # Block Players
             M@model <- add_block_constraint(M@model,
@@ -100,8 +130,8 @@ setMethod('build_lineups',
 
             # Generate Lineups
             if (verbose) pb <- utils::txtProgressBar(min = 0, max = num_lineups, initial = 0, char = '#', style = 3)
-            for (i in 1:num_lineups) {
-              if (verbose) utils::setTxtProgressBar(pb, i)
+            for (iter in 1:num_lineups) {
+              if (verbose) utils::setTxtProgressBar(pb, iter)
 
               # Reset the variance of the model
               current_opt <- apply_variance(M)
@@ -147,14 +177,14 @@ setMethod('build_lineups',
               solution_index <- ompr::get_solution(fit_model, players[i])
 
               # Add to existing rosters
-              solution_vectors[[i]] <- solution_index$value
+              solution_vectors[[offset + iter]] <- solution_index$value
 
               # TO DO -- get only relevant rows (not the index, but the table containing players' data)
               # Returns the *original* FPTS, not those influenced by variance
               cols <- c('id','fullname','team','position','salary','fpts')
-              crlineup <- get_player_data(object)[which(solution_vectors[[i]]==1), ..cols]
+              crlineup <- get_player_data(object)[which(solution_vectors[[offset + iter]]==1), ..cols]
               crlineup <- format_lineup(object, crlineup, fit_model = fit_model)
-              lineups@lineups[[i]] <- crlineup
+              lineups@lineups[[offset + iter]] <- crlineup
 
             }
 
