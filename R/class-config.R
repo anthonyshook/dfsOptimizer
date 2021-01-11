@@ -391,7 +391,7 @@ setClass('fanduelHockeyClassicConfig',
            roster_key = list('C' = list(positions = 'C', num = 2),
                              'W' = list(positions = 'W', num = 2),
                              'D' = list(positions = 'D', num = 2),
-                             'UTIL' = list(positions = c('C','W','D'), num = 2)
+                             'UTIL' = list(positions = c('C','W','D'), num = 2),
                              'G' = list(positions = 'G', num = 1)),
            flex_position = 'UTIL'
          ))
