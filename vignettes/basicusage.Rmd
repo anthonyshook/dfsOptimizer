@@ -105,3 +105,21 @@ for (nl in 1:20) {
   lineups <- build_lineups(mod, num_lineups = 1, existing_lineups = lineups, verbose = FALSE)
 }
 ```
+Or, as another example, let's say you need 100 lineups - after the first 50, you notice the
+model is overwhelmingly selecting forwards from two teams, COL and EDM.  You want to block those
+forwards in the next 50 lineups, but allow for any number of D or G from those teams.
+```{r eval=FALSE}
+# Build 50 lineups
+lineups <- build_lineups(mod, num_lineups = 50, verbose = FALSE) 
+
+# Block any COL/EDM forwards
+player_data <- get_player_data(mod)
+ids_to_block <- player_data[team %in% c('COL','EDM') & position %in% c('C','W'), ]$id
+mod <- block_players_by_id(mod, ids_to_block)
+
+# Build 50 more lineups, which do not match any of the previous
+lineups_new <- build_lineups(mod, num_lineups = 50, existing_lineups = lineups, verbose = FALSE) 
+
+```
+
+
