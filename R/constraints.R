@@ -94,9 +94,10 @@ constr_restrict_opposing_position <- function(model, players, pos1, pos2) {
 #' @param positions Positions for that should be stacked within a single team
 #' @param opt_positions Optional positions -- used to add OR-level positions (e.g., stack of QB, WR & (TE | RB))
 #' @param nstacks Number of stacks to try to include (Default is 1)
+#' @param within_lines Logical.  Whether to generate stacks within lines (works for hockey and nothing else)
 #'
 #' @keywords internal
-constr_team_stack <- function(model, players, positions, opt_positions = NULL, nstacks = 1) {
+constr_team_stack <- function(model, players, positions, opt_positions = NULL, nstacks = 1, within_lines = FALSE) {
 
   # Generate a list of positions with min/max expectations
   position_bounds <- data.table::data.table(table(positions))
@@ -114,9 +115,14 @@ constr_team_stack <- function(model, players, positions, opt_positions = NULL, n
 
   # Some general info about the model
   num_players   <- get_model_length(model, 'players')
-  num_teams     <- get_model_length(model, 'teams')
-  teamvec       <- sapply(players, team)
+  if (within_lines) {
+    # Add Line to the teams, and do the stacking that way
+    teamvec <- paste0(sapply(players, team), sapply(players, function(p) {p@depth}))
+  } else {
+    teamvec <- sapply(players, team)
+  }
   curr_teams    <- unique(teamvec)
+  num_teams     <- length(curr_teams)
   num_positions <- length(positions) + length(opt_positions)
   num_slots     <- length(positions) + ifelse(is.null(opt_positions), 0, 1)
 
