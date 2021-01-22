@@ -14,7 +14,7 @@ contests.
 not yet exporting everything I need to, and new issues always crop up
 once someone who isn’t actually developing the thing gets their hands on
 it. So, if you decide to use it, I’d very much appreciate any bug
-reports and/or suggestions\!
+reports and/or suggestions!
 
 ### Installation
 
@@ -24,23 +24,23 @@ devtools::install_github("anthonyshook/dfsOptimizer")
 
 ### To-Do
 
-  - Unit Testing
-  - CICD
-  - More sports and sites
-  - Add CUSTOM class and API so users can add their own sports
+-   Unit Testing
+-   CICD
+-   More sports and sites
+-   Add CUSTOM class and API so users can add their own sports
 
 ## Included Sites/Sports
 
-|        Sport         |      Draftkings      |       FanDuel        |        Yahoo         | Draftkings Single Game | FanDuel Single Game |
-| :------------------: | :------------------: | :------------------: | :------------------: | :--------------------: | :-----------------: |
-|   **HOCKEY (NHL)**   | :heavy\_check\_mark: | :heavy\_check\_mark: | :heavy\_check\_mark: |  :heavy\_check\_mark:  |         \-          |
-|  **FOOTBALL (NFL)**  | :heavy\_check\_mark: | :heavy\_check\_mark: |          \-          |  :heavy\_check\_mark:  |         \-          |
-|  **BASEBALL (MLB)**  | :heavy\_check\_mark: |          \-          |          \-          |  :heavy\_check\_mark:  |         \-          |
-| **BASKETBALL (NBA)** | :heavy\_check\_mark: | :heavy\_check\_mark: | :heavy\_check\_mark: |  :heavy\_check\_mark:  |         \-          |
-|       **GOLF**       | :heavy\_check\_mark: | :heavy\_check\_mark: | :heavy\_check\_mark: |           \-           |         \-          |
-|      **NASCAR**      | :heavy\_check\_mark: | :heavy\_check\_mark: |          \-          |           \-           |         \-          |
-|       **WNBA**       | :heavy\_check\_mark: |          \-          |          \-          |           \-           |         \-          |
-|      **SOCCER**      | :heavy\_check\_mark: |          \-          |          \-          |           \-           |         \-          |
+|        Sport         | Draftkings | FanDuel | Yahoo | Draftkings Single Game | FanDuel Single Game |
+|:--------------------:|:----------:|:-------:|:-----:|:----------------------:|:-------------------:|
+|   **HOCKEY (NHL)**   |     \+     |   \+    |  \+   |           \+           |         \-          |
+|  **FOOTBALL (NFL)**  |     \+     |   \+    |  \-   |           \+           |         \-          |
+|  **BASEBALL (MLB)**  |     \+     |   \-    |  \-   |           \+           |         \-          |
+| **BASKETBALL (NBA)** |     \+     |   \+    |  \+   |           \+           |         \-          |
+|       **GOLF**       |     \+     |   \+    |  \+   |           \-           |         \-          |
+|      **NASCAR**      |     \+     |   \+    |  \-   |           \-           |         \-          |
+|       **WNBA**       |     \+     |   \-    |  \-   |           \-           |         \-          |
+|      **SOCCER**      |     \+     |   \-    |  \-   |           \-           |         \-          |
 
 ## Notes
 
@@ -95,7 +95,7 @@ mod <- add_players_from_csv(mod, filepath = '/Path/to/DKSalaries_nhl.csv')
 ```
 
 You can also add players from a data.frame – see `?add_players_from_df`
-or `?get_players_from_data_frame` for more detail and examples\!
+or `?get_players_from_data_frame` for more detail and examples!
 
 #### Updating the Projected Fantasy Points for your Model
 

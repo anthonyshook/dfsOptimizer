@@ -30,14 +30,14 @@ devtools::install_github("anthonyshook/dfsOptimizer")
 
 |        Sport         |     Draftkings     |      FanDuel       |       Yahoo        | Draftkings Single Game | FanDuel Single Game |
 |:--------------------:|:------------------:|:------------------:|:------------------:|:----------------------:|:-------------------:|
-|   **HOCKEY (NHL)**   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   :heavy_check_mark:   |          -          |
-|  **FOOTBALL (NFL)**  | :heavy_check_mark: | :heavy_check_mark: |         -          |   :heavy_check_mark:   |          -          |
-|  **BASEBALL (MLB)**  | :heavy_check_mark: |         -          |         -          |   :heavy_check_mark:   |          -          |
-| **BASKETBALL (NBA)** | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |   :heavy_check_mark:   |          -          |
-|       **GOLF**       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |           -            |          -          |
-|      **NASCAR**      | :heavy_check_mark: | :heavy_check_mark: |         -          |           -            |          -          |
-|       **WNBA**       | :heavy_check_mark: |         -          |         -          |           -            |          -          |
-|      **SOCCER**      | :heavy_check_mark: |         -          |         -          |           -            |          -          |
+|   **HOCKEY (NHL)**   | + | + | + |   +   |          -          |
+|  **FOOTBALL (NFL)**  | + | + |         -          |   +   |          -          |
+|  **BASEBALL (MLB)**  | + |         -          |         -          |   +   |          -          |
+| **BASKETBALL (NBA)** | + | + | + |   +   |          -          |
+|       **GOLF**       | + | + | + |           -            |          -          |
+|      **NASCAR**      | + | + |         -          |           -            |          -          |
+|       **WNBA**       | + |         -          |         -          |           -            |          -          |
+|      **SOCCER**      | + |         -          |         -          |           -            |          -          |
 
 ## Notes
 
