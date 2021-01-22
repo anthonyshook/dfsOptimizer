@@ -6,6 +6,7 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+![R](https://github.com/anthonyshook/dfsOptimizer/workflows/R/badge.svg)
 
 ## Daily Fantasy Lineup Optimization in R
 

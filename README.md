@@ -1,6 +1,8 @@
 README
 ================
 
+![R](https://github.com/anthonyshook/dfsOptimizer/workflows/R/badge.svg)
+
 ## Daily Fantasy Lineup Optimization in R
 
 The `dfsOptimizer` package is intended to provide a straightforward way
