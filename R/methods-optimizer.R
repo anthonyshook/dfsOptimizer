@@ -105,7 +105,7 @@ setMethod(f = 'add_players_from_df',
           })
 
 
-setGeneric('add_team_stack', function(object, positions, opt_positions=NULL, nstacks = 1) standardGeneric('add_team_stack'))
+setGeneric('add_team_stack', function(object, positions, opt_positions=NULL, nstacks = 1, within_lines = FALSE) standardGeneric('add_team_stack'))
 #' Add a Team Stack
 #'
 #' @param object An optimizer model object
@@ -113,6 +113,7 @@ setGeneric('add_team_stack', function(object, positions, opt_positions=NULL, nst
 #' @param opt_positions A vector of optional positions. Used to build OR-based stacks, such as QB + WR + (TE or RB).
 #'     Always selects just one of the optional positions.
 #' @param nstacks Number of stacks to include (Default is 1)
+#' @param within_lines Logical. Whether Stacks should be built within lines or depth. If 'sport' is not hockey, this is ignored.
 #'
 #' @return Updated optimizer object
 #'
@@ -133,12 +134,17 @@ setGeneric('add_team_stack', function(object, positions, opt_positions=NULL, nst
 #' @export
 setMethod(f = 'add_team_stack',
           signature = 'optimizer',
-          definition = function(object, positions, opt_positions = NULL, nstacks = 1) {
+          definition = function(object, positions, opt_positions = NULL, nstacks = 1, within_lines = FALSE) {
+
+            # Silenty change within_lines to FALSE if sport is not 'HOCKEY'
+            if (within_lines && object@sport != 'HOCKEY') {
+              within_lines <- FALSE
+            }
 
             # Create constraint
             CON <- .constraintClass(constraint_name = "Team Stack Constraint",
                                     fnc = constr_team_stack,
-                                    args = list(positions = positions, opt_positions = opt_positions, nstacks = nstacks))
+                                    args = list(positions = positions, opt_positions = opt_positions, nstacks = nstacks, within_lines = within_lines))
 
             # Add it to the config object
             object <- include_constraint(object, CON)

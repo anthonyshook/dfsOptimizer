@@ -386,13 +386,14 @@ setClass('fanduelHockeyClassicConfig',
            budget = 55000,
            roster_size = 9L,
            min_team_req = 3L,
-           max_players_per_team = 8L,
+           max_players_per_team = 4L,
            max_overlap = 8,
            roster_key = list('C' = list(positions = 'C', num = 2),
-                             'W' = list(positions = 'W', num = 4),
+                             'W' = list(positions = 'W', num = 2),
                              'D' = list(positions = 'D', num = 2),
+                             'UTIL' = list(positions = c('C','W','D'), num = 2),
                              'G' = list(positions = 'G', num = 1)),
-           flex_position = NA_character_
+           flex_position = 'UTIL'
          ))
 
 
