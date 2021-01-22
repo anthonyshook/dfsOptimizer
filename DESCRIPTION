@@ -18,8 +18,7 @@ Imports:
   ompr.roi,
   lubridate,
   stringr,
-  methods,
-  ROI.plugin.glpk
+  methods
 RoxygenNote: 7.1.0
 Collate: 
     'base-model.R'
@@ -47,5 +46,6 @@ Collate:
     'utils.R'
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    ROI.plugin.glpk
 VignetteBuilder: knitr
