@@ -1,0 +1,285 @@
+---
+title: "Customizing your Optimizer"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+    theme: yeti
+    highlight: textmate
+vignette: >
+  %\VignetteIndexEntry{rules}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  eval = FALSE,
+  comment = "#>"
+)
+```
+
+```{r echo = FALSE}
+library(dfsOptimizer)
+```
+
+The package comes with basic functions to specify constraints within your 
+optimizer model, in order to better tune your lineups.
+
+# Blocking and Locking Players
+First step here is to get player IDs. Using an optimizer object, you can
+get individual player IDs by name like so:
+```{r}
+# Opt is an optimizer object
+single_player_id <- get_player_id(opt, name = 'Sidney Crosby')
+```
+
+Or, you can use `get_player_data`, which will return a data.frame of player
+data, where you can filter by name to get IDs
+```{r}
+player_data <- get_player_data(opt)
+multiple_player_ids <- player_data[fullname %in% c('Carey Price', 'Sidney Crosby')]$id
+```
+
+## Block Players
+If you'd like to omit specific players, you can block by ID.
+```{r}
+# Single Player
+opt <- block_players_by_id(opt, player_ids = single_player_id)
+
+# Blocking multiple players uses the same syntax
+opt <- block_players_by_id(opt, player_ids = multiple_player_ids)
+```
+
+## Lock Players
+If you want to ensure that specific players are included in all lineups.
+```{r}
+# As with blocking, player_ids can be a scalar or vector of IDs
+opt <- lock_players_by_id(opt, player_ids = pids)
+```
+
+# Same Team Stacking
+Useful in cases where you want to stack players from the same team together. For
+instance, you may want to stack a QB and a WR together.
+
+```{r}
+# Stacking QB and WR from the same team together
+opt <- opt %>%
+  add_team_stack(positions = c('QB', 'WR'))
+```
+You can specify the number of stacks - so if you want TWO separate QB/WR stacks,
+you can use:
+```{r}
+# Stacking QB and WR from the same team together
+opt <- opt %>%
+  add_team_stack(positions = c('QB', 'WR'), nstacks = 2)
+```
+
+At times, you may wish to have an additional optional position; say, you want
+to stack a QB/WR pair and *one additional player of either* TE, RB, or WR:
+```{r}
+# Stacking QB and WR from the same team together
+opt <- opt %>%
+  add_team_stack(positions = c('QB', 'WR'), opt_positions = c('TE','WR','RB'))
+```
+
+Lastly, for HOCKEY, add_team_stack can accept an additional parameter, `within_lines`, which when set to TRUE,
+will limit the possible stacks specifically to include players on the same line. Note, this is represented in the `depth` slot
+for players, so it requires that one set specific values of depth (e.g., Sidney Crosby is depth = 1, whereas Evgeni Malkin is depth = 2)
+for each player.
+
+```{r}
+# Stacking QB and WR from the same team together
+opt <- opt %>%
+  add_team_stack(positions = c('C', 'W'), opt_positions = c('D'), within_lines = TRUE)
+```
+
+# Restrict Opposing Positions
+Useful in cases where you want to ensure opposing positions from two teams aren't included 
+in the lineup, like preventing one team's QB and the other team's DST.
+
+Here's an example that prevents the lineups from including one team's goalie
+and _any forward or defenseman_ on the opposing team.
+```{r}
+opt <- opt %>% 
+  restrict_opposing_positions(pos1 = c('C','W','D'), pos2 = 'G')
+```
+
+# Force Opposing Positions
+When you want to ensure that two positions from opposite teams are included. For 
+example, if you want to ensure that the lineups included at least one pair of 
+Team A's QB and Team B's WR.
+
+```{r}
+opt <- opt %>%
+  force_opposing_positions(pos1 = 'QB', pos2 = 'WR')
+```
+
+# Player Exposures
+
+## Maximium Exposure
+```{r}
+# Set Carey Price's maximum exposure to .75
+carey_price_id <- get_player_id(opt, name = 'Carey Price')
+opt <- opt %>% 
+  set_player_max_exp(carey_price_id, .75)
+```
+
+## Minimum Exposure
+```{r}
+# Set Nate Mackinnon's minimum exposure to .6
+mackinnon_id <- get_player_id(opt, name = 'Nate MacKinnon')
+opt <- opt %>% 
+  set_player_min_exp(mackinnon_id, .6)
+```
+
+## Global Exposures 
+
+Sometimes you want to set global exposures, so that no single player is selected
+for a lineup more than X% of the time.  You can use the global maximum exposure for that.
+
+**NOTE:** Individual player exposures supersede the global exposures. So, if you set
+Sidney Crosby's Max-Exposure to .8, and the global max to .5, Sidney Crosby 
+may end up in 80% of your lineups, while no other player will be greater than 50%.
+
+The following sets the global max exposure to 50% -- so no single player will
+be selected in more than 50% of lineups. (The actual percentage of lineups
+can fluctuate slightly dependent on whether the total number of lineups 
+you produce is evenly divisible by the percentage exposure)
+
+```{r}
+opt <- opt %>%
+  set_max_exposure(.5)
+```
+
+# Specific Positions for FLEX/UTIL positions
+
+This has no effect on slates where no FLEX/UTIL positions are included.
+
+```{r}
+# Set the FLEX or UTIL position in the lineup to include only WR
+opt <- opt %>%
+  set_flex_positions(positions = c('WR'))
+
+# Or set it to by WR or RB
+opt <- opt %>%
+  set_flex_positions(positions = c('WR', 'RB'))
+```
+
+# Maximium Repeating Players
+
+Set the maximum number of players allowed to repeat across lineups. This is 
+useful for increasing cross-lineup variability.
+
+```{r}
+# Set it so that the maximum number of players shared across lineups is 5
+opt <- opt %>%
+  set_max_overlap(overlap = 5)
+```
+
+# Set a Minimum Budget
+
+```{r}
+# Set the minimum budget to 40000
+opt <- opt %>%
+  set_min_budget(40000)
+```
+
+# Set a Maximum Budget
+
+```{r}
+# Set the maximum budget to 45000
+opt <- opt %>%
+  set_min_budget(45000)
+```
+
+# Set Multiplier Position
+This applies to Draftking's Captain Mode and Fanduel's MVP mode, where one player
+is designated a multiplier position, where their salary and pts are doubled.
+
+Sometimes, you may want to limit the set of players who are eligible for this
+position (e.g., you definitely want either a QB or a WR, not DST or TE)
+
+```{r}
+# Specific the multiplier position to be either a QB or a WR
+opt <- opt %>%
+  set_multiplier_position(positions = c('QB', 'WR'))
+```
+
+# Variance
+In `dfsOptimizer` variance can added as a percentage change from the projected points. In other words, if you add a global variance of 10%, 
+a player with a projected 60 points may enter the model with anywhere between 54 and 66 points, while a player with projected 20 points will 
+have a range of 18 to 22.
+
+This variance can be set globally, but can also be set at the player level.
+
+Note well that like exposure levels, player-level variance supersedes global variance.  So you can set a global variance, then specify variance 
+for select players individually.
+
+## Global Variance
+```{r}
+# Set Optimizer global variance to 10%
+opt <- opt %>%
+  set_global_variance(variance = .10)
+```
+
+## Player Level Variance
+```{r}
+# Set Carey Price's fpts to vary by plus-or-minus 25%
+ID <- get_player_id(opt, 'Carey Price')
+opt <- opt %>% 
+  set_player_variance(id = ID, variance = .25)
+```
+
+# Team Restrictions
+
+Several methods exist for setting team-specific values.
+
+## Set minimum number of teams to include
+To increase variance in your lineups, you may wish to specify the number of teams to use. Note that this value has a default that's based on the sport, site, and contest type, so changing it may create lineups that don't meet slate requirements.
+
+```{r}
+# Set minimum number of teams to 6
+opt <- set_min_teams(opt, min_teams = 6)
+```
+
+## Set maximum number of teams to include
+Users may want to limit the number of teams selected in a given lineup in order to maximize team stacking possibilities.
+
+```{r}
+# Set maximum number of teams to 6
+opt <- set_max_teams(opt, max_teams = 6)
+```
+
+## Specify Players Per Team
+You can also specific how different teams should be represented in the lineups.
+
+### Max from teams
+Provide instructions for a maximum number of teams.
+```{r}
+# Force the lineup to include a maximum of two players
+# from BUF, and prevent any CLE players from being included in the lineup
+opt <- set_players_per_team(object = opt, 
+                            players_per_team = list(BUF = 2, CLE = 0))
+```
+
+### Exact from teams
+You can set the lineup to use an exact number of players by setting `exact = TRUE`
+```{r}
+# Set lineup to include exactly three SF players, and exactly two DAL players
+opt <- set_players_per_team(object = opt,
+                            players_per_team = list(SF = 3, DAL = 2),
+                            exact = TRUE)
+```
+
+### Combinations
+By passing a logical vector to exact, you can specify whether to use max or exact values for 
+each team in `players_per_team` independently.
+```{r}
+# Include up to 3 players from NYG, and exactly two players from TEN
+opt <- set_players_per_team(object = opt, 
+                            players_per_team = list(NYG = 3, TEN = 2), 
+                            exact = c(FALSE, TRUE))
+```
+
