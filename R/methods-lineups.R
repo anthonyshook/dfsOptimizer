@@ -50,3 +50,24 @@ setMethod('export_lineups', 'lineupClass',
           })
 
 
+setGeneric('convert_lineup_to_vector', function(x, opt) standardGeneric('convert_lineup_to_vector'))
+#' @title Convert lineup object to indexes
+#'
+#' @param x lineupClass object
+#' @param opt an optimizer model object
+#'
+#' @aliases convert_lineup_to_vector
+#'
+#' @keywords internal
+setMethod(f = 'convert_lineup_to_vector',
+          signature = 'lineupClass',
+          definition = function(x, opt) {
+
+            player_data <- get_player_data(opt)
+
+            solution_vectors <- lapply(x@lineups, function (lineup) {
+              .hold <- rep(x = 0, times = nrow(player_data))
+              .hold[match(lineup$id, player_data$id)] <- 1
+              return(.hold)
+            })
+          })

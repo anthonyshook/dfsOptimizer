@@ -5,7 +5,13 @@
 \alias{add_team_stack}
 \title{Add a Team Stack}
 \usage{
-\S4method{add_team_stack}{optimizer}(object, positions, opt_positions = NULL, nstacks = 1)
+\S4method{add_team_stack}{optimizer}(
+  object,
+  positions,
+  opt_positions = NULL,
+  nstacks = 1,
+  within_lines = FALSE
+)
 }
 \arguments{
 \item{object}{An optimizer model object}
@@ -16,6 +22,8 @@
 Always selects just one of the optional positions.}
 
 \item{nstacks}{Number of stacks to include (Default is 1)}
+
+\item{within_lines}{Logical. Whether Stacks should be built within lines or depth. If 'sport' is not hockey, this is ignored.}
 }
 \value{
 Updated optimizer object

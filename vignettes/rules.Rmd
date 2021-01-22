@@ -84,6 +84,17 @@ opt <- opt %>%
   add_team_stack(positions = c('QB', 'WR'), opt_positions = c('TE','WR','RB'))
 ```
 
+Lastly, for HOCKEY, add_team_stack can accept an additional parameter, `within_lines`, which when set to TRUE,
+will limit the possible stacks specifically to include players on the same line. Note, this is represented in the `depth` slot
+for players, so it requires that one set specific values of depth (e.g., Sidney Crosby is depth = 1, whereas Evgeni Malkin is depth = 2)
+for each player.
+
+```{r}
+# Stacking QB and WR from the same team together
+opt <- opt %>%
+  add_team_stack(positions = c('C', 'W'), opt_positions = c('D'), within_lines = TRUE)
+```
+
 # Restrict Opposing Positions
 Useful in cases where you want to ensure opposing positions from two teams aren't included 
 in the lineup, like preventing one team's QB and the other team's DST.
