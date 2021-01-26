@@ -131,7 +131,8 @@ setMethod(f = 'compare_lineups_with_actuals',
             }
 
             if (length(missing_names) > 0 && show_warnings) {
-              warning(paste0('The following players were not found in the `actuals` table: \n    ',
+              warning(paste0('The following players were not found in the `actuals` table. ',
+                             'Lineups containing these players will be inaccurate: \n    ',
                              paste(unique(missing_names),collapse='\n    ')))
             }
 
