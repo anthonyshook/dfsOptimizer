@@ -9,8 +9,7 @@ The `dfsOptimizer` package is intended to provide a straightforward way
 to generate optimal daily fantasy lineups for various sports, sites, and
 contests.
 
-`dfsOptimizer` was built in R 4.0.0, but was previously tested with R
-3.6.
+`dfsOptimizer` was built and tested in R 4.0.2
 
 *NOTE WELL*: This is currently very much in Beta – I’m almost certainly
 not yet exporting everything I need to, and new issues always crop up
@@ -27,7 +26,6 @@ devtools::install_github("anthonyshook/dfsOptimizer")
 ### To-Do
 
 -   Unit Testing
--   CICD
 -   More sports and sites
 -   Add CUSTOM class and API so users can add their own sports
 

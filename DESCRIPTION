@@ -19,7 +19,7 @@ Imports:
   lubridate,
   stringr,
   methods,
- ROI.plugin.glpk
+  ROI.plugin.glpk
 RoxygenNote: 7.1.0
 Collate: 
     'base-model.R'
