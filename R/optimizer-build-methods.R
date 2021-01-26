@@ -186,6 +186,9 @@ setMethod('build_lineups',
               crlineup <- format_lineup(object, crlineup, fit_model = fit_model)
               lineups@lineups[[offset + iter]] <- crlineup
 
+              # Name the lineups
+              names(lineups@lineups) <- paste0('lineup_', 1:length(lineups@lineups))
+
             }
 
             return(lineups)
