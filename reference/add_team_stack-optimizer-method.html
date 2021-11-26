@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dfsOptimizer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -99,6 +99,9 @@
     </li>
     <li>
       <a href="../articles/customizeplayers.html">Customizing Players - Advanced</a>
+    </li>
+    <li>
+      <a href="../articles/experimentation.html">Experimentation and Back-Testing</a>
     </li>
     <li>
       <a href="../articles/rules.html">Customizing your Optimizer</a>
@@ -173,18 +176,18 @@ Always selects just one of the optional positions.</p></td>
     <p>Updated optimizer object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_optimizer.html'>create_optimizer</a></span><span class='op'>(</span>site <span class='op'>=</span> <span class='st'>'DRAFTKINGS'</span>, sport <span class='op'>=</span> <span class='st'>'HOCKEY'</span>, contest_type <span class='op'>=</span> <span class='st'>'CLASSIC'</span><span class='op'>)</span>
-<span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='add_players_from_csv,optimizer-method.html'>add_players_from_csv</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>opt</span>, filepath <span class='op'>=</span> <span class='st'>'/Path/to/file.csv'</span><span class='op'>)</span>
-
-<span class='co'># Add team stack, requiring a Center and Two Wingers from the same team</span>
-<span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>add_team_stack</span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>opt</span>, positions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>,<span class='st'>'W'</span>,<span class='st'>'W'</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># Add team stack, with a Center and a Winger, and one of either another center or winger</span>
-<span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>add_team_stack</span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>opt</span>, positions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>,<span class='st'>'W'</span><span class='op'>)</span>, opt_positions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>,<span class='st'>'W'</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_optimizer.html'>create_optimizer</a></span><span class='op'>(</span>site <span class='op'>=</span> <span class='st'>'DRAFTKINGS'</span>, sport <span class='op'>=</span> <span class='st'>'HOCKEY'</span>, contest_type <span class='op'>=</span> <span class='st'>'CLASSIC'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='add_players_from_csv,optimizer-method.html'>add_players_from_csv</a></span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>opt</span>, filepath <span class='op'>=</span> <span class='st'>'/Path/to/file.csv'</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Add team stack, requiring a Center and Two Wingers from the same team</span></span>
+<span class='r-in'><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>add_team_stack</span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>opt</span>, positions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>,<span class='st'>'W'</span>,<span class='st'>'W'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Add team stack, with a Center and a Winger, and one of either another center or winger</span></span>
+<span class='r-in'><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>add_team_stack</span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>opt</span>, positions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>,<span class='st'>'W'</span><span class='op'>)</span>, opt_positions <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>,<span class='st'>'W'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

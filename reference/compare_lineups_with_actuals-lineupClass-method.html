@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add players to optimizer from CSV — add_players_from_csv,optimizer-method • dfsOptimizer</title>
+<title>Compare Lineups with Actuals — compare_lineups_with_actuals,lineupClass-method • dfsOptimizer</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Add players to optimizer from CSV — add_players_from_csv,optimizer-method" />
-<meta property="og:description" content="Add players to optimizer from CSV" />
+<meta property="og:title" content="Compare Lineups with Actuals — compare_lineups_with_actuals,lineupClass-method" />
+<meta property="og:description" content="This function can be used to determine what a lineup would have scored, given projections and actual
+fantasy points. This makes back-testing different lineup parameters fast and easy." />
 
 
 
@@ -127,47 +128,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add players to optimizer from CSV</h1>
+    <h1>Compare Lineups with Actuals</h1>
     
-    <div class="hidden name"><code>add_players_from_csv-optimizer-method.Rd</code></div>
+    <div class="hidden name"><code>compare_lineups_with_actuals-lineupClass-method.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Add players to optimizer from CSV</p>
+    <p>This function can be used to determine what a lineup would have scored, given projections and actual
+fantasy points. This makes back-testing different lineup parameters fast and easy.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S4 method for optimizer</span>
-<span class='fu'>add_players_from_csv</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>filepath</span>, custom <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S4 method for lineupClass</span>
+<span class='fu'>compare_lineups_with_actuals</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>actuals</span>, show_warnings <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An optimizer model object</p></td>
+      <td><p>An object of class Lineups</p></td>
     </tr>
     <tr>
-      <th>filepath</th>
-      <td><p>Filepath location of the CSV</p></td>
+      <th>actuals</th>
+      <td><p>A data.frame (or data.table, or tibble) containing players and actual fantasy points.  See details.</p></td>
     </tr>
     <tr>
-      <th>custom</th>
-      <td><p>Set to TRUE to use user-generated CSVs with player data; the data will be
-parsed using <code>get_players_from_date_frame</code></p></td>
+      <th>show_warnings</th>
+      <td><p>Flag indicating whether warnings should be shown (e.g., "Player X was not found in <code>actuals</code>").</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Optimizer model object with slot <code>players</code> filled</p>
+    <p>Data.table of lineup comparisons</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
-<span class='r-in'><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='create_optimizer.html'>create_optimizer</a></span><span class='op'>(</span>site <span class='op'>=</span> <span class='st'>'DRAFTKINGS'</span>, sport <span class='op'>=</span> <span class='st'>'HOCKEY'</span>, contest_type <span class='op'>=</span> <span class='st'>'CLASSIC'</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>add_players_from_csv</span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>opt</span>, filepath <span class='op'>=</span> <span class='st'>'/Path/to/file.csv'</span><span class='op'>)</span></span>
-<span class='r-in'><span class='op'>}</span></span>
-<span class='r-in'></span>
-</pre>
+    <p>The <code>actuals</code> data.frame needs to contain a column called <code>actuals</code> that contains actual fantasy points,
+and at least one of <code>id</code> (player IDs associated with the model run), or <code>fullname</code>.  If both identifier columns
+are present, <code>id</code> will be preferentially used.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

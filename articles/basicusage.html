@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dfsOptimizer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
       </span>
     </div>
 
@@ -58,6 +58,9 @@
     </li>
     <li>
       <a href="../articles/customizeplayers.html">Customizing Players - Advanced</a>
+    </li>
+    <li>
+      <a href="../articles/experimentation.html">Experimentation and Back-Testing</a>
     </li>
     <li>
       <a href="../articles/rules.html">Customizing your Optimizer</a>
@@ -115,7 +118,7 @@
 <p>You can view the lineups simply by calling the object saved by <code>build_lineups</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lineups</span></code></pre></div>
-<pre><code>#&gt; [[1]]
+<pre><code>#&gt; $lineup_1
 #&gt;           id          fullname team position salary   fpts roster_position
 #&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
 #&gt;  2: 14086445   Auston Matthews  TOR        C   7900  15.85               C
@@ -128,7 +131,7 @@
 #&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
 #&gt; 10:                                    TOTAL  49900 121.84                
 #&gt; 
-#&gt; [[2]]
+#&gt; $lineup_2
 #&gt;           id          fullname team position salary   fpts roster_position
 #&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
 #&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C
@@ -141,7 +144,7 @@
 #&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
 #&gt; 10:                                    TOTAL  49900 121.62                
 #&gt; 
-#&gt; [[3]]
+#&gt; $lineup_3
 #&gt;           id          fullname team position salary   fpts roster_position
 #&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
 #&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C
@@ -154,7 +157,7 @@
 #&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
 #&gt; 10:                                    TOTAL  50000 121.56                
 #&gt; 
-#&gt; [[4]]
+#&gt; $lineup_4
 #&gt;           id          fullname team position salary   fpts roster_position
 #&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
 #&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C
@@ -167,7 +170,7 @@
 #&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
 #&gt; 10:                                    TOTAL  49500 121.54                
 #&gt; 
-#&gt; [[5]]
+#&gt; $lineup_5
 #&gt;           id          fullname team position salary   fpts roster_position
 #&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
 #&gt;  2: 14086445   Auston Matthews  TOR        C   7900  15.85               C
@@ -182,7 +185,7 @@
 <p>You can access the individual lineups with standard ‘[’ indexing</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lineups</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
-<pre><code>#&gt; [[1]]
+<pre><code>#&gt; $lineup_1
 #&gt;          id          fullname team position salary  fpts roster_position
 #&gt; 1: 14086443  Nathan MacKinnon  COL        C   8300 19.00               C
 #&gt; 2: 14086445   Auston Matthews  TOR        C   7900 15.85               C
@@ -205,11 +208,12 @@
 #&gt; 7: 14086917         Sami Niku  WPG        D   2600  8.40               D
 #&gt; 8: 14087024    Cayden Primeau  MON        G   6500 19.20               G
 #&gt; 9: 14086453    Leon Draisaitl  EDM        C   6600 15.20            UTIL</code></pre>
-<p>Finally, you may to extract the lineups to a list, To do so, you can simply run <code><a href="https://rdrr.io/r/base/list.html">as.list(lineups)</a></code></p>
+<p>Finally, you may to extract the lineups to a list, To do so, you can simply run <code>as.list(lineups)</code></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Here we're getting the total fpts from every lineup using sapply</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span>, <span class="st">'[['</span>, <span class="st">'fpts'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt; [1] 121.84 121.62 121.56 121.54 121.30</code></pre>
+<pre><code>#&gt; lineup_1 lineup_2 lineup_3 lineup_4 lineup_5 
+#&gt;   121.84   121.62   121.56   121.54   121.30</code></pre>
 </div>
 <div id="lineup-summary" class="section level2">
 <h2 class="hasAnchor">
@@ -273,7 +277,7 @@
   <span class="co"># Note the data.table notation here -- we're saying for ALL Cs and Ws on Colorado,</span>
   <span class="co"># Let's apply the _same_ random adjustment.  You could easily loop this across teams,</span>
   <span class="co"># and lines if you had line-information</span>
-  <span class="va">player_data</span><span class="op">[</span><span class="va">team</span> <span class="op">==</span> <span class="st">'COL'</span> <span class="op">&amp;&amp;</span> <span class="va">position</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'C'</span>,<span class="st">'W'</span><span class="op">)</span>, 
+  <span class="va">player_data</span><span class="op">[</span><span class="va">team</span> <span class="op">==</span> <span class="st">'COL'</span> <span class="op">&amp;&amp;</span> <span class="va">position</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'C'</span>,<span class="st">'W'</span><span class="op">)</span>, 
               <span class="va">fpts</span> <span class="op">:=</span> <span class="va">fpts</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">random_adjustment</span><span class="op">)</span><span class="op">]</span>
   
   <span class="co"># Now add that updated data back into the optimizer</span>
@@ -289,7 +293,7 @@
 
 <span class="co"># Block any COL/EDM forwards</span>
 <span class="va">player_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_player_data,optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span>
-<span class="va">ids_to_block</span> <span class="op">&lt;-</span> <span class="va">player_data</span><span class="op">[</span><span class="va">team</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'COL'</span>,<span class="st">'EDM'</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">position</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'C'</span>,<span class="st">'W'</span><span class="op">)</span>, <span class="op">]</span><span class="op">$</span><span class="va">id</span>
+<span class="va">ids_to_block</span> <span class="op">&lt;-</span> <span class="va">player_data</span><span class="op">[</span><span class="va">team</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'COL'</span>,<span class="st">'EDM'</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">position</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'C'</span>,<span class="st">'W'</span><span class="op">)</span>, <span class="op">]</span><span class="op">$</span><span class="va">id</span>
 <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/block_players_by_id,optimizer-method.html">block_players_by_id</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">ids_to_block</span><span class="op">)</span>
 
 <span class="co"># Build 50 more lineups, which do not match any of the previous</span>
