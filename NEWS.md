@@ -1,5 +1,8 @@
 # dfsOptimizer
 
+### 1.4.1 - November 2021
+* Fixed a bug where minimum exposure player constraints were not being honored.
+
 ### 1.4.0 - February 2021
 * Added `compare_lineups_with_actuals` method to make experimentation easier.  Method can be used to determine how changing specific parameters would have played out in a given slate or contest.
 
