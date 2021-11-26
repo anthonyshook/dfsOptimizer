@@ -1,0 +1,77 @@
+---
+title: "Experimentation and Back-Testing"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+    theme: yeti
+    highlight: textmate
+vignette: >
+  %\VignetteIndexEntry{rules}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  eval = FALSE,
+  comment = "#>"
+)
+```
+
+```{r echo = FALSE, eval=TRUE}
+library(dfsOptimizer)
+```
+
+When you're using a tool like `dfsOptimizer`, it can be helpful to do real-world experiments to fine-tune the methods and constraints
+you choose to apply when you're building lineups.  For instance, should you stack players?  Should you limit the max salary?
+
+To make this easier, you can use the `compare_lineups_with_actuals` function.
+
+## Compare lineups with actual performance
+
+Given a set up lineups generated using `build_lineups`, the `compare_lineups_with_actuals` can quickly calculate the
+real-world value of those lineups, given a data.frame containing actual scores.
+
+An example: You joined a contest on a DFS site, and you didn't win -- you want to see whether you would have performed better
+in that contest had you done something differently with your lineup construction.
+
+So, you go get the players' *actual* fantasy points for that contest, and using `compare_lineups_with_actuals`, can start testing.
+
+In the following example, `actuals` is a data.frame with three columns: 
+- `id`: The player's ID
+- `fullname`: The player's fullname
+- `actuals`: The actual fantasy points for that player
+
+```{r, eval = T}
+head(actuals)
+
+# Build initial model
+initial_mod <- create_optimizer('DRAFTKINGS','HOCKEY','CLASSIC')
+initial_mod <- add_players_from_df(initial_mod, nhl_players)
+
+# Build 5 lineups with one rule -- max player overlap = 5
+mod1 <- set_max_overlap(initial_mod, 5)
+lineups_1 <- build_lineups(mod1, 5, verbose = FALSE)
+results_1 <- compare_lineups_with_actuals(lineups_1, actuals)
+
+# Now build another 5 lineups with max_overlap of 4, and 
+# Max exposure to 50%
+mod2 <- initial_mod
+mod2 <- set_max_overlap(mod2, 4)
+mod2 <- set_max_exposure(mod2, .3)
+
+lineups_2 <- build_lineups(mod2, 5, verbose = FALSE)
+results_2 <- compare_lineups_with_actuals(lineups_2, actuals)
+```
+
+By looking at the output of `compare_lineups_with_actuals`, one can quickly see
+whether one set of constraints produced a better *actual* lineup than any other.
+```{r, eval = T}
+results_1
+results_2
+```
+
+In the above example, the second set of constraints (max overlap of 4 and max exposure of 50%) would have resulted in a 
+set of higher scoring lineups.

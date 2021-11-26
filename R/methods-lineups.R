@@ -71,3 +71,76 @@ setMethod(f = 'convert_lineup_to_vector',
               return(.hold)
             })
           })
+
+
+setGeneric('compare_lineups_with_actuals', function(object, actuals, show_warnings = TRUE) standardGeneric('compare_lineups_with_actuals'))
+#' @title Compare Lineups with Actuals
+#'
+#' @param object An object of class Lineups
+#' @param actuals A data.frame (or data.table, or tibble) containing players and actual fantasy points.  See details.
+#' @param show_warnings Flag indicating whether warnings should be shown (e.g., "Player X was not found in \code{actuals}").
+#'
+#' @description This function can be used to determine what a lineup would have scored, given projections and actual
+#' fantasy points. This makes back-testing different lineup parameters fast and easy.
+#'
+#' @details The \code{actuals} data.frame needs to contain a column called \code{actuals} that contains actual fantasy points,
+#' and at least one of \code{id} (player IDs associated with the model run), or \code{fullname}.  If both identifier columns
+#' are present, \code{id} will be preferentially used.
+#'
+#' @return Data.table of lineup comparisons
+#'
+#' @aliases compare_lineups_with_actuals
+#'
+#' @export
+setMethod(f = 'compare_lineups_with_actuals',
+          signature = 'lineupClass',
+          definition = function(object, actuals, show_warnings = TRUE) {
+            # Check actuals for appropriate columns
+            if (!any(c('id','fullname') %in% colnames(actuals))) stop('`actuals` data.frame requires one of `id` or `fullname` as columns.')
+            if (!('actuals' %in% colnames(actuals))) stop('Column `actuals` required in `actuals` data.frame.')
+
+            # Pick the joining column
+            if ('id' %in% colnames(actuals)) {
+              join_term = 'id'
+            } else {
+              join_term = 'fullname'
+            }
+
+            # silly, maybe, but rename
+
+            ## Now get the data out of the lineups.
+            # Hold variables
+            summarized_comps <- list()
+            missing_names <- c()
+
+            for (i in 1:length(object@lineups)) {
+              # Merge the actuals
+              tmp <- merge(x = object@lineups[[i]],
+                           y = actuals[, .SD, .SDcols = c(join_term, 'actuals')],
+                           by = join_term,
+                           all.x = TRUE)
+              # Check for missing names
+              missing_names <- c(missing_names, tmp[is.na(actuals),]$fullname)
+
+              # get the summary data
+              summarized_comps[[i]] <- data.frame(
+                lineup = names(object@lineups)[i],
+                projected_pts = sum(tmp$fpts),
+                actual_pts = sum(tmp$actuals, na.rm = TRUE)
+              )
+            }
+
+            if (length(missing_names) > 0 && show_warnings) {
+              warning(paste0('The following players were not found in the `actuals` table. ',
+                             'Lineups containing these players will be inaccurate: \n    ',
+                             paste(unique(missing_names),collapse='\n    ')))
+            }
+
+            # combine
+            final <- data.table::rbindlist(summarized_comps)
+            final[, diff := actual_pts - projected_pts]
+
+            return(final[order(-actual_pts)])
+
+          })
+

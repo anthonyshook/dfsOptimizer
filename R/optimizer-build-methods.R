@@ -24,6 +24,12 @@ setMethod('construct_model',
               if (is.na(max_exposure(P))) {
                 P <- set_player_max_exposure(P, max_exposure(config))
               }
+
+              # Same for min
+              if (is.na(min_exposure(P))) {
+                P@min_exposure <- 0
+              }
+
               return(P)
             })
 
@@ -151,16 +157,25 @@ setMethod('build_lineups',
               if ( 1/(length(solution_vectors) + 1) < max_exposure(M@config)) {
                 current_exposures <- calculate_exposure(solution_vectors)
                 over_exposed <- which(current_exposures > sapply(M@players, max_exposure))
+                under_exposed <- which(current_exposures <= sapply(M@players, min_exposure))
 
                 # Ignore Locked and blocked
                 over_exposed <- setdiff(over_exposed,
                                         c(which(sapply(M@players, locked) == 1),
                                           which(sapply(M@players, blocked) == 1)))
+                under_exposed <- setdiff(under_exposed,
+                                         c(which(sapply(M@players, locked) == 1),
+                                           which(sapply(M@players, blocked) == 1)))
 
                 # Add exposure constraint
                 if (length(over_exposed) > 0) {
                   current_model <- current_model %>%
                     ompr::add_constraint(players[i] == 0, i = over_exposed)
+                }
+
+                if (length(under_exposed) > 0) {
+                  current_model <- current_model %>%
+                    ompr::add_constraint(players[i] == 1, i = under_exposed)
                 }
               }
 
@@ -185,6 +200,9 @@ setMethod('build_lineups',
               crlineup <- get_player_data(object)[which(solution_vectors[[offset + iter]]==1), ..cols]
               crlineup <- format_lineup(object, crlineup, fit_model = fit_model)
               lineups@lineups[[offset + iter]] <- crlineup
+
+              # Name the lineups
+              names(lineups@lineups) <- paste0('lineup_', 1:length(lineups@lineups))
 
             }
 
