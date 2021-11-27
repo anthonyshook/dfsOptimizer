@@ -7,7 +7,7 @@ output:
     theme: yeti
     highlight: textmate
 vignette: >
-  %\VignetteIndexEntry{rules}
+  %\VignetteIndexEntry{experimentation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
