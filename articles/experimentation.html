@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dfsOptimizer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -96,57 +92,57 @@
     
 <p>When you’re using a tool like <code>dfsOptimizer</code>, it can be helpful to do real-world experiments to fine-tune the methods and constraints you choose to apply when you’re building lineups. For instance, should you stack players? Should you limit the max salary?</p>
 <p>To make this easier, you can use the <code>compare_lineups_with_actuals</code> function.</p>
-<div id="compare-lineups-with-actual-performance" class="section level2">
-<h2 class="hasAnchor">
-<a href="#compare-lineups-with-actual-performance" class="anchor"></a>Compare lineups with actual performance</h2>
+<div class="section level2">
+<h2 id="compare-lineups-with-actual-performance">Compare lineups with actual performance<a class="anchor" aria-label="anchor" href="#compare-lineups-with-actual-performance"></a>
+</h2>
 <p>Given a set up lineups generated using <code>build_lineups</code>, the <code>compare_lineups_with_actuals</code> can quickly calculate the real-world value of those lineups, given a data.frame containing actual scores.</p>
 <p>An example: You joined a contest on a DFS site, and you didn’t win – you want to see whether you would have performed better in that contest had you done something differently with your lineup construction.</p>
 <p>So, you go get the players’ <em>actual</em> fantasy points for that contest, and using <code>compare_lineups_with_actuals</code>, can start testing.</p>
 <p>In the following example, <code>actuals</code> is a data.frame with three columns: - <code>id</code>: The player’s ID - <code>fullname</code>: The player’s fullname - <code>actuals</code>: The actual fantasy points for that player</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">actuals</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;           fullname       id actuals
-#&gt; 1:      A.J. Greer 14086739     0.0
-#&gt; 2:     Adam Brooks 14086515     2.0
-#&gt; 3: Adam Clendening 14086951     0.0
-#&gt; 4:    Adam Larsson 14086885     3.0
-#&gt; 5:      Adam Lowry 14086495     1.5
-#&gt; 6:     Adam Pelech 14086851     0.0</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">actuals</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;           fullname       id actuals</span></span>
+<span><span class="co">#&gt; 1:      A.J. Greer 14086739     0.0</span></span>
+<span><span class="co">#&gt; 2:     Adam Brooks 14086515     2.0</span></span>
+<span><span class="co">#&gt; 3: Adam Clendening 14086951     0.0</span></span>
+<span><span class="co">#&gt; 4:    Adam Larsson 14086885     3.0</span></span>
+<span><span class="co">#&gt; 5:      Adam Lowry 14086495     1.5</span></span>
+<span><span class="co">#&gt; 6:     Adam Pelech 14086851     0.0</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Build initial model</span>
-<span class="va">initial_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span><span class="st">'DRAFTKINGS'</span>,<span class="st">'HOCKEY'</span>,<span class="st">'CLASSIC'</span><span class="op">)</span>
-<span class="va">initial_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df,optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">initial_mod</span>, <span class="va">nhl_players</span><span class="op">)</span>
-
-<span class="co"># Build 5 lineups with one rule -- max player overlap = 5</span>
-<span class="va">mod1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_max_overlap,optimizer-method.html">set_max_overlap</a></span><span class="op">(</span><span class="va">initial_mod</span>, <span class="fl">5</span><span class="op">)</span>
-<span class="va">lineups_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups,optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod1</span>, <span class="fl">5</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">results_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compare_lineups_with_actuals,lineupClass-method.html">compare_lineups_with_actuals</a></span><span class="op">(</span><span class="va">lineups_1</span>, <span class="va">actuals</span><span class="op">)</span>
-
-<span class="co"># Now build another 5 lineups with max_overlap of 4, and </span>
-<span class="co"># Max exposure to 50%</span>
-<span class="va">mod2</span> <span class="op">&lt;-</span> <span class="va">initial_mod</span>
-<span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_max_overlap,optimizer-method.html">set_max_overlap</a></span><span class="op">(</span><span class="va">mod2</span>, <span class="fl">4</span><span class="op">)</span>
-<span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_max_exposure,optimizer-method.html">set_max_exposure</a></span><span class="op">(</span><span class="va">mod2</span>, <span class="fl">.3</span><span class="op">)</span>
-
-<span class="va">lineups_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups,optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod2</span>, <span class="fl">5</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">results_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compare_lineups_with_actuals,lineupClass-method.html">compare_lineups_with_actuals</a></span><span class="op">(</span><span class="va">lineups_2</span>, <span class="va">actuals</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Build initial model</span></span>
+<span><span class="va">initial_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span><span class="st">'DRAFTKINGS'</span>,<span class="st">'HOCKEY'</span>,<span class="st">'CLASSIC'</span><span class="op">)</span></span>
+<span><span class="va">initial_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df-optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">initial_mod</span>, <span class="va">nhl_players</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Build 5 lineups with one rule -- max player overlap = 5</span></span>
+<span><span class="va">mod1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_max_overlap-optimizer-method.html">set_max_overlap</a></span><span class="op">(</span><span class="va">initial_mod</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">lineups_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups-optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod1</span>, <span class="fl">5</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">results_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compare_lineups_with_actuals-lineupClass-method.html">compare_lineups_with_actuals</a></span><span class="op">(</span><span class="va">lineups_1</span>, <span class="va">actuals</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Now build another 5 lineups with max_overlap of 4, and </span></span>
+<span><span class="co"># Max exposure to 50%</span></span>
+<span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="va">initial_mod</span></span>
+<span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_max_overlap-optimizer-method.html">set_max_overlap</a></span><span class="op">(</span><span class="va">mod2</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_max_exposure-optimizer-method.html">set_max_exposure</a></span><span class="op">(</span><span class="va">mod2</span>, <span class="fl">.3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lineups_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups-optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod2</span>, <span class="fl">5</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">results_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compare_lineups_with_actuals-lineupClass-method.html">compare_lineups_with_actuals</a></span><span class="op">(</span><span class="va">lineups_2</span>, <span class="va">actuals</span><span class="op">)</span></span></code></pre></div>
 <p>By looking at the output of <code>compare_lineups_with_actuals</code>, one can quickly see whether one set of constraints produced a better <em>actual</em> lineup than any other.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results_1</span></code></pre></div>
-<pre><code>#&gt;      lineup projected_pts actual_pts    diff
-#&gt; 1: lineup_3        119.62       26.0  -93.62
-#&gt; 2: lineup_1        121.84       25.0  -96.84
-#&gt; 3: lineup_2        120.89       24.0  -96.89
-#&gt; 4: lineup_5        119.25       16.0 -103.25
-#&gt; 5: lineup_4        119.32       15.5 -103.82</code></pre>
+<code class="sourceCode R"><span><span class="va">results_1</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;      lineup projected_pts actual_pts    diff</span></span>
+<span><span class="co">#&gt; 1: lineup_3        119.62       26.0  -93.62</span></span>
+<span><span class="co">#&gt; 2: lineup_1        121.84       25.0  -96.84</span></span>
+<span><span class="co">#&gt; 3: lineup_2        120.89       24.0  -96.89</span></span>
+<span><span class="co">#&gt; 4: lineup_5        119.25       16.0 -103.25</span></span>
+<span><span class="co">#&gt; 5: lineup_4        119.32       15.5 -103.82</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results_2</span></code></pre></div>
-<pre><code>#&gt;      lineup projected_pts actual_pts   diff
-#&gt; 1: lineup_3        118.21       30.5 -87.71
-#&gt; 2: lineup_5         98.61       26.3 -72.31
-#&gt; 3: lineup_1        121.84       25.0 -96.84
-#&gt; 4: lineup_2        120.07       22.5 -97.57
-#&gt; 5: lineup_4        101.97       18.4 -83.57</code></pre>
+<code class="sourceCode R"><span><span class="va">results_2</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;      lineup projected_pts actual_pts   diff</span></span>
+<span><span class="co">#&gt; 1: lineup_3        118.21       30.5 -87.71</span></span>
+<span><span class="co">#&gt; 2: lineup_5         98.61       26.3 -72.31</span></span>
+<span><span class="co">#&gt; 3: lineup_1        121.84       25.0 -96.84</span></span>
+<span><span class="co">#&gt; 4: lineup_2        120.07       22.5 -97.57</span></span>
+<span><span class="co">#&gt; 5: lineup_4        101.97       18.4 -83.57</span></span></code></pre>
 <p>In the above example, the second set of constraints (max overlap of 4 and max exposure of 50%) would have resulted in a set of higher scoring lineups.</p>
 </div>
   </div>
@@ -162,11 +158,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Anthony Shook.</p>
+  <p></p>
+<p>Developed by Anthony Shook.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -174,6 +172,8 @@
 
   
 
+
+  
 
   </body>
 </html>

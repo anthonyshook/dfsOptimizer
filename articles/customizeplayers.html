@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dfsOptimizer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -95,80 +91,80 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">dfsOptimizer</span><span class="op">)</span></code></pre></div>
-<div id="basic-methods" class="section level1">
-<h1 class="hasAnchor">
-<a href="#basic-methods" class="anchor"></a>Basic Methods</h1>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">dfsOptimizer</span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="basic-methods">Basic Methods<a class="anchor" aria-label="anchor" href="#basic-methods"></a>
+</h2>
 <p>The package includes a lot of methods for customizing individual players in your model (see the “Customizing your Optimizer” vignette for examples)</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Example of how to block players by ID</span>
-<span class="co"># Single Player</span>
-<span class="va">opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/block_players_by_id,optimizer-method.html">block_players_by_id</a></span><span class="op">(</span><span class="va">opt</span>, player_ids <span class="op">=</span> <span class="va">single_player_id</span><span class="op">)</span>
-
-<span class="co"># Blocking multiple players uses the same syntax</span>
-<span class="va">opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/block_players_by_id,optimizer-method.html">block_players_by_id</a></span><span class="op">(</span><span class="va">opt</span>, player_ids <span class="op">=</span> <span class="va">multiple_player_ids</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Example of how to block players by ID</span></span>
+<span><span class="co"># Single Player</span></span>
+<span><span class="va">opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/block_players_by_id-optimizer-method.html">block_players_by_id</a></span><span class="op">(</span><span class="va">opt</span>, player_ids <span class="op">=</span> <span class="va">single_player_id</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Blocking multiple players uses the same syntax</span></span>
+<span><span class="va">opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/block_players_by_id-optimizer-method.html">block_players_by_id</a></span><span class="op">(</span><span class="va">opt</span>, player_ids <span class="op">=</span> <span class="va">multiple_player_ids</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="customizing-player-sets---advanced" class="section level1">
-<h1 class="hasAnchor">
-<a href="#customizing-player-sets---advanced" class="anchor"></a>Customizing Player Sets - Advanced</h1>
+<div class="section level2">
+<h2 id="customizing-player-sets---advanced">Customizing Player Sets - Advanced<a class="anchor" aria-label="anchor" href="#customizing-player-sets---advanced"></a>
+</h2>
 <p>Let’s say you want to do something complicated, like * Remove every player who <em>either</em> is in the bottom 50% of projected value (fpts/salary) OR plays for Montreal * Lock the two wingers with the highest points * Set the maximum exposure of all players to be proportional to their projected value, <em>within teams</em></p>
-<p>You could use the various sets of functions included in this package, But for complex, multi-step customization, the flow I recommend is: 1. Add players to an optimizer object 2. Pull those players out using <code><a href="../reference/get_player_data,optimizer-method.html">get_player_data()</a></code> 3. Use whatever R code you like on the data.table of players 4. Put the table back into the model with <code>add_players_from_df</code></p>
+<p>You could use the various sets of functions included in this package, But for complex, multi-step customization, the flow I recommend is: 1. Add players to an optimizer object 2. Pull those players out using <code><a href="../reference/get_player_data-optimizer-method.html">get_player_data()</a></code> 3. Use whatever R code you like on the data.table of players 4. Put the table back into the model with <code>add_players_from_df</code></p>
 <p>Here’s how we’d handle the above example:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Instantiate</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span><span class="op">)</span>
-
-<span class="co"># Add players (using the data set nhl_players, which is included in the package)</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df,optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">nhl_players</span><span class="op">)</span>
-<span class="va">mod</span></code></pre></div>
-<pre><code>#&gt; Optimizer Object (S4 class)
-#&gt; Site: DRAFTKINGS
-#&gt; Sport: HOCKEY
-#&gt; Contest Type: CLASSIC
-#&gt; Number of Players: 308</code></pre>
+<code class="sourceCode R"><span><span class="co"># Instantiate</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add players (using the data set nhl_players, which is included in the package)</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df-optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">nhl_players</span><span class="op">)</span></span>
+<span><span class="va">mod</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Optimizer Object (S4 class)</span></span>
+<span><span class="co">#&gt; Site: DRAFTKINGS</span></span>
+<span><span class="co">#&gt; Sport: HOCKEY</span></span>
+<span><span class="co">#&gt; Contest Type: CLASSIC</span></span>
+<span><span class="co">#&gt; Number of Players: 308</span></span></code></pre>
 <p>One can see we have 308 players in our set – Let’s pull the out into a data.table</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Pull those right back out</span>
-<span class="co"># This step is necessary if you added players to your model via CSV,</span>
-<span class="co"># otherwise you could just manipulate the original data.frame before</span>
-<span class="co"># adding it to the model</span>
-<span class="va">players</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_player_data,optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">players</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;          id first_name  last_name           fullname team position depth salary
-#&gt; 1: 14086443     Nathan  MacKinnon   Nathan MacKinnon  COL        C     1   8300
-#&gt; 2: 14087003   Frederik   Andersen  Frederik Andersen  TOR        G     1   8200
-#&gt; 3: 14087005    Michael Hutchinson Michael Hutchinson  TOR        G     1   8000
-#&gt; 4: 14087004      Carey      Price        Carey Price  MON        G     1   8000
-#&gt; 5: 14086445     Auston   Matthews    Auston Matthews  TOR        C     1   7900
-#&gt; 6: 14087007    Charlie   Lindgren   Charlie Lindgren  MON        G     1   7800
-#&gt;     fpts locked blocked is_injured min_exposure max_exposure variance
-#&gt; 1: 19.00  FALSE   FALSE      FALSE           NA           NA       NA
-#&gt; 2: 15.78  FALSE   FALSE      FALSE           NA           NA       NA
-#&gt; 3: 11.26  FALSE   FALSE      FALSE           NA           NA       NA
-#&gt; 4: 12.18  FALSE   FALSE      FALSE           NA           NA       NA
-#&gt; 5: 15.85  FALSE   FALSE      FALSE           NA           NA       NA
-#&gt; 6: 16.10  FALSE   FALSE      FALSE           NA           NA       NA</code></pre>
+<code class="sourceCode R"><span><span class="co"># Pull those right back out</span></span>
+<span><span class="co"># This step is necessary if you added players to your model via CSV,</span></span>
+<span><span class="co"># otherwise you could just manipulate the original data.frame before</span></span>
+<span><span class="co"># adding it to the model</span></span>
+<span><span class="va">players</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_player_data-optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">players</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;          id first_name  last_name           fullname team position depth salary</span></span>
+<span><span class="co">#&gt; 1: 14086443     Nathan  MacKinnon   Nathan MacKinnon  COL        C     1   8300</span></span>
+<span><span class="co">#&gt; 2: 14087003   Frederik   Andersen  Frederik Andersen  TOR        G     1   8200</span></span>
+<span><span class="co">#&gt; 3: 14087005    Michael Hutchinson Michael Hutchinson  TOR        G     1   8000</span></span>
+<span><span class="co">#&gt; 4: 14087004      Carey      Price        Carey Price  MON        G     1   8000</span></span>
+<span><span class="co">#&gt; 5: 14086445     Auston   Matthews    Auston Matthews  TOR        C     1   7900</span></span>
+<span><span class="co">#&gt; 6: 14087007    Charlie   Lindgren   Charlie Lindgren  MON        G     1   7800</span></span>
+<span><span class="co">#&gt;     fpts locked blocked is_injured min_exposure max_exposure variance</span></span>
+<span><span class="co">#&gt; 1: 19.00  FALSE   FALSE      FALSE           NA           NA       NA</span></span>
+<span><span class="co">#&gt; 2: 15.78  FALSE   FALSE      FALSE           NA           NA       NA</span></span>
+<span><span class="co">#&gt; 3: 11.26  FALSE   FALSE      FALSE           NA           NA       NA</span></span>
+<span><span class="co">#&gt; 4: 12.18  FALSE   FALSE      FALSE           NA           NA       NA</span></span>
+<span><span class="co">#&gt; 5: 15.85  FALSE   FALSE      FALSE           NA           NA       NA</span></span>
+<span><span class="co">#&gt; 6: 16.10  FALSE   FALSE      FALSE           NA           NA       NA</span></span></code></pre>
 <p>Now that we have the players, we can manipulate the table however we want – I’m going to use data.table in this example, but you could just as easily use whatever methods or packages you want.</p>
 <p>Remember what we want to do: * Remove every player who <em>either</em> is in the bottom 50% of projected value (fpts/salary) OR plays for Montreal * Lock the two wingers with the highest points * Set the maximum exposure of all players to be proportional to their projected value, <em>within teams</em></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Remove every player who _either_ is in the bottom 50% of projected value (fpts/salary) OR plays for Montreal</span>
-<span class="va">players</span> <span class="op">&lt;-</span>
-  <span class="va">players</span><span class="op">[</span><span class="va">fpts</span><span class="op">/</span><span class="va">salary</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">fpts</span><span class="op">/</span><span class="va">salary</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="va">team</span> <span class="op">!=</span> <span class="st">'MON'</span><span class="op">]</span>
-
-<span class="co"># Lock the two wingers with the highest points</span>
-<span class="va">players</span><span class="op">[</span> <span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">players</span><span class="op">[</span><span class="va">position</span> <span class="op">==</span> <span class="st">'W'</span>, <span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">fpts</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="va">id</span><span class="op">]</span>, <span class="va">locked</span> <span class="op">:=</span> <span class="cn">TRUE</span><span class="op">]</span>
-
-<span class="co"># Set the maximum exposure of all players to be proportional to their projected value, *within teams*</span>
-<span class="va">players</span><span class="op">[</span>, <span class="va">max_exposure</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/rank.html">rank</a></span><span class="op">(</span><span class="va">fpts</span><span class="op">/</span><span class="va">salary</span>, ties.method <span class="op">=</span> <span class="st">'first'</span><span class="op">)</span> <span class="op">/</span> <span class="va">.N</span>, by <span class="op">=</span> <span class="va">team</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Remove every player who _either_ is in the bottom 50% of projected value (fpts/salary) OR plays for Montreal</span></span>
+<span><span class="va">players</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">players</span><span class="op">[</span><span class="va">fpts</span><span class="op">/</span><span class="va">salary</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">fpts</span><span class="op">/</span><span class="va">salary</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="va">team</span> <span class="op">!=</span> <span class="st">'MON'</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Lock the two wingers with the highest points</span></span>
+<span><span class="va">players</span><span class="op">[</span> <span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">players</span><span class="op">[</span><span class="va">position</span> <span class="op">==</span> <span class="st">'W'</span>, <span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">fpts</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="va">id</span><span class="op">]</span>, <span class="va">locked</span> <span class="op">:=</span> <span class="cn">TRUE</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Set the maximum exposure of all players to be proportional to their projected value, *within teams*</span></span>
+<span><span class="va">players</span><span class="op">[</span>, <span class="va">max_exposure</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/rank.html" class="external-link">rank</a></span><span class="op">(</span><span class="va">fpts</span><span class="op">/</span><span class="va">salary</span>, ties.method <span class="op">=</span> <span class="st">'first'</span><span class="op">)</span> <span class="op">/</span> <span class="va">.N</span>, by <span class="op">=</span> <span class="va">team</span><span class="op">]</span></span></code></pre></div>
 <p>From here, you just put the data right back in using <code>add_players_from_df</code></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df,optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">players</span><span class="op">)</span>
-<span class="va">mod</span></code></pre></div>
-<pre><code>#&gt; Optimizer Object (S4 class)
-#&gt; Site: DRAFTKINGS
-#&gt; Sport: HOCKEY
-#&gt; Contest Type: CLASSIC
-#&gt; Number of Players: 132</code></pre>
+<code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df-optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">players</span><span class="op">)</span></span>
+<span><span class="va">mod</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Optimizer Object (S4 class)</span></span>
+<span><span class="co">#&gt; Site: DRAFTKINGS</span></span>
+<span><span class="co">#&gt; Sport: HOCKEY</span></span>
+<span><span class="co">#&gt; Contest Type: CLASSIC</span></span>
+<span><span class="co">#&gt; Number of Players: 132</span></span></code></pre>
 <p>You could, of course, use this method in conjunction with external data as well. For instance, if you wanted to remove anyone who played the night before, or who hasn’t player more than N games, you could join in an external set with values like “Days since played” or “N Games Played” and use that to filter the data down before setting it back into the model!</p>
 </div>
   </div>
@@ -184,11 +180,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Anthony Shook.</p>
+  <p></p>
+<p>Developed by Anthony Shook.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -196,6 +194,8 @@
 
   
 
+
+  
 
   </body>
 </html>

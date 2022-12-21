@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dfsOptimizer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -94,210 +90,210 @@
 
     
     
-<div id="setup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h1>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
 <p>Library the package and a solver (glpk)</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">dfsOptimizer</span><span class="op">)</span></code></pre></div>
-<div id="building-optimizer-and-getting-lineups" class="section level2">
-<h2 class="hasAnchor">
-<a href="#building-optimizer-and-getting-lineups" class="anchor"></a>Building Optimizer and getting lineups</h2>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">dfsOptimizer</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="building-optimizer-and-getting-lineups">Building Optimizer and getting lineups<a class="anchor" aria-label="anchor" href="#building-optimizer-and-getting-lineups"></a>
+</h3>
 <p>Example of instantiating an Optimizer object, adding players from an internal dataset (<code>nhl_players</code>), generating 5 lineups.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Instantiate</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span><span class="op">)</span>
-<span class="co"># Add players</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df,optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">nhl_players</span><span class="op">)</span>
-<span class="co"># Generate lineups</span>
-<span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups,optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">5</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Instantiate</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span><span class="op">)</span></span>
+<span><span class="co"># Add players</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df-optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">nhl_players</span><span class="op">)</span></span>
+<span><span class="co"># Generate lineups</span></span>
+<span><span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups-optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">5</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="view-the-lineups" class="section level2">
-<h2 class="hasAnchor">
-<a href="#view-the-lineups" class="anchor"></a>View the lineups</h2>
+<div class="section level3">
+<h3 id="view-the-lineups">View the lineups<a class="anchor" aria-label="anchor" href="#view-the-lineups"></a>
+</h3>
 <p>You can view the lineups simply by calling the object saved by <code>build_lineups</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lineups</span></code></pre></div>
-<pre><code>#&gt; $lineup_1
-#&gt;           id          fullname team position salary   fpts roster_position
-#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
-#&gt;  2: 14086445   Auston Matthews  TOR        C   7900  15.85               C
-#&gt;  3: 14086573 Brendan Gallagher  MON        W   6000  13.57               W
-#&gt;  4: 14086657   Kailer Yamamoto  EDM        W   2900   7.93               W
-#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W
-#&gt;  6: 14086813     Oscar Klefbom  EDM        D   6200  13.37               D
-#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D
-#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G
-#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
-#&gt; 10:                                    TOTAL  49900 121.84                
-#&gt; 
-#&gt; $lineup_2
-#&gt;           id          fullname team position salary   fpts roster_position
-#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
-#&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C
-#&gt;  3: 14086573 Brendan Gallagher  MON        W   6000  13.57               W
-#&gt;  4: 14086641      Matt Calvert  COL        W   3300   8.01               W
-#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W
-#&gt;  6: 14086813     Oscar Klefbom  EDM        D   6200  13.37               D
-#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D
-#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G
-#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
-#&gt; 10:                                    TOTAL  49900 121.62                
-#&gt; 
-#&gt; $lineup_3
-#&gt;           id          fullname team position salary   fpts roster_position
-#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
-#&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C
-#&gt;  3: 14086569    Mikko Rantanen  COL        W   6400  13.25               W
-#&gt;  4: 14086573 Brendan Gallagher  MON        W   6000  13.57               W
-#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W
-#&gt;  6: 14086867       Jake Muzzin  TOR        D   3200   8.07               D
-#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D
-#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G
-#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
-#&gt; 10:                                    TOTAL  50000 121.56                
-#&gt; 
-#&gt; $lineup_4
-#&gt;           id          fullname team position salary   fpts roster_position
-#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
-#&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C
-#&gt;  3: 14086573 Brendan Gallagher  MON        W   6000  13.57               W
-#&gt;  4: 14086657   Kailer Yamamoto  EDM        W   2900   7.93               W
-#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W
-#&gt;  6: 14086813     Oscar Klefbom  EDM        D   6200  13.37               D
-#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D
-#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G
-#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
-#&gt; 10:                                    TOTAL  49500 121.54                
-#&gt; 
-#&gt; $lineup_5
-#&gt;           id          fullname team position salary   fpts roster_position
-#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C
-#&gt;  2: 14086445   Auston Matthews  TOR        C   7900  15.85               C
-#&gt;  3: 14086573 Brendan Gallagher  MON        W   6000  13.57               W
-#&gt;  4: 14086653    Ilya Kovalchuk  MON        W   3000   7.39               W
-#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W
-#&gt;  6: 14086813     Oscar Klefbom  EDM        D   6200  13.37               D
-#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D
-#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G
-#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL
-#&gt; 10:                                    TOTAL  50000 121.30</code></pre>
+<code class="sourceCode R"><span><span class="va">lineups</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; $lineup_1</span></span>
+<span><span class="co">#&gt;           id          fullname team position salary   fpts roster_position</span></span>
+<span><span class="co">#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C</span></span>
+<span><span class="co">#&gt;  2: 14086445   Auston Matthews  TOR        C   7900  15.85               C</span></span>
+<span><span class="co">#&gt;  3: 14086573 Brendan Gallagher  MON        W   6000  13.57               W</span></span>
+<span><span class="co">#&gt;  4: 14086657   Kailer Yamamoto  EDM        W   2900   7.93               W</span></span>
+<span><span class="co">#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W</span></span>
+<span><span class="co">#&gt;  6: 14086813     Oscar Klefbom  EDM        D   6200  13.37               D</span></span>
+<span><span class="co">#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D</span></span>
+<span><span class="co">#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G</span></span>
+<span><span class="co">#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL</span></span>
+<span><span class="co">#&gt; 10:                                    TOTAL  49900 121.84                </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lineup_2</span></span>
+<span><span class="co">#&gt;           id          fullname team position salary   fpts roster_position</span></span>
+<span><span class="co">#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C</span></span>
+<span><span class="co">#&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C</span></span>
+<span><span class="co">#&gt;  3: 14086573 Brendan Gallagher  MON        W   6000  13.57               W</span></span>
+<span><span class="co">#&gt;  4: 14086641      Matt Calvert  COL        W   3300   8.01               W</span></span>
+<span><span class="co">#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W</span></span>
+<span><span class="co">#&gt;  6: 14086813     Oscar Klefbom  EDM        D   6200  13.37               D</span></span>
+<span><span class="co">#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D</span></span>
+<span><span class="co">#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G</span></span>
+<span><span class="co">#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL</span></span>
+<span><span class="co">#&gt; 10:                                    TOTAL  49900 121.62                </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lineup_3</span></span>
+<span><span class="co">#&gt;           id          fullname team position salary   fpts roster_position</span></span>
+<span><span class="co">#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C</span></span>
+<span><span class="co">#&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C</span></span>
+<span><span class="co">#&gt;  3: 14086569    Mikko Rantanen  COL        W   6400  13.25               W</span></span>
+<span><span class="co">#&gt;  4: 14086573 Brendan Gallagher  MON        W   6000  13.57               W</span></span>
+<span><span class="co">#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W</span></span>
+<span><span class="co">#&gt;  6: 14086867       Jake Muzzin  TOR        D   3200   8.07               D</span></span>
+<span><span class="co">#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D</span></span>
+<span><span class="co">#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G</span></span>
+<span><span class="co">#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL</span></span>
+<span><span class="co">#&gt; 10:                                    TOTAL  50000 121.56                </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lineup_4</span></span>
+<span><span class="co">#&gt;           id          fullname team position salary   fpts roster_position</span></span>
+<span><span class="co">#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C</span></span>
+<span><span class="co">#&gt;  2: 14086447    Connor McDavid  EDM        C   7500  15.55               C</span></span>
+<span><span class="co">#&gt;  3: 14086573 Brendan Gallagher  MON        W   6000  13.57               W</span></span>
+<span><span class="co">#&gt;  4: 14086657   Kailer Yamamoto  EDM        W   2900   7.93               W</span></span>
+<span><span class="co">#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W</span></span>
+<span><span class="co">#&gt;  6: 14086813     Oscar Klefbom  EDM        D   6200  13.37               D</span></span>
+<span><span class="co">#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D</span></span>
+<span><span class="co">#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G</span></span>
+<span><span class="co">#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL</span></span>
+<span><span class="co">#&gt; 10:                                    TOTAL  49500 121.54                </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lineup_5</span></span>
+<span><span class="co">#&gt;           id          fullname team position salary   fpts roster_position</span></span>
+<span><span class="co">#&gt;  1: 14086443  Nathan MacKinnon  COL        C   8300  19.00               C</span></span>
+<span><span class="co">#&gt;  2: 14086445   Auston Matthews  TOR        C   7900  15.85               C</span></span>
+<span><span class="co">#&gt;  3: 14086573 Brendan Gallagher  MON        W   6000  13.57               W</span></span>
+<span><span class="co">#&gt;  4: 14086653    Ilya Kovalchuk  MON        W   3000   7.39               W</span></span>
+<span><span class="co">#&gt;  5: 14086659        Martin Frk   LA        W   2900   9.32               W</span></span>
+<span><span class="co">#&gt;  6: 14086813     Oscar Klefbom  EDM        D   6200  13.37               D</span></span>
+<span><span class="co">#&gt;  7: 14086917         Sami Niku  WPG        D   2600   8.40               D</span></span>
+<span><span class="co">#&gt;  8: 14087024    Cayden Primeau  MON        G   6500  19.20               G</span></span>
+<span><span class="co">#&gt;  9: 14086453    Leon Draisaitl  EDM        C   6600  15.20            UTIL</span></span>
+<span><span class="co">#&gt; 10:                                    TOTAL  50000 121.30</span></span></code></pre>
 <p>You can access the individual lineups with standard ‘[’ indexing</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lineups</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
-<pre><code>#&gt; $lineup_1
-#&gt;          id          fullname team position salary  fpts roster_position
-#&gt; 1: 14086443  Nathan MacKinnon  COL        C   8300 19.00               C
-#&gt; 2: 14086445   Auston Matthews  TOR        C   7900 15.85               C
-#&gt; 3: 14086573 Brendan Gallagher  MON        W   6000 13.57               W
-#&gt; 4: 14086657   Kailer Yamamoto  EDM        W   2900  7.93               W
-#&gt; 5: 14086659        Martin Frk   LA        W   2900  9.32               W
-#&gt; 6: 14086813     Oscar Klefbom  EDM        D   6200 13.37               D
-#&gt; 7: 14086917         Sami Niku  WPG        D   2600  8.40               D
-#&gt; 8: 14087024    Cayden Primeau  MON        G   6500 19.20               G
-#&gt; 9: 14086453    Leon Draisaitl  EDM        C   6600 15.20            UTIL</code></pre>
+<code class="sourceCode R"><span><span class="va">lineups</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; $lineup_1</span></span>
+<span><span class="co">#&gt;          id          fullname team position salary  fpts roster_position</span></span>
+<span><span class="co">#&gt; 1: 14086443  Nathan MacKinnon  COL        C   8300 19.00               C</span></span>
+<span><span class="co">#&gt; 2: 14086445   Auston Matthews  TOR        C   7900 15.85               C</span></span>
+<span><span class="co">#&gt; 3: 14086573 Brendan Gallagher  MON        W   6000 13.57               W</span></span>
+<span><span class="co">#&gt; 4: 14086657   Kailer Yamamoto  EDM        W   2900  7.93               W</span></span>
+<span><span class="co">#&gt; 5: 14086659        Martin Frk   LA        W   2900  9.32               W</span></span>
+<span><span class="co">#&gt; 6: 14086813     Oscar Klefbom  EDM        D   6200 13.37               D</span></span>
+<span><span class="co">#&gt; 7: 14086917         Sami Niku  WPG        D   2600  8.40               D</span></span>
+<span><span class="co">#&gt; 8: 14087024    Cayden Primeau  MON        G   6500 19.20               G</span></span>
+<span><span class="co">#&gt; 9: 14086453    Leon Draisaitl  EDM        C   6600 15.20            UTIL</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lineups</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></code></pre></div>
-<pre><code>#&gt;          id          fullname team position salary  fpts roster_position
-#&gt; 1: 14086443  Nathan MacKinnon  COL        C   8300 19.00               C
-#&gt; 2: 14086447    Connor McDavid  EDM        C   7500 15.55               C
-#&gt; 3: 14086573 Brendan Gallagher  MON        W   6000 13.57               W
-#&gt; 4: 14086641      Matt Calvert  COL        W   3300  8.01               W
-#&gt; 5: 14086659        Martin Frk   LA        W   2900  9.32               W
-#&gt; 6: 14086813     Oscar Klefbom  EDM        D   6200 13.37               D
-#&gt; 7: 14086917         Sami Niku  WPG        D   2600  8.40               D
-#&gt; 8: 14087024    Cayden Primeau  MON        G   6500 19.20               G
-#&gt; 9: 14086453    Leon Draisaitl  EDM        C   6600 15.20            UTIL</code></pre>
+<code class="sourceCode R"><span><span class="va">lineups</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;          id          fullname team position salary  fpts roster_position</span></span>
+<span><span class="co">#&gt; 1: 14086443  Nathan MacKinnon  COL        C   8300 19.00               C</span></span>
+<span><span class="co">#&gt; 2: 14086447    Connor McDavid  EDM        C   7500 15.55               C</span></span>
+<span><span class="co">#&gt; 3: 14086573 Brendan Gallagher  MON        W   6000 13.57               W</span></span>
+<span><span class="co">#&gt; 4: 14086641      Matt Calvert  COL        W   3300  8.01               W</span></span>
+<span><span class="co">#&gt; 5: 14086659        Martin Frk   LA        W   2900  9.32               W</span></span>
+<span><span class="co">#&gt; 6: 14086813     Oscar Klefbom  EDM        D   6200 13.37               D</span></span>
+<span><span class="co">#&gt; 7: 14086917         Sami Niku  WPG        D   2600  8.40               D</span></span>
+<span><span class="co">#&gt; 8: 14087024    Cayden Primeau  MON        G   6500 19.20               G</span></span>
+<span><span class="co">#&gt; 9: 14086453    Leon Draisaitl  EDM        C   6600 15.20            UTIL</span></span></code></pre>
 <p>Finally, you may to extract the lineups to a list, To do so, you can simply run <code>as.list(lineups)</code></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Here we're getting the total fpts from every lineup using sapply</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span>, <span class="st">'[['</span>, <span class="st">'fpts'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt; lineup_1 lineup_2 lineup_3 lineup_4 lineup_5 
-#&gt;   121.84   121.62   121.56   121.54   121.30</code></pre>
+<code class="sourceCode R"><span><span class="co"># Here we're getting the total fpts from every lineup using sapply</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span>, <span class="st">'[['</span>, <span class="st">'fpts'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; lineup_1 lineup_2 lineup_3 lineup_4 lineup_5 </span></span>
+<span><span class="co">#&gt;   121.84   121.62   121.56   121.54   121.30</span></span></code></pre>
 </div>
-<div id="lineup-summary" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lineup-summary" class="anchor"></a>Lineup Summary</h2>
+<div class="section level3">
+<h3 id="lineup-summary">Lineup Summary<a class="anchor" aria-label="anchor" href="#lineup-summary"></a>
+</h3>
 <p>Lineup summary provides information about how often individual players were selected for lineups (count and percentage), which teams were selected most often, and a measure of lineup variance (higher Jaccard Distance means more variance across lineups)</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Summary stats</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt; Number of Expected Lineups: 5
-#&gt; Number of Lineups Found: 5
-#&gt; 
-#&gt; Player Exposures:
-#&gt;                Player Lineups Percent
-#&gt;  1:  Nathan MacKinnon       5     100
-#&gt;  2: Brendan Gallagher       5     100
-#&gt;  3:        Martin Frk       5     100
-#&gt;  4:         Sami Niku       5     100
-#&gt;  5:    Cayden Primeau       5     100
-#&gt;  6:    Leon Draisaitl       5     100
-#&gt;  7:     Oscar Klefbom       4      80
-#&gt;  8:    Connor McDavid       3      60
-#&gt;  9:   Auston Matthews       2      40
-#&gt; 10:   Kailer Yamamoto       2      40
-#&gt; 11:      Matt Calvert       1      20
-#&gt; 12:    Mikko Rantanen       1      20
-#&gt; 13:       Jake Muzzin       1      20
-#&gt; 14:    Ilya Kovalchuk       1      20
-#&gt; 
-#&gt; Players Per Team:
-#&gt; COL EDM  LA MON TOR WPG 
-#&gt;   7  14   5  11   3   5 
-#&gt; 
-#&gt; Lineup Variance (mean Jaccard Distance): 34.18 %
-#&gt; </code></pre>
+<code class="sourceCode R"><span><span class="co"># Summary stats</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Number of Expected Lineups: 5</span></span>
+<span><span class="co">#&gt; Number of Lineups Found: 5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Player Exposures:</span></span>
+<span><span class="co">#&gt;                Player Lineups Percent</span></span>
+<span><span class="co">#&gt;  1:  Nathan MacKinnon       5     100</span></span>
+<span><span class="co">#&gt;  2: Brendan Gallagher       5     100</span></span>
+<span><span class="co">#&gt;  3:        Martin Frk       5     100</span></span>
+<span><span class="co">#&gt;  4:         Sami Niku       5     100</span></span>
+<span><span class="co">#&gt;  5:    Cayden Primeau       5     100</span></span>
+<span><span class="co">#&gt;  6:    Leon Draisaitl       5     100</span></span>
+<span><span class="co">#&gt;  7:     Oscar Klefbom       4      80</span></span>
+<span><span class="co">#&gt;  8:    Connor McDavid       3      60</span></span>
+<span><span class="co">#&gt;  9:   Auston Matthews       2      40</span></span>
+<span><span class="co">#&gt; 10:   Kailer Yamamoto       2      40</span></span>
+<span><span class="co">#&gt; 11:      Matt Calvert       1      20</span></span>
+<span><span class="co">#&gt; 12:    Mikko Rantanen       1      20</span></span>
+<span><span class="co">#&gt; 13:       Jake Muzzin       1      20</span></span>
+<span><span class="co">#&gt; 14:    Ilya Kovalchuk       1      20</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Players Per Team:</span></span>
+<span><span class="co">#&gt; COL EDM  LA MON TOR WPG </span></span>
+<span><span class="co">#&gt;   7  14   5  11   3   5 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Lineup Variance (mean Jaccard Distance): 34.18 %</span></span>
+<span><span class="co">#&gt; </span></span></code></pre>
 </div>
-<div id="export-the-lineups" class="section level2">
-<h2 class="hasAnchor">
-<a href="#export-the-lineups" class="anchor"></a>Export the lineups</h2>
+<div class="section level3">
+<h3 id="export-the-lineups">Export the lineups<a class="anchor" aria-label="anchor" href="#export-the-lineups"></a>
+</h3>
 <p>The format of the file output by export_lineups is determined by the Site, Sport, and Contest Type.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/export_lineups,lineupClass-method.html">export_lineups</a></span><span class="op">(</span><span class="va">lineups</span>, file <span class="op">=</span> <span class="st">'lineup_export.csv'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/export_lineups-lineupClass-method.html">export_lineups</a></span><span class="op">(</span><span class="va">lineups</span>, file <span class="op">=</span> <span class="st">'lineup_export.csv'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="including-previously-generated-lineups" class="section level2">
-<h2 class="hasAnchor">
-<a href="#including-previously-generated-lineups" class="anchor"></a>Including Previously Generated Lineups</h2>
+<div class="section level3">
+<h3 id="including-previously-generated-lineups">Including Previously Generated Lineups<a class="anchor" aria-label="anchor" href="#including-previously-generated-lineups"></a>
+</h3>
 <p>There may be cases where you want to include previously generated lineups. For example, let’s say you want certain players’ variance to be dependent – like if a hockey center’s projection decreases randomly, his wingers’ projections should decrease a similar amount. By including previously generated lineups, you can alter the projections before each iteration of the model, but still be sure you’re not generating the same lineup twice.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Make an empty object called Lineups</span>
-<span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># Pull the initial player data, to build off of</span>
-<span class="va">player_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_player_data,optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span>
-
-<span class="co"># Iterate for as many lineups as you'd like, let's say 20</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">nl</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># Apply your formula for dependent-randomness</span>
-  <span class="co"># Get a single percentage adjustment (say, 10%)</span>
-  <span class="va">random_adjustment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">.1</span>, <span class="fl">.1</span><span class="op">)</span>
-  
-  <span class="co"># We'll apply it to COL Cs and Ws from our nhl_players set, as an illustration</span>
-  <span class="co"># Note the data.table notation here -- we're saying for ALL Cs and Ws on Colorado,</span>
-  <span class="co"># Let's apply the _same_ random adjustment.  You could easily loop this across teams,</span>
-  <span class="co"># and lines if you had line-information</span>
-  <span class="va">player_data</span><span class="op">[</span><span class="va">team</span> <span class="op">==</span> <span class="st">'COL'</span> <span class="op">&amp;&amp;</span> <span class="va">position</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'C'</span>,<span class="st">'W'</span><span class="op">)</span>, 
-              <span class="va">fpts</span> <span class="op">:=</span> <span class="va">fpts</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">random_adjustment</span><span class="op">)</span><span class="op">]</span>
-  
-  <span class="co"># Now add that updated data back into the optimizer</span>
-  <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df,optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">player_data</span><span class="op">)</span>
-
-  <span class="co"># And Build the next lineup.Note the inclusion of the `existing_lineups` parameter</span>
-  <span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups,optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">1</span>, existing_lineups <span class="op">=</span> <span class="va">lineups</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Make an empty object called Lineups</span></span>
+<span><span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Pull the initial player data, to build off of</span></span>
+<span><span class="va">player_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_player_data-optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Iterate for as many lineups as you'd like, let's say 20</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">nl</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Apply your formula for dependent-randomness</span></span>
+<span>  <span class="co"># Get a single percentage adjustment (say, 10%)</span></span>
+<span>  <span class="va">random_adjustment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">.1</span>, <span class="fl">.1</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># We'll apply it to COL Cs and Ws from our nhl_players set, as an illustration</span></span>
+<span>  <span class="co"># Note the data.table notation here -- we're saying for ALL Cs and Ws on Colorado,</span></span>
+<span>  <span class="co"># Let's apply the _same_ random adjustment.  You could easily loop this across teams,</span></span>
+<span>  <span class="co"># and lines if you had line-information</span></span>
+<span>  <span class="va">player_data</span><span class="op">[</span><span class="va">team</span> <span class="op">==</span> <span class="st">'COL'</span> <span class="op">&amp;&amp;</span> <span class="va">position</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C'</span>,<span class="st">'W'</span><span class="op">)</span>, </span>
+<span>              <span class="va">fpts</span> <span class="op">:=</span> <span class="va">fpts</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">random_adjustment</span><span class="op">)</span><span class="op">]</span></span>
+<span>  </span>
+<span>  <span class="co"># Now add that updated data back into the optimizer</span></span>
+<span>  <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_players_from_df-optimizer-method.html">add_players_from_df</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">player_data</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># And Build the next lineup.Note the inclusion of the `existing_lineups` parameter</span></span>
+<span>  <span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups-optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">1</span>, existing_lineups <span class="op">=</span> <span class="va">lineups</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Or, as another example, let’s say you need 100 lineups - after the first 50, you notice the model is overwhelmingly selecting forwards from two teams, COL and EDM. You want to block those forwards in the next 50 lineups, but allow for any number of D or G from those teams.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Build 50 lineups</span>
-<span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups,optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">50</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> 
-
-<span class="co"># Block any COL/EDM forwards</span>
-<span class="va">player_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_player_data,optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span>
-<span class="va">ids_to_block</span> <span class="op">&lt;-</span> <span class="va">player_data</span><span class="op">[</span><span class="va">team</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'COL'</span>,<span class="st">'EDM'</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">position</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'C'</span>,<span class="st">'W'</span><span class="op">)</span>, <span class="op">]</span><span class="op">$</span><span class="va">id</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/block_players_by_id,optimizer-method.html">block_players_by_id</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">ids_to_block</span><span class="op">)</span>
-
-<span class="co"># Build 50 more lineups, which do not match any of the previous</span>
-<span class="va">lineups_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups,optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">50</span>, existing_lineups <span class="op">=</span> <span class="va">lineups</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Build 50 lineups</span></span>
+<span><span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups-optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">50</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Block any COL/EDM forwards</span></span>
+<span><span class="va">player_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_player_data-optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
+<span><span class="va">ids_to_block</span> <span class="op">&lt;-</span> <span class="va">player_data</span><span class="op">[</span><span class="va">team</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'COL'</span>,<span class="st">'EDM'</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">position</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C'</span>,<span class="st">'W'</span><span class="op">)</span>, <span class="op">]</span><span class="op">$</span><span class="va">id</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/block_players_by_id-optimizer-method.html">block_players_by_id</a></span><span class="op">(</span><span class="va">mod</span>, <span class="va">ids_to_block</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Build 50 more lineups, which do not match any of the previous</span></span>
+<span><span class="va">lineups_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_lineups-optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">50</span>, existing_lineups <span class="op">=</span> <span class="va">lineups</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code></pre></div>
 </div>
 </div>
   </div>
@@ -313,11 +309,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Anthony Shook.</p>
+  <p></p>
+<p>Developed by Anthony Shook.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -325,6 +323,8 @@
 
   
 
+
+  
 
   </body>
 </html>

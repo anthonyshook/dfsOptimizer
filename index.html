@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,23 +34,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">dfsOptimizer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -84,25 +80,27 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="readme" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#readme" class="anchor"></a>README</h1></div>
-<p><img src="https://github.com/anthonyshook/dfsOptimizer/workflows/R/badge.svg" alt="R"></p>
-<div id="daily-fantasy-lineup-optimization-in-r" class="section level2">
-<h2 class="hasAnchor">
-<a href="#daily-fantasy-lineup-optimization-in-r" class="anchor"></a>Daily Fantasy Lineup Optimization in R</h2>
+<div class="section level1">
+<div class="page-header"><h1 id="readme">README<a class="anchor" aria-label="anchor" href="#readme"></a>
+</h1></div>
+<div class="figure">
+<img src="https://github.com/anthonyshook/dfsOptimizer/workflows/R/badge.svg" alt=""><p class="caption">R</p>
+</div>
+<div class="section level2">
+<h2 id="daily-fantasy-lineup-optimization-in-r">Daily Fantasy Lineup Optimization in R<a class="anchor" aria-label="anchor" href="#daily-fantasy-lineup-optimization-in-r"></a>
+</h2>
 <p>The <code>dfsOptimizer</code> package is intended to provide a straightforward way to generate optimal daily fantasy lineups for various sports, sites, and contests.</p>
 <p><code>dfsOptimizer</code> was built and tested in R 4.0.2</p>
 <p><em>NOTE WELL</em>: This is currently very much in Beta – I’m almost certainly not yet exporting everything I need to, and new issues always crop up once someone who isn’t actually developing the thing gets their hands on it. So, if you decide to use it, I’d very much appreciate any bug reports and/or suggestions!</p>
-<div id="installation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h3>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"anthonyshook/dfsOptimizer"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"anthonyshook/dfsOptimizer"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="to-do" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do" class="anchor"></a>To-Do</h3>
+<div class="section level3">
+<h3 id="to-do">To-Do<a class="anchor" aria-label="anchor" href="#to-do"></a>
+</h3>
 <ul>
 <li>Unit Testing</li>
 <li>More sports and sites</li>
@@ -110,9 +108,9 @@
 </ul>
 </div>
 </div>
-<div id="included-sitessports" class="section level2">
-<h2 class="hasAnchor">
-<a href="#included-sitessports" class="anchor"></a>Included Sites/Sports</h2>
+<div class="section level2">
+<h2 id="included-sitessports">Included Sites/Sports<a class="anchor" aria-label="anchor" href="#included-sitessports"></a>
+</h2>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Sport</th>
@@ -190,74 +188,74 @@
 </tbody>
 </table>
 </div>
-<div id="notes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#notes" class="anchor"></a>Notes</h2>
-<p>The package relies on the <code>ROI</code> package, and comes with one solver as a dependency – <code>ROI.plugin.glpk</code>. This is to ensure it works out of the box, so to speak. However, the <code>solver</code> argument in <code><a href="reference/build_lineups,optimizer-method.html">build_lineups()</a></code> is compatible with the <code>ompr.roi</code> package, so if you have <code>ROI.plugin.symphony</code> installed, it should be as simple as `build_lineups(solver=‘symphony’)</p>
+<div class="section level2">
+<h2 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
+</h2>
+<p>The package relies on the <code>ROI</code> package, and comes with one solver as a dependency – <code>ROI.plugin.glpk</code>. This is to ensure it works out of the box, so to speak. However, the <code>solver</code> argument in <code><a href="reference/build_lineups-optimizer-method.html">build_lineups()</a></code> is compatible with the <code>ompr.roi</code> package, so if you have <code>ROI.plugin.symphony</code> installed, it should be as simple as `build_lineups(solver=‘symphony’)</p>
 </div>
-<div id="simple-examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simple-examples" class="anchor"></a>Simple Examples</h2>
+<div class="section level2">
+<h2 id="simple-examples">Simple Examples<a class="anchor" aria-label="anchor" href="#simple-examples"></a>
+</h2>
 <p>Build Lineups from a Draftkings roster file (i.e., that you download from DK). This example uses the mean Points-per-game provided by draftkings as a projection, which I don’t recommend you actually do.</p>
-<div id="quick-way---pass-file-in-creation-statement" class="section level4">
-<h4 class="hasAnchor">
-<a href="#quick-way---pass-file-in-creation-statement" class="anchor"></a>Quick Way - pass file in creation statement</h4>
+<div class="section level4">
+<h4 id="quick-way---pass-file-in-creation-statement">Quick Way - pass file in creation statement<a class="anchor" aria-label="anchor" href="#quick-way---pass-file-in-creation-statement"></a>
+</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Build an optimizer</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, 
-                        sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, 
-                        contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span>, 
-                        filepath <span class="op">=</span> <span class="st">'/Path/to/DKSalaries_nhl.csv'</span><span class="op">)</span>
-
-<span class="co"># Build 20 lineups</span>
-<span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/build_lineups,optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
-
-<span class="co"># Get summary stats (player and team exposure breakdowns, and a cross-lineup similarity measure)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span>
-
-<span class="co"># See the lineups</span>
-<span class="va">lineups</span>
-
-<span class="co"># OR save them to a list</span>
-<span class="va">lineups_extracted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span>
-
-<span class="co"># OR export them into a format that you can upload to the selected site</span>
-<span class="fu"><a href="reference/export_lineups,lineupClass-method.html">export_lineups</a></span><span class="op">(</span><span class="va">lineups</span>, file <span class="op">=</span> <span class="st">'/path/to/lineup_export.csv'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Build an optimizer</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, </span>
+<span>                        sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, </span>
+<span>                        contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span>, </span>
+<span>                        filepath <span class="op">=</span> <span class="st">'/Path/to/DKSalaries_nhl.csv'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Build 20 lineups</span></span>
+<span><span class="va">lineups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/build_lineups-optimizer-method.html">build_lineups</a></span><span class="op">(</span><span class="va">mod</span>, num_lineups <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get summary stats (player and team exposure breakdowns, and a cross-lineup similarity measure)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># See the lineups</span></span>
+<span><span class="va">lineups</span></span>
+<span></span>
+<span><span class="co"># OR save them to a list</span></span>
+<span><span class="va">lineups_extracted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">lineups</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># OR export them into a format that you can upload to the selected site</span></span>
+<span><span class="fu"><a href="reference/export_lineups-lineupClass-method.html">export_lineups</a></span><span class="op">(</span><span class="va">lineups</span>, file <span class="op">=</span> <span class="st">'/path/to/lineup_export.csv'</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="slightly-less-quick-way---parse-file-and-add-players-you-could-use-this-to-replace-the-player-list-on-an-already-build-model" class="section level4">
-<h4 class="hasAnchor">
-<a href="#slightly-less-quick-way---parse-file-and-add-players-you-could-use-this-to-replace-the-player-list-on-an-already-build-model" class="anchor"></a>Slightly less quick way - parse file and add players (you could use this to replace the player list on an already build model)</h4>
+<div class="section level4">
+<h4 id="slightly-less-quick-way---parse-file-and-add-players-you-could-use-this-to-replace-the-player-list-on-an-already-build-model">Slightly less quick way - parse file and add players (you could use this to replace the player list on an already build model)<a class="anchor" aria-label="anchor" href="#slightly-less-quick-way---parse-file-and-add-players-you-could-use-this-to-replace-the-player-list-on-an-already-build-model"></a>
+</h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Build an optimizer</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, 
-                        sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, 
-                        contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span><span class="op">)</span>
-
-<span class="co"># Parse and add players</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_players_from_csv,optimizer-method.html">add_players_from_csv</a></span><span class="op">(</span><span class="va">mod</span>, filepath <span class="op">=</span> <span class="st">'/Path/to/DKSalaries_nhl.csv'</span><span class="op">)</span></code></pre></div>
-<p>You can also add players from a data.frame – see <code><a href="reference/add_players_from_df,optimizer-method.html">?add_players_from_df</a></code> or <code><a href="reference/get_players_from_data_frame.html">?get_players_from_data_frame</a></code> for more detail and examples!</p>
+<code class="sourceCode R"><span><span class="co"># Build an optimizer</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, </span>
+<span>                        sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, </span>
+<span>                        contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Parse and add players</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/add_players_from_csv-optimizer-method.html">add_players_from_csv</a></span><span class="op">(</span><span class="va">mod</span>, filepath <span class="op">=</span> <span class="st">'/Path/to/DKSalaries_nhl.csv'</span><span class="op">)</span></span></code></pre></div>
+<p>You can also add players from a data.frame – see <code><a href="reference/add_players_from_df-optimizer-method.html">?add_players_from_df</a></code> or <code><a href="reference/get_players_from_data_frame.html">?get_players_from_data_frame</a></code> for more detail and examples!</p>
 </div>
-<div id="updating-the-projected-fantasy-points-for-your-model" class="section level4">
-<h4 class="hasAnchor">
-<a href="#updating-the-projected-fantasy-points-for-your-model" class="anchor"></a>Updating the Projected Fantasy Points for your Model</h4>
+<div class="section level4">
+<h4 id="updating-the-projected-fantasy-points-for-your-model">Updating the Projected Fantasy Points for your Model<a class="anchor" aria-label="anchor" href="#updating-the-projected-fantasy-points-for-your-model"></a>
+</h4>
 <p>Once you have an existing optimizer model, you can update the FPTS using the function <code>update_fpts</code>. This requires a data.frame that contains columns <code>id</code> and <code>fpts</code> – the easiest way to get players’ ids is using <code>get_player_data</code> on an optimizer with players added.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Build an optimizer</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, 
-                        sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, 
-                        contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span>,
-                        filepath <span class="op">=</span> <span class="st">'/Path/to/DKSalaries_nhl.csv'</span><span class="op">)</span>
-
-<span class="co"># Get the data</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_player_data,optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span>
-
-<span class="co"># From here, you can replace the value of FPTS in df by either</span>
-<span class="co"># merging with another table by player name or ID</span>
-<span class="co"># As an example, we'll just toss in some random values</span>
-<span class="va">df</span><span class="op">$</span><span class="va">fpts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>
-
-<span class="co"># Update the model with the new FPTS</span>
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/update_fpts,optimizer-method.html">update_fpts</a></span><span class="op">(</span><span class="va">mod</span>, fpts_data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Build an optimizer</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_optimizer.html">create_optimizer</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">'DRAFTKINGS'</span>, </span>
+<span>                        sport <span class="op">=</span> <span class="st">'HOCKEY'</span>, </span>
+<span>                        contest_type <span class="op">=</span> <span class="st">'CLASSIC'</span>,</span>
+<span>                        filepath <span class="op">=</span> <span class="st">'/Path/to/DKSalaries_nhl.csv'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get the data</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_player_data-optimizer-method.html">get_player_data</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># From here, you can replace the value of FPTS in df by either</span></span>
+<span><span class="co"># merging with another table by player name or ID</span></span>
+<span><span class="co"># As an example, we'll just toss in some random values</span></span>
+<span><span class="va">df</span><span class="op">$</span><span class="va">fpts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Update the model with the new FPTS</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/update_fpts-optimizer-method.html">update_fpts</a></span><span class="op">(</span><span class="va">mod</span>, fpts_data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -265,30 +263,43 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing dfsOptimizer</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Anthony Shook <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Anthony Shook.</p>
+  <p></p>
+<p>Developed by Anthony Shook.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -296,6 +307,8 @@
 
   
 
+
+  
 
   </body>
 </html>
