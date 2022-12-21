@@ -184,7 +184,7 @@ setMethod('build_lineups',
                                              solver = ompr.roi::with_ROI(solver))
 
               # Break if not optimal
-              if (fit_model$status != 'optimal') {
+              if (!(fit_model$status %in% c('optimal', 'success'))) {
                 stop('Model could not reach a solution.')
               }
 
